@@ -1,0 +1,33 @@
+plugins {
+id 'com.android.application'
+
+}
+
+android {
+namespace "com.example.hider"
+compileSdk 29
+
+lint {
+        checkReleaseBuilds false
+    }
+
+defaultConfig {  
+    applicationId "com.example.hider"  
+    minSdk 29
+    targetSdk 36
+    versionCode 10
+    versionName "1.0"  
+}  
+
+buildTypes {  
+    release {  
+        minifyEnabled false  
+        shrinkResources false  
+         }  
+}
+
+}
+
+dependencies {
+implementation fileTree(dir: 'libs', include: ['*.jar'])
+}
