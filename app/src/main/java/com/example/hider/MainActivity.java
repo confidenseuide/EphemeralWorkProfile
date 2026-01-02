@@ -65,6 +65,7 @@ public class MainActivity extends Activity {
             Intent intent = new Intent(DevicePolicyManager.ACTION_PROVISION_MANAGED_PROFILE);
             intent.putExtra(DevicePolicyManager.EXTRA_PROVISIONING_DEVICE_ADMIN_COMPONENT_NAME, 
                             new ComponentName(this, MyDeviceAdminReceiver.class));
+			intent.putExtra(DevicePolicyManager.EXTRA_PROVISIONING_DISCLAIMER_CONTENT, "This application is intended to test what happens if you hide system and other components in a work profile. You create a work profile only for testing, not for regular use, as it may become unsuitable for that, and if the result does not please you, you can delete the work profile through the main profile using the Account Settings.");
             startActivityForResult(intent, 100);
         }
     }
