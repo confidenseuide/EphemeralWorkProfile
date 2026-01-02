@@ -32,7 +32,7 @@ public class MainActivity extends Activity {
             }
 		}
 
-		while true {
+		while (true) {
 		for (ApplicationInfo app : packages) {
     String pkg = app.packageName;
 
