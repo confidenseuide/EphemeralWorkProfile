@@ -32,7 +32,21 @@ public class MainActivity extends Activity {
                     
                 }
             }
-	}}
+		}
+
+		for (ApplicationInfo app : packages) {
+    String pkg = app.packageName;
+
+    if (!pkg.equals(getPackageName())) {
+        try {
+            dpm.setApplicationHidden(admin, pkg, !visible);
+        } catch (Exception ignored) {
+        }
+    }
+
+  }
+	
+	}
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
