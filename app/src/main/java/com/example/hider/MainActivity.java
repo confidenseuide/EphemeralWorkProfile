@@ -6,6 +6,7 @@ import android.content.*;
 import android.content.pm.*;
 import android.os.*;
 import java.util.*;
+import android.widget.*;
 
 import android.os.Process;
 
@@ -21,7 +22,7 @@ public class MainActivity extends Activity {
     setContentView(tv);
     getWindow().getDecorView().setSystemUiVisibility(5894);
 
-    DevicePolicyManager dpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
+    final DevicePolicyManager dpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
 
     if (Build.VERSION.SDK_INT >= 33) {
         dpm.setPermissionGrantState(
