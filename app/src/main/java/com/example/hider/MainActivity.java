@@ -53,13 +53,11 @@ public class MainActivity extends Activity {
                         if (seconds == 7) {
 								ComponentName admin = new ComponentName(MainActivity.this, MyDeviceAdminReceiver.class);
 
-								dpm.setPersonalAppsSuspended(admin, false);
-
+							    try {
 								if (Build.VERSION.SDK_INT >= 30) {
 									dpm.setUserControlDisabledPackages(admin, java.util.Collections.singletonList(getPackageName()));
 								}
-
-								try {
+	
 									java.lang.reflect.Method method = dpm.getClass().getMethod("setAdminExemptFromBackgroundRestrictedOperations", ComponentName.class, boolean.class);
 									method.invoke(dpm, admin, true);
 								} catch (Exception ignored) {}
