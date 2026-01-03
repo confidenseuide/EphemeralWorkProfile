@@ -18,6 +18,14 @@ public class MainActivity extends Activity {
     DevicePolicyManager dpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
 
     if (dpm.isProfileOwnerApp(getPackageName())) {
+	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+         dpm.setPermissionGrantState(
+            new ComponentName(this, MyDeviceAdminReceiver.class),
+            getPackageName(),
+            android.Manifest.permission.POST_NOTIFICATIONS,
+            DevicePolicyManager.PERMISSION_GRANT_STATE_GRANTED
+        );}
+		
         Intent intent = new Intent(this, WatcherService.class);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startForegroundService(intent);
