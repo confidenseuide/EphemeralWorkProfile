@@ -23,7 +23,7 @@ public class WatcherService extends Service {
         super.onCreate();
         
         
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= 26) {
             NotificationChannel channel = new NotificationChannel(
                     CHANNEL_ID, "Secure Guard", NotificationManager.IMPORTANCE_LOW);
             getSystemService(NotificationManager.class).createNotificationChannel(channel);
@@ -35,7 +35,7 @@ public class WatcherService extends Service {
                 .setSmallIcon(android.R.drawable.ic_lock_lock)
                 .build();
         
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= 34) {
     startForegroundService(serviceIntent);
 } else {
     startService(serviceIntent);
