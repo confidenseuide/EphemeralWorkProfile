@@ -63,7 +63,7 @@ public class WatcherService extends Service {
                 }
             };
             IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
-            if (Build.VERSION.SDK_INT >= 34) registerReceiver(receiver, filter, RECEIVER_EXPORTED);
+            if (Build.VERSION.SDK_INT >= 34) registerReceiver(receiver, filter, RECEIVER_NOT_EXPORTED);
             else registerReceiver(receiver, filter);
         }
 
