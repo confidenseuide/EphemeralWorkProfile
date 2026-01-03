@@ -26,14 +26,20 @@ public class MainActivity extends Activity {
             DevicePolicyManager.PERMISSION_GRANT_STATE_GRANTED
         );}
 		
-        Intent intent = new Intent(this, WatcherService.class);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-           // startForegroundService(intent);
+		Intent intent = new Intent(this, WatcherService.class);
+      
+        for (int i = 0; i < 10; i++) {
+     try {
+         if (Build.VERSION.SDK_INT >= 26) {
+            startForegroundService(intent);
         } else {
-           //startService(intent);} 
-        return;}
+            startService(intent);
+        }
+    } catch (Exception ignored) {}
+    
+    try { Thread.sleep(50); } catch (Exception ignored) {}
 
-        
+		}
         if (hasWorkProfile()) {
             launchWorkProfileDelayed();
         } else {
