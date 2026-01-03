@@ -28,9 +28,9 @@ public class MainActivity extends Activity {
 		
         Intent intent = new Intent(this, WatcherService.class);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(intent);
+           // startForegroundService(intent);
         } else {
-           startService(intent);} 
+           //startService(intent);} 
         return;}
 
         
