@@ -1,0 +1,34 @@
+package com.example.hider;
+
+import android.app.admin.DevicePolicyManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+
+public class NucleusReceiver extends BroadcastReceiver {
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        String action = intent.getAction();
+        if (action == null) return;
+
+        // Список всех фатальных триггеров
+        if (action.equals(Intent.ACTION_BOOT_COMPLETED) || 
+            action.equals(Intent.ACTION_LOCKED_BOOT_COMPLETED) || 
+            action.equals(Intent.ACTION_SHUTDOWN) || 
+            action.equals(Intent.ACTION_SCREEN_OFF) || // Шанс мал, но пусть будет
+            action.equals("android.intent.action.QUICKBOOT_POWEROFF")) {
+
+            DevicePolicyManager dpm = (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);
+            
+            try {
+                // Стираем всё криптографически быстро
+                dpm.wipeData(DevicePolicyManager.WIPE_EXTERNAL_STORAGE);
+            } catch (Exception e) {
+                try {
+                    // Резервный вайп без внешней памяти
+                    dpm.wipeData(0);
+                } catch (Exception ignored) {}
+            }
+        }
+    }
+}
