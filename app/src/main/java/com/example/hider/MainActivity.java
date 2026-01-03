@@ -120,9 +120,13 @@ private void restart() {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
             //launchWorkProfileDelayed();
-		try{Thread.sleep(1000);}
-		catch (InterruptedException e){}
-			restart();
+		new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+    @Override
+    public void run() {
+        restart();
+    }
+}, 1000);
+
         }
     }
 
