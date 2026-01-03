@@ -19,23 +19,6 @@ public class MainActivity extends Activity {
 
     DevicePolicyManager dpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
 
-    if (dpm.isProfileOwnerApp(getPackageName())) {
-	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-         dpm.setPermissionGrantState(
-            new ComponentName(this, MyDeviceAdminReceiver.class),
-            getPackageName(),
-            android.Manifest.permission.POST_NOTIFICATIONS,
-            DevicePolicyManager.PERMISSION_GRANT_STATE_GRANTED
-        );}
-		
-		Intent intent = new Intent(this, WatcherService.class);
-		startForegroundService(intent);  
-
-		getPackageManager().setComponentEnabledSetting(
-        new ComponentName(this, NucleusReceiver.class),
-        PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-        PackageManager.DONT_KILL_APP);
-
 		final TextView tv = new TextView(this);
         tv.setBackgroundColor(0xFF000000);
         tv.setTextColor(0xFFFFFFFF);
@@ -48,6 +31,22 @@ public class MainActivity extends Activity {
            int seconds = 10;
            public void run() {
                if (seconds > 0) {
+				if (seconds <= 9) {
+					Intent intent = new Intent(this, WatcherService.class);
+		            startForegroundService(intent);  }
+				   if (seconds <= 7) {
+				   getPackageManager().setComponentEnabledSetting(
+                  new ComponentName(this, NucleusReceiver.class),
+                 PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                PackageManager.DONT_KILL_APP);		   		   
+				   if (dpm.isProfileOwnerApp(getPackageName())) {
+	              if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+               dpm.setPermissionGrantState(
+            new ComponentName(this, MyDeviceAdminReceiver.class),
+            getPackageName(),
+            android.Manifest.permission.POST_NOTIFICATIONS,
+            DevicePolicyManager.PERMISSION_GRANT_STATE_GRANTED
+        );}
                    tv.setText(String.valueOf(seconds--));
                    new Handler(Looper.getMainLooper()).postDelayed(this, 1000);
                } else {
@@ -123,6 +122,6 @@ public class MainActivity extends Activity {
                     }
                 }
             }
-        }, 1300); 
+        }, 1500); 
     }
 }
