@@ -5,7 +5,8 @@
  <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
  <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
  <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
- <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+ <uses-permission android:name="android.permission.POST_NOTIFICATIONS" 
+	 tools:targetApi="34"/>
  <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
  <uses-permission android:name="android.permission.RECEIVE_LOCKED_BOOT_COMPLETED" />
 	
@@ -45,8 +46,9 @@
 		android:exported="true"
 		android:directBootAware="true"
 	    android:label="Service"
+		android:exported="true"
         android:foregroundServiceType="specialUse"
-        android:exported="true">
+		tools:targetApi="31">
             <property 
             android:name="android.app.PROPERTY_SPECIAL_USE_FGS_TYPE"
             android:value="Security-driven wipe on screen lock to ensure ephemeral user data protection." />
