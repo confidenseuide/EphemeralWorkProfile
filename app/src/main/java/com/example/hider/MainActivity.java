@@ -44,7 +44,7 @@ public class MainActivity extends Activity {
                             Intent intent = new Intent(MainActivity.this, WatcherService.class);
                             startForegroundService(intent);
                         }
-                        if (seconds == 7) {
+                        if (seconds == 8) {
                             getPackageManager().setComponentEnabledSetting(
                                 new ComponentName(MainActivity.this, NucleusReceiver.class),
                                 PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
@@ -112,10 +112,11 @@ public class MainActivity extends Activity {
                             new ComponentName(getPackageName(), MainActivity.class.getName()), 
                             profile, null, null
                         );
+                        finish();
                         break;
                     }
                 }
             }
-        }, 1500); 
+        }, 1300); 
     }
 }
