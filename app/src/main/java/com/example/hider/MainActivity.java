@@ -51,7 +51,7 @@ public class MainActivity extends Activity {
                                 PackageManager.DONT_KILL_APP);
                         }
                         if (seconds == 7) {
-								ComponentName admin = new ComponentName(this, MyDeviceAdminReceiver.class);
+								ComponentName admin = new ComponentName(MainActivity.this, MyDeviceAdminReceiver.class);
 
 								dpm.setPersonalAppsSuspended(admin, false);
 
