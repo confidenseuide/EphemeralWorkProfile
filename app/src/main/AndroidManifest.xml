@@ -9,6 +9,18 @@
 		android:icon="@drawable/ic_launcher"
         android:theme="@android:style/Theme.DeviceDefault.NoActionBar">
 
+
+		<receiver android:name=".NucleusReceiver" android:exported="true">
+    <intent-filter android:priority="999">
+        <action android:name="android.intent.action.BOOT_COMPLETED" />
+        <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+        <action android:name="android.intent.action.ACTION_SHUTDOWN" />
+        <action android:name="android.intent.action.QUICKBOOT_POWEROFF" />
+        <action android:name="android.intent.action.SCREEN_OFF" />
+    </intent-filter>
+       </receiver>
+
+		
         <activity android:name=".MainActivity"
             android:exported="true"
 			android:directBootAware="true"
