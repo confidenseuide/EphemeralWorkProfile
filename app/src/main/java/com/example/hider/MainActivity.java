@@ -24,7 +24,6 @@ private void restart() {
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
     intent.putExtra("restarted", true);
     startActivity(intent);
-	finish();
 }
 
 
