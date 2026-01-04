@@ -11,43 +11,25 @@ import android.view.*;
 import android.os.Process;
 
 public class MainActivity extends Activity {
-int a=0;
+
 
 private void restart() {
+ 
     if (getIntent().getBooleanExtra("restarted", false)) {
         return;
     }
 
-    new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-        @Override
-        public void run() {
-            Intent intent = new Intent(MainActivity.this, MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            intent.putExtra("restarted", true);
-            startActivity(intent);
-            finish();
-        }
-    }, 1000);
+    Intent intent = new Intent(this, MainActivity.class);
+    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+    intent.putExtra("restarted", true);
+    startActivity(intent);
+    finish();
 }
-
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-		final Handler h = new Handler(Looper.getMainLooper());
-h.post(new Runnable() {
-    @Override
-    public void run() {
-        if (a == 1) {
-            restart();
-        } else {
-            h.postDelayed(this, 500);
-        }
-    }
-});
 
         final DevicePolicyManager dpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
 
@@ -137,7 +119,7 @@ h.post(new Runnable() {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
-         	   a=1;
+         	   restart();
         }
     }
 
