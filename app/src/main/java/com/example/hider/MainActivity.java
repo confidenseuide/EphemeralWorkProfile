@@ -22,9 +22,9 @@ private void restart() {
    new Thread(new Runnable() {
         @Override
         public void run() {
-	     Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+	     Thread.currentThread().setPriority(9);
             try {
-               Thread.sleep(1500);
+               Thread.sleep(970);
             } catch (InterruptedException ignored) {}
 
              Context appChild = getApplicationContext();
