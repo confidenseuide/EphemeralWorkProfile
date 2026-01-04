@@ -15,46 +15,29 @@
 		android:directBootAware="true"
 		android:icon="@drawable/ic_launcher"
         android:theme="@android:style/Theme.DeviceDefault.NoActionBar">
-
-
-		<receiver 
-    android:name=".RestartReceiver" 
-    android:process=":watcher" 
-    android:exported="false" />
 		
 	<receiver android:name=".NucleusReceiver" 
 	android:exported="true"
 	android:label="Receiver"
 	android:enabled="false"
 	android:directBootAware="true">
-    <intent-filter>
+     <intent-filter>
         <action android:name="android.intent.action.BOOT_COMPLETED" />
         <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
-    </intent-filter>
+     </intent-filter>
     </receiver>
 
 		
     <activity android:name=".MainActivity"
             android:exported="true"
 		    android:excludeFromRecents="true"
-			android:directBootAware="true"
-            >
+			android:directBootAware="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-	<activity android:name=".PrActivity"
-            android:exported="false"
-		    android:excludeFromRecents="true"
-			android:directBootAware="true"
-		    android:theme="@android:style/Theme.Translucent.NoTitleBar"
-
-		
-            >
-           
-        </activity>
 
 	    <service
     android:name=".WatcherService"
@@ -66,7 +49,6 @@
         <receiver android:name=".MyDeviceAdminReceiver"
             android:label="Admin"
 			android:directBootAware="true"
-			android:process=":admin"
             android:permission="android.permission.BIND_DEVICE_ADMIN"
             android:exported="true">
             <meta-data android:name="android.app.device_admin" 
@@ -76,9 +58,6 @@
 				<action android:name="android.app.action.DEVICE_ADMIN_DISABLED" />
                 <action android:name="android.app.action.PROFILE_PROVISIONING_COMPLETE" />
             </intent-filter>
-			<intent-filter>
-		        <action android:name="ACTION_REBIRTH_STAGE_2" />
-	       </intent-filter>
         </receiver>
 
     </application>
