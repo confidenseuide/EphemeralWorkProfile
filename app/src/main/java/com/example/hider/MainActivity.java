@@ -19,8 +19,34 @@ private void restart() {
         return;
     }
 
-	sendBroadcast(new Intent(MainActivity.this, RestartReceiver.class));
-    finish();
+	// 1. Готовим интент на возврат
+Intent intent = new Intent(this, MainActivity.class);
+intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+intent.putExtra("restarted", true);
+
+// 2. Упаковываем в PendingIntent. 
+// FLAG_CANCEL_CURRENT нужен, чтобы старые копии интента не мешались.
+PendingIntent pi = PendingIntent.getActivity(
+    this, 
+    0, 
+    intent, 
+    PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_CANCEL_CURRENT
+);
+
+// 3. Используем AlarmClock. 
+// Это самый высокий приоритет в Android, он игнорирует ограничения фона.
+AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+if (am != null) {
+    // Ставим время: текущее + 1 секунда (чтобы провижнинг успел сдохнуть)
+    long triggerTime = System.currentTimeMillis() + 1000;
+    AlarmManager.AlarmClockInfo info = new AlarmManager.AlarmClockInfo(triggerTime, pi);
+    am.setAlarmClock(info, pi);
+}
+
+// 4. ГЛАВНОЕ: Уходим в небытие.
+// Теперь Provisioning Manager видит, что ты закрылся, и он тоже закрывается.
+finish();
+
 }
 
 
