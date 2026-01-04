@@ -17,19 +17,11 @@ private void restart() {
         return;
     }
 
-	
-       // 1. Первый сон — даем системе осознать статус провижнинга
-    try { Thread.sleep(300); } catch (Exception e) {}
-    
+    // 1. Сначала ПРЯЧЕМСЯ, чтобы провижнинг не видел нас
     moveTaskToBack(true);
 
-    // 2. Второй сон — ждем, пока окно "улетит" за горизонт
-    try { Thread.sleep(300); } catch (Exception e) {}
-
+    // 2. Вызываем финиш. С этого момента активити официально "умирает"
     finish();
-
-    // 3. Третий сон — удерживаем процесс от закрытия, пока система чистит стек
-    try { Thread.sleep(300); } catch (Exception e) {}
 
     // 3. Запускаем новый поток, который выживет после finish()
     // и подождет, пока труп активити остынет
@@ -41,17 +33,22 @@ private void restart() {
             try {
                 // Спим 1 секунду. За это время finish() точно отработает,
                 // и Provisioning Manager закроется.
-                Thread.sleep(500);
+                Thread.sleep(1000);
             } catch (InterruptedException ignored) {}
 
-
-			Context app = getApplicationContext();
-            Intent intent = new Intent(app, MyDeviceAdminReceiver.class);
-            intent.setAction("ACTION_REBIRTH_STAGE_2");
-            app.sendBroadcast(intent);
-			
             // 4. Используем Context приложения (не Активити!), чтобы запустить новую задачу
+            Context appChild = getApplicationContext();
+            Intent intent = new Intent(appChild, MainActivity.class);
             
+            // Важнейшие флаги: запуск в новой задаче на пустом месте
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.putExtra("restarted", true);
+            
+            try {
+                appChild.startActivity(intent);
+            } catch (Exception e) {
+                // Если тут упало, значит система всё еще считает нас фоновым спамом
+            }
 
             // 5. Жестко убиваем старый процесс, если нужно всё очистить
             // android.os.Process.killProcess(android.os.Process.myPid());
