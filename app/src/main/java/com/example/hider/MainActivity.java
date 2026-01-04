@@ -17,42 +17,30 @@ private void restart() {
         return;
     }
 
-    // 1. Сначала ПРЯЧЕМСЯ, чтобы провижнинг не видел нас
-    moveTaskToBack(true);
+     moveTaskToBack(true);
 
-    // 2. Вызываем финиш. С этого момента активити официально "умирает"
     finish();
 
-    // 3. Запускаем новый поток, который выживет после finish()
-    // и подождет, пока труп активити остынет
-    new Thread(new Runnable() {
+   new Thread(new Runnable() {
         @Override
         public void run() {
-			// Перед тем как уйти в спячку, даем процессу "бронежилет"
-        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+	     Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
             try {
-                // Спим 1 секунду. За это время finish() точно отработает,
-                // и Provisioning Manager закроется.
-                Thread.sleep(1000);
+               Thread.sleep(1000);
             } catch (InterruptedException ignored) {}
 
-            // 4. Используем Context приложения (не Активити!), чтобы запустить новую задачу
-            Context appChild = getApplicationContext();
+             Context appChild = getApplicationContext();
             Intent intent = new Intent(appChild, MainActivity.class);
             
-            // Важнейшие флаги: запуск в новой задаче на пустом месте
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             intent.putExtra("restarted", true);
             
             try {
                 appChild.startActivity(intent);
             } catch (Exception e) {
-                // Если тут упало, значит система всё еще считает нас фоновым спамом
             }
 
-            // 5. Жестко убиваем старый процесс, если нужно всё очистить
-            // android.os.Process.killProcess(android.os.Process.myPid());
-        }
+            }
     }).start();
 }
 
@@ -180,14 +168,12 @@ private void restart() {
             if (launcherApps != null && userManager != null) {
                 List<UserHandle> profiles = userManager.getUserProfiles();
                 for (UserHandle profile : profiles) {
-                    // Проверяем ID: если не 0, то это рабочий профиль
-                    if (userManager.getSerialNumberForUser(profile) != 0) {
+                   if (userManager.getSerialNumberForUser(profile) != 0) {
                         launcherApps.startMainActivity(
                             new ComponentName(getPackageName(), MainActivity.class.getName()), 
                             profile, null, null
                         );
                         
-                        // Закрываем текущую активити
                         finishAndRemoveTask();
                         break;
                     }
