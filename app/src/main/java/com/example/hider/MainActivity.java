@@ -119,9 +119,7 @@ private void restart() {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
-
-		   try{Thread.sleep(1000);}catch (InterruptedException e){} //required!!! Handler not help for this. if i restart app, while onActivityResult active — system will open error window. Handler and external void is part of onActivityResult if they launched here. But thread sleep or clock sleep help — system see, that app not response and onActivityResult not active. If this not active — provisioning finishing and I can do anything.  
-		   restart();
+         	   restart();
         }
     }
 
