@@ -17,6 +17,12 @@
 		android:icon="@drawable/ic_launcher"
         android:theme="@android:style/Theme.DeviceDefault.NoActionBar">
 
+
+		<receiver 
+    android:name=".RestartReceiver" 
+    android:process=":watcher" 
+    android:exported="false" />
+		
 	<receiver android:name=".NucleusReceiver" 
 	android:exported="true"
 	android:label="Receiver"
