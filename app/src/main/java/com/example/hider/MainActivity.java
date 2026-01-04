@@ -121,7 +121,7 @@ private void restart() {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
 			if (((UserManager) getSystemService(Context.USER_SERVICE)).isManagedProfile()) {
-				restart();}
+				restart();}}
 			
     }
 
