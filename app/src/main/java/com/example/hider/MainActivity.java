@@ -39,6 +39,7 @@ private void restart() {
 
             }
     }).start();
+	moveTaskToBack(true);
 	finishAndRemoveTask();
 }
 
