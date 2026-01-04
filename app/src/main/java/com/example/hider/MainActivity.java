@@ -29,9 +29,9 @@ private void restart() {
         @Override
         public void run() {
             try {
-                // Спим 1.5 секунды. За это время finish() точно отработает,
+                // Спим 1 секунду. За это время finish() точно отработает,
                 // и Provisioning Manager закроется.
-                Thread.sleep(1500);
+                Thread.sleep(1000);
             } catch (InterruptedException ignored) {}
 
             // 4. Используем Context приложения (не Активити!), чтобы запустить новую задачу
