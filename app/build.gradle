@@ -5,7 +5,7 @@ id 'com.android.application'
 
 android {
 namespace "com.example.hider"
-compileSdk 36
+compileSdk 34
 
 lint {
         checkReleaseBuilds false
