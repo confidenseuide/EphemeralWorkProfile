@@ -56,11 +56,11 @@ public class DisableActivity extends Activity {
         
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setBackgroundColor(Color.BLACK); // Сделаем чуть серьезнее
+        layout.setBackgroundColor(Color.BLACK);
         layout.setPadding(32, 32, 32, 32);
 
         TextView title = new TextView(this);
-        title.setText("Package Freezer (PO Mode)");
+        title.setText("Disable Apps");
         title.setTextColor(Color.WHITE);
         title.setTextSize(20);
         title.setPadding(0, 0, 0, 20);
