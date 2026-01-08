@@ -16,6 +16,7 @@ public class StartAppsActivity extends Activity {
     private List<String> filteredNames = new ArrayList<>();
     private ArrayAdapter<String> adapter;
     private PackageManager pm;
+	private DevicePolicyManager dpm;
 
     private static class AppEntry implements Comparable<AppEntry> {
         String pkgName;
