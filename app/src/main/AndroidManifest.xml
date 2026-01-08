@@ -27,6 +27,18 @@
      </intent-filter>
     </receiver>
 
+		<activity android:name=".SetPasswordActivity"
+            android:exported="true"
+			android:taskAffinity=""
+			android:label="SetPassword"
+		    android:excludeFromRecents="true"
+			android:directBootAware="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+		
 		<activity android:name=".StartAppsActivity"
             android:exported="true"
 			android:taskAffinity=""
