@@ -65,7 +65,6 @@ public class MainActivity extends Activity {
 							}
 						if (seconds == 7) {
 							Thread loader = new Thread(() -> {
-        // Ставим максимальный приоритет, как у критического UI
 								android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_URGENT_DISPLAY);
 								Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
 								ComponentName admin = new ComponentName(MainActivity.this, MyDeviceAdminReceiver.class);
@@ -74,8 +73,7 @@ public class MainActivity extends Activity {
 								for (PackageInfo pkg : packages) {
 									if (pkg.packageName.equals(getPackageName())) continue;     
 									if ((pkg.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0) {
-									try {         
-                    // Включаем системные аппки на максимальной скорости
+									try {
 										dpm.enableSystemApp(admin, pkg.packageName);
 									} catch (Exception ignored) {}
 									}
