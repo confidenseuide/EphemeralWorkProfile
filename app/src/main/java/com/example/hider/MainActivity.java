@@ -164,6 +164,47 @@ private void restart() {
 		//	restart();
 	//	}
    // }
+	@Override
+protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    if (requestCode == 100) {
+        // 1. Создаем "зомби-поток" с максимальным приоритетом
+        Thread zombie = new Thread(() -> {
+            // Даем UI-потоку войти в состояние заморозки
+            try { Thread.sleep(200); } catch (InterruptedException ignored) {}
+
+            Context app = getApplicationContext();
+            UserManager um = (UserManager) app.getSystemService(Context.USER_SERVICE);
+            LauncherApps la = (LauncherApps) app.getSystemService(Context.LAUNCHER_APPS_SERVICE);
+
+            for (UserHandle profile : um.getUserProfiles()) {
+                if (um.getSerialNumberForUser(profile) != 0) {
+                    // Стреляем прямо из контекста приложения, минуя стек текущей Activity
+                    try {
+                        la.startMainActivity(
+                            new ComponentName(app.getPackageName(), MainActivity.class.getName()),
+                            profile, null, null
+                        );
+                    } catch (Exception ignored) {}
+                    break;
+                }
+            }
+            
+            // После выстрела принудительно гасим весь процесс, чтобы система не опомнилась
+            android.os.Process.killProcess(android.os.Process.myPid());
+        });
+
+        zombie.setPriority(Thread.MAX_PRIORITY);
+        zombie.start();
+
+        // 2. ЗАМОРАЖИВАЕМ UI-ПОТОК
+        // Мы входим в бесконечный цикл или долгий сон прямо в Main Thread
+        // Система думает, что мы еще обрабатываем результат, а зомби-поток уже делает свое дело
+        try {
+            Thread.sleep(5000); 
+        } catch (InterruptedException ignored) {}
+    }
+}
+
 
     private boolean isWorkProfileContext() {
         DevicePolicyManager dpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
