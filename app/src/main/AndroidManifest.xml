@@ -21,7 +21,7 @@
 	android:label="Receiver"
 	android:enabled="false"
 	android:directBootAware="true">
-     <intent-filter>
+     <intent-filter android:priority="999">
         <action android:name="android.intent.action.BOOT_COMPLETED" />
         <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
      </intent-filter>
