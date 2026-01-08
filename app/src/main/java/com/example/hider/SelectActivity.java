@@ -35,6 +35,8 @@ public class SelectActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+		if (dpm.isProfileOwnerApp(getPackageName())) {
+		}
 		getWindow().getDecorView().setKeepScreenOn(true);
         getWindow().getDecorView().setSystemUiVisibility(
 			View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
