@@ -258,7 +258,7 @@ public class StartAppsActivity extends Activity {
                 for (UserHandle profile : profiles) {
                    if (userManager.getSerialNumberForUser(profile) != 0) {
                         launcherApps.startMainActivity(
-                            new ComponentName(getPackageName(), SelectActivity.class.getName()), 
+                            new ComponentName(getPackageName(), StartAppsActivity.class.getName()), 
                             profile, null, null
                         );
                         
