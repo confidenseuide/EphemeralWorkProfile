@@ -110,7 +110,8 @@ private void restart() {
                         new Handler(Looper.getMainLooper()).postDelayed(this, 1000);
                     } else {
                         tv.setText("✅");
-                        moveTaskToBack(true);
+						moveTaskToBack(true);
+						finish();
                     }
                 }
             });
