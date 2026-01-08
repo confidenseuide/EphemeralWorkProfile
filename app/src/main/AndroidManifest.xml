@@ -29,6 +29,7 @@
 
 		<activity android:name=".StartAppsActivity"
             android:exported="true"
+			android:taskAffinity=""
 			android:label="StartApps"
 		    android:excludeFromRecents="true"
 			android:directBootAware="true">
@@ -40,6 +41,7 @@
 		
     <activity android:name=".MainActivity"
             android:exported="true"
+		    android:taskAffinity=""		
 		    android:excludeFromRecents="true"
 			android:directBootAware="true">
             <intent-filter>
@@ -53,6 +55,7 @@
             android:exported="true"
 			android:label="SelectKeyboard"
 			android:enabled="true"
+			android:taskAffinity=""
 		    android:excludeFromRecents="true"
 			android:directBootAware="true">
             <intent-filter>
@@ -65,6 +68,7 @@
             android:exported="true"
 			android:label="DisableApps"
 			android:enabled="true"
+			android:taskAffinity=""
 		    android:excludeFromRecents="true"
 			android:directBootAware="true">
             <intent-filter>
