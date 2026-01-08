@@ -41,15 +41,9 @@ public class SetPasswordActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);		
-		if (!isWorkProfileContext() && hasWorkProfile()) {
-            launchWorkProfileDelayed();
-		}
-		if (!isWorkProfileContext() && !hasWorkProfile()) {
-			Intent intent = new Intent(this, MainActivity.class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			startActivity(intent);
-			finish();
-		}
+	
+		if (isWorkProfileContext() && hasWorkProfile()) {
+			
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.setGravity(Gravity.CENTER);
@@ -68,7 +62,7 @@ public class SetPasswordActivity extends Activity {
 
         layout.addView(btnChange);
         setContentView(layout);
-    }
+    }}
 	private boolean isWorkProfileContext() {
         DevicePolicyManager dpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
         return dpm.isProfileOwnerApp(getPackageName());
