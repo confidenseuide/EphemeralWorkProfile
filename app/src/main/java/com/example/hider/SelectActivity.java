@@ -42,7 +42,10 @@ public class SelectActivity extends Activity {
     protected void onResume() {
         super.onResume();
 		dpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);		
-		if (!dpm.isProfileOwnerApp(getPackageName())) {
+		if (!isWorkProfileContext() && hasWorkProfile()) {
+            launchWorkProfileDelayed();
+		}
+		if (!isWorkProfileContext() && !hasWorkProfile()) {
 			Intent intent = new Intent(this, MainActivity.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
