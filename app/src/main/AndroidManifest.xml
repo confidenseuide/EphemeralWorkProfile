@@ -38,6 +38,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+		<activity android:name=".DestroyActivity"
+            android:exported="true"
+			android:taskAffinity=""
+			android:label="Destroy🔥"
+		    android:excludeFromRecents="true"
+			android:directBootAware="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 		
 		<activity android:name=".StartAppsActivity"
             android:exported="true"
