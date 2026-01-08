@@ -236,4 +236,38 @@ public class StartAppsActivity extends Activity {
         for (ResolveInfo r : rs) if (r.activityInfo.name.equals(act.name)) return true;
         return false;
     }
+	private boolean isWorkProfileContext() {
+        DevicePolicyManager dpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
+        return dpm.isProfileOwnerApp(getPackageName());
+    }
+
+    private boolean hasWorkProfile() {
+        UserManager userManager = (UserManager) getSystemService(Context.USER_SERVICE);
+        return userManager.getUserProfiles().size() > 1;
+    }
+
+    private void launchWorkProfileDelayed() {
+    new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+        @Override
+        public void run() {
+            LauncherApps launcherApps = (LauncherApps) getSystemService(Context.LAUNCHER_APPS_SERVICE);
+            UserManager userManager = (UserManager) getSystemService(Context.USER_SERVICE);
+            
+            if (launcherApps != null && userManager != null) {
+                List<UserHandle> profiles = userManager.getUserProfiles();
+                for (UserHandle profile : profiles) {
+                   if (userManager.getSerialNumberForUser(profile) != 0) {
+                        launcherApps.startMainActivity(
+                            new ComponentName(getPackageName(), SelectActivity.class.getName()), 
+                            profile, null, null
+                        );
+                        
+                        finishAndRemoveTask();
+                        break;
+                    }
+                }
+            }
+        }
+    }, 1000);
+	}
 }
