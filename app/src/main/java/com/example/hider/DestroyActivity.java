@@ -1,4 +1,5 @@
 package com.example.hider;
+
 import android.app.*;
 import android.app.admin.*;
 import android.content.*;
@@ -45,7 +46,7 @@ public class DestroyActivity extends Activity {
                 for (UserHandle profile : profiles) {
                    if (userManager.getSerialNumberForUser(profile) != 0) {
                         launcherApps.startMainActivity(
-                            new ComponentName(getPackageName(), DisableActivity.class.getName()), 
+                            new ComponentName(getPackageName(), DestroyActivity.class.getName()), 
                             profile, null, null
                         );
                         
