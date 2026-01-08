@@ -1,27 +1,14 @@
 package com.example.hider;
 
-import android.app.Activity;
-import android.view.*;
 import android.os.*;
-import android.content.Intent;
-import android.app.admin.DevicePolicyManager;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
-import android.view.inputmethod.InputMethodInfo;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import android.content.*;
+import android.content.pm.*;
+import android.app.*;
+import android.app.admin.*;
+import android.view.*;
+import android.view.inputmethod.*;
+import android.widget.*;
+import java.util.*;
 
 public class SelectActivity extends Activity {
 
