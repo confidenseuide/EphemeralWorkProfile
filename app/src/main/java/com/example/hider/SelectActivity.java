@@ -35,7 +35,10 @@ public class SelectActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-		if (dpm.isProfileOwnerApp(getPackageName())) {
+		if (!dpm.isProfileOwnerApp(getPackageName())) {
+			Intent intent = new Intent(context, MainActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			context.startActivity(intent);
 		}
 		getWindow().getDecorView().setKeepScreenOn(true);
         getWindow().getDecorView().setSystemUiVisibility(
