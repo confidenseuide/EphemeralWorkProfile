@@ -10,7 +10,6 @@ import android.view.*;
 import android.widget.*;
 import java.util.*;
 
-
 public class DisableActivity extends Activity {
 
     private DevicePolicyManager dpm;
