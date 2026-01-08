@@ -38,9 +38,9 @@ public class SelectActivity extends Activity {
         super.onResume();
 		dpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);		
 		if (!dpm.isProfileOwnerApp(getPackageName())) {
-			Intent intent = new Intent(context, MainActivity.class);
+			Intent intent = new Intent(this, MainActivity.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			context.startActivity(intent);
+			startActivity(intent);
 			getPackageManager().setComponentEnabledSetting(
             new ComponentName(this, SelectActivity.class),
             PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
