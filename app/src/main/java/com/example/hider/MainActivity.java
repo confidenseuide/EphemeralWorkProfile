@@ -128,7 +128,7 @@ public class MainActivity extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     if (requestCode == 100) {
 		/*
-		WORKAROUND: Outrunning Provisioning Manager Focus-Reset Logic.
+		* WORKAROUND: Outrunning Provisioning Manager Focus-Reset Logic.
 		* On many OEM ROMs (Xiaomi, Samsung, etc.), the ProvisioningManager often 
 		* fails or force-closes the app if a Work Profile activity is launched 
 		* immediately from onActivityResult. This happens due to a race condition 
