@@ -53,7 +53,7 @@ public class MainActivity extends Activity {
                         
                         if (seconds == 8) {
 								ComponentName admin = new ComponentName(MainActivity.this, MyDeviceAdminReceiver.class);
-
+							    dpm.clearUserRestriction(new ComponentName(MainActivity.this, MyDeviceAdminReceiver.class), UserManager.DISALLOW_APPS_CONTROL);
 							    try {if (Build.VERSION.SDK_INT >= 30) {
 									dpm.setUserControlDisabledPackages(admin, java.util.Collections.singletonList(getPackageName()));
 								}} catch (Exception ignored) {}
