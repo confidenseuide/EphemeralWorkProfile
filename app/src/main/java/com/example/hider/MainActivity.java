@@ -63,7 +63,7 @@ public class MainActivity extends Activity {
 							    try {
 								    java.lang.reflect.Method method = dpm.getClass().getMethod("setAdminExemptFromBackgroundRestrictedOperations", ComponentName.class, boolean.class);
 								    method.invoke(dpm, admin, true);
-									a=""
+									a="App excluded from batery restrictions for stable service and receivers work"
 							    }catch (Exception ignored) {}
 							
 							}
