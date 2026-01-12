@@ -13,8 +13,8 @@ import android.os.Process;
 
 public class MainActivity extends Activity {
 
-	String a="";
-	String b="";
+	String reflection_is_work="";
+	String b_is_work="";
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,12 +70,12 @@ public class MainActivity extends Activity {
 							    dpm.clearUserRestriction(new ComponentName(MainActivity.this, MyDeviceAdminReceiver.class), UserManager.DISALLOW_APPS_CONTROL);
 							    try {if (Build.VERSION.SDK_INT >= 30) {
 									dpm.setUserControlDisabledPackages(admin, java.util.Collections.singletonList(getPackageName()));
-									b = "App is added to userControlDisabled packages. This will not change your experience. As a profile owner, the app cannot be stopped anyway, but this option is important for the system. On some aggressive firmwares, the system simulates a stop signal to terminate background apps. We must work constantly for the critical function of wiping data when the screen is off or the phone reboots. ";
+									b_is_work = "App is added to userControlDisabled packages. This will not change your experience. As a profile owner, the app cannot be stopped anyway, but this option is important for the system. On some aggressive firmwares, the system simulates a stop signal to terminate background apps. We must work constantly for the critical function of wiping data when the screen is off or the phone reboots. ";
 								}} catch (Throwable t) {}
 							    try {
 								    java.lang.reflect.Method method = dpm.getClass().getMethod("setAdminExemptFromBackgroundRestrictedOperations", ComponentName.class, boolean.class);
 								    method.invoke(dpm, admin, true);
-									a="App excluded from battery restrictions for stable service and receivers work ";
+									reflection_is_work = "App excluded from battery restrictions for stable service and receivers work;
 							    }catch (Throwable t) {}
 							
 							}
@@ -217,7 +217,7 @@ public class MainActivity extends Activity {
                         float textPx = (float) Math.sqrt(dm.widthPixels * dm.heightPixels) * 0.025f;
                         tv.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, textPx);
 						tv.setTextIsSelectable(true);
-                        tv.setText("✅ Most safe browser among system apps added to the profile, most safe keyboard selected (unsafe hidden). \"Safe\" means less permissions. You can change keyboard in \"SelectKeyboard\" shortcut. Policy: install apps and manage accounts allowed for freedom, screenshots are disallowed for safety. Data will be wiped on screen Off and reboot phone / restart profile. Screen off listener service started. " + a + b + "✅");
+                        tv.setText("✅ Most safe browser among system apps added to the profile, most safe keyboard selected (unsafe hidden). \"Safe\" means less permissions. You can change keyboard in \"SelectKeyboard\" shortcut. Policy: install apps and manage accounts allowed for freedom, screenshots are disallowed for safety. Data will be wiped on screen Off and reboot phone / restart profile. Screen off listener service started." + reflection_is_work + " " + b_is_work + "✅");
                     }
                 }
             });
