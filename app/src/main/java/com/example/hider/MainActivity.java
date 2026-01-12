@@ -84,8 +84,7 @@ public class MainActivity extends Activity {
             "2. App tries to ignore battery optimization and disable package control to prevent stop-signals from the system.\n" +
             "3. App adds a \"safe\" browser to the profile.\n" +
             "4. App disables screenshots in the profile (safety), enables app install and account management (free use).\n" +
-            "5. App selects a \"safe\" keyboard and freezes others.\n\n" +
-            "start->");
+            "5. App selects a \"safe\" keyboard and freezes others.\n\n");
     
     scroll.addView(tv);
     root.addView(scroll, sParams);
@@ -114,8 +113,6 @@ public class MainActivity extends Activity {
     root.addView(bottomBar, new android.widget.LinearLayout.LayoutParams(-1, -2));
 
     btn.setOnClickListener(v -> {
-        // App is added to userControlDisabledPackages...
-        // [КОММЕНТАРИЙ СОХРАНЕН]
         
         // ТУТ ТВОЙ КОД
         
