@@ -15,20 +15,13 @@ public class MainActivity extends Activity {
 
 	private static volatile String ucd_is_work="";
 
-
 	private void showOnboarding() {
-    // Используем тему без рамок и заголовков
     final android.app.Dialog dialog = new android.app.Dialog(this, android.R.style.Theme_NoTitleBar_Fullscreen);
-    
-    // Флаги, чтобы диалог был поверх всего и зажигал экран
     android.view.Window window = dialog.getWindow();
     if (window != null) {
         window.addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
-                | android.view.WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
-                | android.view.WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-                | android.view.WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON);
+                | android.view.WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
         
-        // Настоящий Fullscreen (скрываем навигацию и статус-бар)
         window.getDecorView().setSystemUiVisibility(
                 android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 | android.view.View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -47,19 +40,16 @@ public class MainActivity extends Activity {
     root.setOrientation(android.widget.LinearLayout.VERTICAL);
     root.setBackgroundColor(0xFFFFFFFF);
 
-    // 1. СИНЯЯ ЧЕЛКА (Header Container)
     android.widget.LinearLayout headerContainer = new android.widget.LinearLayout(this);
     headerContainer.setOrientation(android.widget.LinearLayout.VERTICAL);
     headerContainer.setBackgroundColor(0xFF7484B0);
     android.widget.LinearLayout.LayoutParams hParams = new android.widget.LinearLayout.LayoutParams(-1, 0, 1.0f);
     
-    // Пустое место сверху, чтобы текст ушел вниз к границе
     android.view.View spacer = new android.view.View(this);
     headerContainer.addView(spacer, new android.widget.LinearLayout.LayoutParams(-1, 0, 1.0f));
 
-    // Текст на синем фоне ПЛОТНО к границе
     android.widget.TextView titleTv = new android.widget.TextView(this);
-    titleTv.setText("EphemeralWorkProfileApp");
+    titleTv.setText("EphemeralWorkProfile");
     titleTv.setTextColor(0xFFFFFFFF);
     titleTv.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, scaleFactor * 0.035f);
     titleTv.setPadding(pX, 0, pX, (int)(pX * 0.5f)); // Отступ только снизу
@@ -67,7 +57,6 @@ public class MainActivity extends Activity {
     
     root.addView(headerContainer, hParams);
 
-    // 2. БЕЛЫЙ КОНТЕНТ
     android.widget.ScrollView scroll = new android.widget.ScrollView(this);
     android.widget.LinearLayout.LayoutParams sParams = new android.widget.LinearLayout.LayoutParams(-1, 0, 2.0f);
     
@@ -76,7 +65,7 @@ public class MainActivity extends Activity {
     tv.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, textPx);
     tv.setTextColor(0xFF333333);
     tv.setLineSpacing(0, 1.2f);
-    tv.setText("Hello, this is EphemeralWorkProfileApp.\n" +
+    tv.setText("Hello, this is EphemeralWorkProfile app.\n" +
             "This app creates a work profile that will be destroyed when your screen is turned off, the phone is rebooted, or the profile is restarted.\n\n" +
             "Just click start -> next -> next ->... to create the profile.\n\n" +
             "When the profile is created, the app starts autoconfigure:\n" +
@@ -89,14 +78,12 @@ public class MainActivity extends Activity {
     scroll.addView(tv);
     root.addView(scroll, sParams);
 
-    // 3. РАЗДЕЛИТЕЛЬ
     android.view.View divider = new android.view.View(this);
     divider.setBackgroundColor(0xFFDCDCDC);
     root.addView(divider, new android.widget.LinearLayout.LayoutParams(-1, 3));
-
-    // 4. СЕРАЯ НИЖНЯЯ ПАНЕЛЬ
+		
     android.widget.RelativeLayout bottomBar = new android.widget.RelativeLayout(this);
-    bottomBar.setBackgroundColor(0xFFF5F5F5); // СЕРЫЙ ФОН ПАНЕЛИ
+    bottomBar.setBackgroundColor(0xFFF5F5F5);
     bottomBar.setPadding(pX, (int)(pX * 0.2f), pX, (int)(pX * 0.2f));
 
     android.widget.Button btn = new android.widget.Button(this);
