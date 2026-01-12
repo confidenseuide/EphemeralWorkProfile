@@ -100,7 +100,7 @@ public class MainActivity extends Activity {
     bottomBar.setPadding(pX, (int)(pX * 0.2f), pX, (int)(pX * 0.2f));
 
     android.widget.Button btn = new android.widget.Button(this);
-    btn.setText("ДАЛЕЕ >");
+    btn.setText("START >");
     btn.setTextColor(0xFF333333);
     btn.setBackgroundColor(0);
     btn.setTypeface(null, android.graphics.Typeface.BOLD);
