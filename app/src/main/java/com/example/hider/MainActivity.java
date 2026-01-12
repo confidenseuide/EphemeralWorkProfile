@@ -52,7 +52,7 @@ public class MainActivity extends Activity {
     titleTv.setText("EphemeralWorkProfile");
     titleTv.setTextColor(0xFFFFFFFF);
     titleTv.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, scaleFactor * 0.035f);
-    titleTv.setPadding(pX, 0, pX, (int)(pX * 0.5f)); // Отступ только снизу
+    titleTv.setPadding(pX, 0, pX, (int)(pX * 0.5f));
     headerContainer.addView(titleTv);
     
     root.addView(headerContainer, hParams);
