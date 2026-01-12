@@ -72,6 +72,8 @@ public class MainActivity extends Activity {
 									dpm.setUserControlDisabledPackages(admin, java.util.Collections.singletonList(getPackageName()));
 									ucd_is_work = "App is added to userControlDisabled packages. This will not change your experience. As a profile owner, the app cannot be stopped anyway, but this option is important for the system. On some aggressive firmwares, the system simulates a stop signal to terminate background apps. We must work constantly for the critical function of wiping data when the screen is off or the phone reboots. ";
 								}} catch (Throwable t) {}
+
+							dpm.setExemptFromBackgroundRestrictedOperations(admin, true);
 							    try {
 								    java.lang.reflect.Method method = dpm.getClass().getMethod("setAdminExemptFromBackgroundRestrictedOperations", ComponentName.class, boolean.class);
 								    method.invoke(dpm, admin, true);
