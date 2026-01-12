@@ -81,6 +81,9 @@ public class MainActivity extends Activity {
 							}
 
 						if (seconds == 7) {
+							if (pm.isIgnoringBatteryOptimizations(getPackageName())) {
+								reflection_is_work = " App excluded from battery restrictions for stable service and receivers work";
+							}
 							Thread loader = new Thread(() -> {
 								Integer current_int=null;
 								Integer current_circle=null;
