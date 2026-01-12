@@ -69,7 +69,7 @@ public class MainActivity extends Activity {
     btnStart.setTextColor(0xFF212121);
     btnStart.setBackgroundColor(0x00000000); // Прозрачный фон как в Shelter
     btnStart.setTextSize(14);
-    btnStart.setTypeface(null, Typeface.BOLD);
+    btnStart.setTypeface(null, android.graphics.Typeface.BOLD);
 
     RelativeLayout.LayoutParams btnParams = new RelativeLayout.LayoutParams(
             ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
