@@ -15,31 +15,37 @@ public class MainActivity extends Activity {
 
 	private static volatile String ucd_is_work="";
 
-	private void showOnboarding() {
+	
+    private void showOnboarding() {
+    // Используем контекст текущей Activity. 
+    // Тема NoTitleBar_Fullscreen гарантирует полное перекрытие.
     final Dialog dialog = new Dialog(this, android.R.style.Theme_NoTitleBar_Fullscreen);
-    
-    // Главный контейнер
+
+    // 1. Главный контейнер (Root)
     LinearLayout root = new LinearLayout(this);
     root.setOrientation(LinearLayout.VERTICAL);
-    root.setBackgroundColor(0xFFFFFFFF); // Белый фон
+    root.setBackgroundColor(0xFFFFFFFF); // Чисто белый фон
 
-    // Синяя шапка (Header) как в Shelter/Provisioning
+    // 2. Синяя "челка" (Header). В Shelter она занимает всё верхнее пространство до текста.
     TextView header = new TextView(this);
     header.setText("EphemeralWorkProfileApp");
-    header.setBackgroundColor(0xFF3F51B5); // Indigo синий
+    header.setBackgroundColor(0xFF7484B0); // Цвет как на скриншоте (Shelter Blue)
     header.setTextColor(0xFFFFFFFF);
-    header.setTextSize(20);
-    header.setPadding(60, 80, 60, 80);
+    header.setTextSize(24);
     header.setGravity(Gravity.CENTER);
-    root.addView(header);
+    
+    // Высота челки (weight 1 к 2, либо фиксированно)
+    LinearLayout.LayoutParams headerParams = new LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT, 0, 1.2f); 
+    root.addView(header, headerParams);
 
-    // Контентная часть с кнопкой
+    // 3. Белый блок с текстом и кнопкой (Content)
     RelativeLayout content = new RelativeLayout(this);
-    content.setLayoutParams(new LinearLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-    content.setPadding(60, 60, 60, 60);
+    LinearLayout.LayoutParams contentParams = new LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT, 0, 2.0f);
+    content.setPadding(80, 100, 80, 100);
 
-    // Текст по центру экрана
+    // Текст (твои формы слов соблюдены)
     TextView textView = new TextView(this);
     textView.setText("Hello, this is EphemeralWorkProfileApp.\n" +
             "This app creates a work profile that will be destroyed when your screen is turned off, the phone is rebooted, or the profile is restarted.\n\n" +
@@ -51,42 +57,42 @@ public class MainActivity extends Activity {
             "4. App disables screenshots in the profile (safety), enables app install and account management (free use).\n" +
             "5. App selects a \"safe\" keyboard and freezes others.\n\n" +
             "start->");
-    textView.setTextColor(0xFF212121); // Почти черный
+    textView.setTextColor(0xFF555555);
     textView.setTextSize(16);
-    textView.setLineSpacing(0, 1.2f);
+    textView.setLineSpacing(0, 1.3f);
 
-    RelativeLayout.LayoutParams textParams = new RelativeLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-    textParams.addRule(RelativeLayout.CENTER_IN_PARENT); // Текст в центре
-    content.addView(textView, textParams);
+    content.addView(textView);
 
-    // Кнопка в правом нижнем углу
+    // 4. Кнопка "ДАЛЕЕ >" (start ->) в самом низу справа
     Button btnStart = new Button(this);
-    btnStart.setText("start ->");
-    btnStart.setAllCaps(false);
+    btnStart.setText("START ->");
     btnStart.setTextColor(0xFF212121);
-    btnStart.setBackgroundColor(0x00000000); // Прозрачный фон кнопки для стиля Provisioning
-    
+    btnStart.setBackgroundColor(0x00000000); // Прозрачный фон как в Shelter
+    btnStart.setTextSize(14);
+    btnStart.setTypeface(null, Typeface.BOLD);
+
     RelativeLayout.LayoutParams btnParams = new RelativeLayout.LayoutParams(
             ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     btnParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
     btnParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
     content.addView(btnStart, btnParams);
 
-    root.addView(content);
+    root.addView(content, contentParams);
 
+    // Клик
     btnStart.setOnClickListener(v -> {
         // App is added to userControlDisabledPackages. This does not apply to real user control ⸻ as a profile owner the app can't be stopped by user click in settings anyway. This option is important for the system. On some aggressive firmwares, the system simulates a user stop signal to terminate background apps. This direct signal is not blocked like the button in settings, but userControlDisabledPackages may not receive this signal. We must maintain persistent operation for the critical function of wiping data when the screen is off or the phone reboots.
 
-        // ТУТ ТВОЙ КОД
+        // ТВОЙ КОД ЗДЕСЬ
         
         dialog.dismiss();
     });
 
     dialog.setContentView(root);
-    dialog.setCancelable(false);
+    dialog.setCancelable(false); // Нельзя закрыть кнопкой "Назад"
     dialog.show();
 }
+
 
 	
     @Override
