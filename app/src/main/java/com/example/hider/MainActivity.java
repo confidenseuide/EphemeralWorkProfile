@@ -48,6 +48,16 @@ public class MainActivity extends Activity {
         
             new Handler(Looper.getMainLooper()).post(new Runnable() {
                 int seconds = 10;
+				/*
+				Why we use a timer and did not use switches?: This app creates a temporary work profile that is deleted 
+				when the screen turns off. The user can delete and recreate it multiple 
+				times in some situations. Auto-configuration allows doing it fast. 
+				At the end, we inform the user of what we did. After the timer expires, 
+				the user will see the message before using the profile. They can choose 
+				not to use the work profile or delete it by simply turning off the 
+				screen if they don't like that message. Furthermore, work profile 
+				settings don't affect the main system settings.
+				*/
                 public void run() {
                     if (seconds > 0) {            
                         if (seconds == 9) {
