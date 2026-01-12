@@ -13,8 +13,8 @@ import android.os.Process;
 
 public class MainActivity extends Activity {
 
-	String reflection_is_work="";
-	String b_is_work="";
+	private static volatile String reflection_is_work="";
+	private static volatile String b_is_work="";
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
