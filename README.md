@@ -1,4 +1,4 @@
-# WorkAppHider
+# EphemeralWorkProfile
 Profile owner Android app.
 
 This app creates a temporary work profile. It will be reset when the screen is turned off or when you reboot your phone.
