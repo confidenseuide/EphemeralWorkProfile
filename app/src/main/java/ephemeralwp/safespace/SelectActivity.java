@@ -1,4 +1,4 @@
-package com.example.hider;
+package ephemeralwp.safespace;
 
 import android.os.*;
 import android.content.*;
