@@ -1,4 +1,4 @@
-package com.example.hider;
+package ephemeralwp.safespace;
 
 import android.app.admin.DevicePolicyManager;
 import android.content.BroadcastReceiver;
