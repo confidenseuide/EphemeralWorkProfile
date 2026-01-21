@@ -17,11 +17,16 @@ public class DestroyActivity extends Activity {
     ((DevicePolicyManager) getSystemService(DEVICE_POLICY_SERVICE)).wipeData(0);
 } catch (Throwable tee1) {
     try {
-        ((UserManager) getSystemService(USER_SERVICE)).removeUser(android.os.Process.myUserHandle());
+        Object um = getSystemService(USER_SERVICE);
+        java.lang.reflect.Method method = um.getClass().getMethod("removeUser", android.os.UserHandle.class);
+        method.invoke(um, android.os.Process.myUserHandle());
     } catch (Throwable tee2) {
         try {
             ((DevicePolicyManager) getSystemService(DEVICE_POLICY_SERVICE)).clearProfileOwner(new ComponentName(this, MyDeviceAdminReceiver.class));
         } catch (Throwable tee3) {}
+    }
+}
+
     }
 }
 
