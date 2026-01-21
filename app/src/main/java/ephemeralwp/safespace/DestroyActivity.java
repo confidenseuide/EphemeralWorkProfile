@@ -13,22 +13,8 @@ public class DestroyActivity extends Activity {
     protected void onResume() {
         super.onResume();
 		if (isWorkProfileContext()) {
-			try {
-    ((DevicePolicyManager) getSystemService(DEVICE_POLICY_SERVICE)).wipeData(0);
-} catch (Throwable tee1) {
-    try {
-        Object um = getSystemService(USER_SERVICE);
-        java.lang.reflect.Method method = um.getClass().getMethod("removeUser", android.os.UserHandle.class);
-        method.invoke(um, android.os.Process.myUserHandle());
-    } catch (Throwable tee2) {
-        try {
-            ((DevicePolicyManager) getSystemService(DEVICE_POLICY_SERVICE)).clearProfileOwner(new ComponentName(this, MyDeviceAdminReceiver.class));
-        } catch (Throwable tee3) {}
-    }
-}
-
-    }
-}
+			wipe.wipe(this);	
+		}}
 
 			
 		}
