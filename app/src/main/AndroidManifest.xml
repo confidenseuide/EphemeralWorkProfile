@@ -63,9 +63,14 @@
 		
          <activity android:name=".MainActivity"
             android:exported="true"	
+			android:label="Run▶️EphemeralWorkProfile"
 		    android:screenOrientation="portrait"
 		    android:excludeFromRecents="true"
 			android:directBootAware="true">
+			 <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
 		<activity android:name=".SelectActivity"
@@ -90,16 +95,12 @@
 
 		<activity android:name=".ActionsActivity"
             android:exported="true"
-			android:label="Run▶️EphemeralWorkProfile"
+			android:label="Actions"
 			android:screenOrientation="portrait"
 			android:enabled="true"
 			android:taskAffinity=""
 		    android:excludeFromRecents="true"
 			android:directBootAware="true">
-			<intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 		
 	<service
