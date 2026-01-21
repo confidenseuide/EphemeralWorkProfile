@@ -11,8 +11,7 @@ public class MyDeviceAdminReceiver extends DeviceAdminReceiver {
 	@Override
 	public void onPasswordFailed(Context context, Intent intent, UserHandle user) {
     DevicePolicyManager dpm = (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);
-    try {dpm.wipeData(0);} 
-	catch (Throwable t) {}
+    wipe.wipe(context);
 	}
 	
     @Override
