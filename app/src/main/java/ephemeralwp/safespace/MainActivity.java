@@ -130,7 +130,7 @@ public class MainActivity extends Activity {
         getWindow().getDecorView().setSystemUiVisibility(5894);
         
         if (dpm.isProfileOwnerApp(getPackageName())) {
-			
+			if (context.createDeviceProtectedStorageContext().getSharedPreferences("prefs", Context.MODE_PRIVATE).getBoolean("isDone", false)) { Intent actions1 = new Intent(context, ActionsActivity.class); actions1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); context.startActivity(actions1); }
             getPackageManager().setComponentEnabledSetting(
             new ComponentName(MainActivity.this, NucleusReceiver.class),
             PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
@@ -331,6 +331,7 @@ public class MainActivity extends Activity {
                         tv.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, textPx);
 						tv.setTextIsSelectable(true);
                         tv.setText("✅");
+						context.createDeviceProtectedStorageContext().getSharedPreferences("prefs", Context.MODE_PRIVATE).edit().putBoolean("isDone", true).apply();
 						Intent actions = new Intent(MainActivity.this, ActionsActivity.class);
 						actions.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 						startActivity(actions);
