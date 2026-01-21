@@ -6,80 +6,134 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 public class ActionsActivity extends Activity {
 
-    // Храним мапу "Label -> ClassName", чтобы при клике знать, что запускать
-    private Map<String, String> labelToClass = new HashMap<>();
+    private Map<String, String> labelToClass = new LinkedHashMap<>();
+    private static final String CLOSE_APP_LABEL = "CloseApp";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        LinearLayout layout = new LinearLayout(this);
-        layout.setOrientation(LinearLayout.VERTICAL);
+        // Главный контейнер (на весь экран, центрирует содержимое)
+        LinearLayout root = new LinearLayout(this);
+        root.setOrientation(LinearLayout.VERTICAL);
+        root.setGravity(Gravity.CENTER);
+        root.setBackgroundColor(Color.BLACK); // Можно убрать, если не нужен черный фон
 
-        // Кнопка просто сворачивает приложение
-        Button btnHome = new Button(this);
-        btnHome.setText("HOME");
-        btnHome.setOnClickListener(v -> {
-            Intent home = new Intent(Intent.ACTION_MAIN);
-            home.addCategory(Intent.CATEGORY_HOME);
-            home.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(home);
-        });
-        layout.addView(btnHome);
+        // Внутренний контейнер для элементов (чтобы заголовок и список были вместе)
+        LinearLayout contentBox = new LinearLayout(this);
+        contentBox.setOrientation(LinearLayout.VERTICAL);
+        contentBox.setGravity(Gravity.CENTER_HORIZONTAL);
+        LinearLayout.LayoutParams boxParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        boxParams.setMargins(60, 0, 60, 0);
+        contentBox.setLayoutParams(boxParams);
 
+        // Заголовок "What to do?"
+        TextView title = new TextView(this);
+        title.setText("What to do?");
+        title.setTextSize(24);
+        title.setTypeface(null, Typeface.BOLD);
+        title.setTextColor(Color.WHITE);
+        title.setPadding(0, 0, 0, 40); // Отступ снизу до списка
+        title.setGravity(Gravity.CENTER);
+        contentBox.addView(title);
+
+        // Список
         ListView listView = new ListView(this);
-        layout.addView(listView);
-        setContentView(layout);
+        LinearLayout.LayoutParams listParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        listView.setLayoutParams(listParams);
+        contentBox.addView(listView);
 
-        loadActivities();
+        root.addView(contentBox);
+        setContentView(root);
+
+        // Формируем список: сначала CloseApp
+        labelToClass.put(CLOSE_APP_LABEL, "ACTION_CLOSE");
+        loadNonLauncherActivities();
 
         List<String> labels = new ArrayList<>(labelToClass.keySet());
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, labels);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener((parent, view, position, id) -> {
-            try {
-                String label = labels.get(position);
-                String className = labelToClass.get(label);
-                Intent i = new Intent();
-                i.setComponent(new ComponentName(getPackageName(), className));
-                startActivity(i);
-            } catch (Exception ignored) {}
+            String label = labels.get(position);
+            String className = labelToClass.get(label);
+
+            if (label.equals(CLOSE_APP_LABEL)) {
+                // Твоя логика HOME (сворачивание)
+                Intent home = new Intent(Intent.ACTION_MAIN);
+                home.addCategory(Intent.CATEGORY_HOME);
+                home.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(home);
+            } else {
+                try {
+                    Intent i = new Intent();
+                    i.setComponent(new ComponentName(getPackageName(), className));
+                    startActivity(i);
+                } catch (Exception ignored) {}
+            }
         });
     }
 
-    private void loadActivities() {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        hideSystemUI();
+    }
+
+    private void hideSystemUI() {
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN);
+    }
+
+    private void loadNonLauncherActivities() {
         try {
             PackageManager pm = getPackageManager();
             PackageInfo pi = pm.getPackageInfo(getPackageName(), PackageManager.GET_ACTIVITIES);
             
+            Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
+            mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+            mainIntent.setPackage(getPackageName());
+            List<android.content.pm.ResolveInfo> launcherApps = pm.queryIntentActivities(mainIntent, 0);
+            
+            List<String> launcherClassNames = new ArrayList<>();
+            for (android.content.pm.ResolveInfo ri : launcherApps) {
+                launcherClassNames.add(ri.activityInfo.name);
+            }
+
             for (ActivityInfo info : pi.activities) {
-                // Игнорируем лаунчер и текущую активити
-                if (info.name.equals(this.getClass().getName()) || info.name.contains("MainActivity")) {
-                    continue;
+                if (!info.name.equals(this.getClass().getName()) && !launcherClassNames.contains(info.name)) {
+                    String label = info.loadLabel(pm).toString();
+                    if (label.equals(info.name) || label.isEmpty()) {
+                        String[] parts = info.name.split("\\.");
+                        label = parts[parts.length - 1];
+                    }
+                    labelToClass.put(label, info.name);
                 }
-
-                // Получаем label. Если его нет — берем короткое имя класса
-                String label = info.loadLabel(pm).toString();
-                if (label.equals(info.name) || label.isEmpty()) {
-                    String[] parts = info.name.split("\\.");
-                    label = parts[parts.length - 1];
-                }
-
-                // Добавляем в мапу (если лейблы одинаковые, добавится только один)
-                labelToClass.put(label, info.name);
             }
         } catch (Exception ignored) {}
     }
