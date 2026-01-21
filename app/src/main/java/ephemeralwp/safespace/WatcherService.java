@@ -56,7 +56,10 @@ public class WatcherService extends Service {
                 }
             };
 
-            IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
+            IntentFilter filter = new IntentFilter();
+            filter.addAction(Intent.ACTION_SCREEN_OFF);
+            filter.addAction("android.hardware.usb.action.USB_STATE");
+            filter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
             if (Build.VERSION.SDK_INT >= 34) {
                 registerReceiver(receiver, filter, Context.RECEIVER_NOT_EXPORTED);
             } else {
