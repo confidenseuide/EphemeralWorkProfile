@@ -1,24 +1,14 @@
 package ephemeralwp.safespace;
 
-import android.app.Activity;
-import android.content.ComponentName;
-import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.os.Bundle;
-import android.view.Gravity;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import android.app.*;
+import android.app.admin.*;
+import android.content.*;
+import android.content.pm.*;
+import android.graphics.*;
+import android.os.*;
+import android.view.*;
+import android.widget.*;
+import java.util.*;
 
 public class ActionsActivity extends Activity {
 
