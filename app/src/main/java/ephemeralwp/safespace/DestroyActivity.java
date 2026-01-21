@@ -14,7 +14,12 @@ public class DestroyActivity extends Activity {
         super.onResume();
 		if (isWorkProfileContext()) {
 			DevicePolicyManager dpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
+			try {
 			dpm.wipeData(0);
+			} catch (Throwable tee) {
+				
+			}
+			
 		}
 		if (!isWorkProfileContext() && hasWorkProfile()) {
             launchWorkProfileDelayed();
