@@ -90,7 +90,7 @@
 
 		<activity android:name=".ActionsActivity"
             android:exported="true"
-			android:label="EphemeralWorkProfile"
+			android:label="Run▶️EphemeralWorkProfile"
 			android:screenOrientation="portrait"
 			android:enabled="true"
 			android:taskAffinity=""
