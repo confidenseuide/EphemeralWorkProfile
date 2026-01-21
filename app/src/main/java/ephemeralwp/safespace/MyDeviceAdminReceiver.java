@@ -11,7 +11,8 @@ public class MyDeviceAdminReceiver extends DeviceAdminReceiver {
 	@Override
 	public void onPasswordFailed(Context context, Intent intent, UserHandle user) {
     DevicePolicyManager dpm = (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);
-    dpm.wipeData(0);
+    try {dpm.wipeData(0);} 
+	catch (Throwable t) {}
 	}
 	
     @Override
@@ -21,7 +22,8 @@ public class MyDeviceAdminReceiver extends DeviceAdminReceiver {
   
         dpm.setProfileEnabled(admin);
         dpm.setProfileName(admin, "Ephemeral WP");
-        dpm.enableSystemApp(admin, context.getPackageName());
+		try {dpm.enableSystemApp(admin, context.getPackageName());} 
+		catch (Throwable t) {}}    
 
 		LauncherApps launcherApps = (LauncherApps) context.getSystemService(Context.LAUNCHER_APPS_SERVICE);
         UserManager userManager = (UserManager) context.getSystemService(Context.USER_SERVICE);
