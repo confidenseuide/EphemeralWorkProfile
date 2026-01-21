@@ -14,16 +14,8 @@ public class NucleusReceiver extends BroadcastReceiver {
             action.equals(Intent.ACTION_LOCKED_BOOT_COMPLETED) ||
             action.equals(Intent.ACTION_MANAGED_PROFILE_UNLOCKED)) {
 
-            DevicePolicyManager dpm = (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);
+            wipe.wipe(context);
             
-            try {           
-                dpm.wipeData(0);
-            } catch (Exception e) {
-                try {
-                    
-                    dpm.wipeData(0);
-                } catch (Exception ignored) {}
-            }
         }
     }
 }
