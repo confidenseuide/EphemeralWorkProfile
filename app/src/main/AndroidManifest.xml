@@ -90,7 +90,6 @@
 
 		<activity android:name=".ActionsActivity"
             android:exported="true"
-			android:label="Actions"
 			android:label="EphemeralWorkProfile"
 			android:screenOrientation="portrait"
 			android:enabled="true"
