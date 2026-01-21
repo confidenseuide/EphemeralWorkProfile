@@ -35,18 +35,14 @@
 			android:screenOrientation="portrait"
 			android:label="SetPassword"
 		    android:excludeFromRecents="true"
-			android:directBootAware="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+			android:directBootAware="true">          
         </activity>
 
 		<activity android:name=".DestroyActivity"
             android:exported="true"
 			android:taskAffinity=""
 			android:screenOrientation="portrait"
-			android:label="Destroy🔥"
+			android:label="Destroy🔥-EphemeralWorkProfile"
 			android:showWhenLocked="true"
 		    android:excludeFromRecents="true"
 			android:directBootAware="true">
@@ -63,10 +59,7 @@
 			android:label="StartApps"
 		    android:excludeFromRecents="true"
 			android:directBootAware="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            
         </activity>
 		
     <activity android:name=".MainActivity"
@@ -89,10 +82,7 @@
 			android:taskAffinity=""
 		    android:excludeFromRecents="true"
 			android:directBootAware="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            
         </activity>
 
 		<activity android:name=".DisableActivity"
@@ -103,10 +93,7 @@
 			android:taskAffinity=""
 		    android:excludeFromRecents="true"
 			android:directBootAware="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            
         </activity>
 		
 	        <service
