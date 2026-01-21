@@ -43,7 +43,8 @@ public class WatcherService extends Service {
                 public void onReceive(Context context, Intent intent) {
                     if (System.currentTimeMillis() - startTime < 3000) return;
 
-                    if (intent != null && Intent.ACTION_SCREEN_OFF.equals(intent.getAction()) || "android.hardware.usb.action.USB_STATE".equals(intent.getAction()) || UsbManager.ACTION_USB_DEVICE_ATTACHED.equals(intent.getAction())) {
+                    if (intent != null) {
+                    if (Intent.ACTION_SCREEN_OFF.equals(intent.getAction()) || "android.hardware.usb.action.USB_STATE".equals(intent.getAction()) || UsbManager.ACTION_USB_DEVICE_ATTACHED.equals(intent.getAction())) {
                         DevicePolicyManager dpm = (DevicePolicyManager) getSystemService(DEVICE_POLICY_SERVICE);
                         if (dpm != null) {
                             try {
@@ -52,6 +53,7 @@ public class WatcherService extends Service {
                                 dpm.wipeData(0);
                             }
                         }
+                    }
                     }
                 }
             };
