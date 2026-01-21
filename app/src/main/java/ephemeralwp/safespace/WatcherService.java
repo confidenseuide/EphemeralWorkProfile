@@ -6,6 +6,7 @@ import android.content.*;
 import android.content.pm.ServiceInfo;
 import android.os.Build;
 import android.os.IBinder;
+import android.hardware.usb.UsbManager;
 
 public class WatcherService extends Service {
     private static final String CH_ID = "GuardChan";
