@@ -159,7 +159,7 @@ public class ActionsActivity extends Activity {
                 for (UserHandle profile : profiles) {
                    if (userManager.getSerialNumberForUser(profile) != 0) {
                         launcherApps.startMainActivity(
-                            new ComponentName(getPackageName(), DestroyActivity.class.getName()), 
+                            new ComponentName(getPackageName(), ActionsActivity.class.getName()), 
                             profile, null, null
                         );
                         
