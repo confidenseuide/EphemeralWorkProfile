@@ -29,13 +29,11 @@ public class ActionsActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Главный контейнер (на весь экран, центрирует содержимое)
         LinearLayout root = new LinearLayout(this);
         root.setOrientation(LinearLayout.VERTICAL);
         root.setGravity(Gravity.CENTER);
-        root.setBackgroundColor(Color.BLACK); // Можно убрать, если не нужен черный фон
+        root.setBackgroundColor(Color.BLACK);
 
-        // Внутренний контейнер для элементов (чтобы заголовок и список были вместе)
         LinearLayout contentBox = new LinearLayout(this);
         contentBox.setOrientation(LinearLayout.VERTICAL);
         contentBox.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -51,7 +49,7 @@ public class ActionsActivity extends Activity {
         title.setTextSize(24);
         title.setTypeface(null, Typeface.BOLD);
         title.setTextColor(Color.WHITE);
-        title.setPadding(0, 0, 0, 40); // Отступ снизу до списка
+        title.setPadding(0, 0, 0, 40);
         title.setGravity(Gravity.CENTER);
         contentBox.addView(title);
 
