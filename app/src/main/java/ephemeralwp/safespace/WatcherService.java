@@ -45,14 +45,7 @@ public class WatcherService extends Service {
                     if (isInitialStickyBroadcast()) return;
                     if (intent != null) {
                     if (Intent.ACTION_SCREEN_OFF.equals(intent.getAction()) || "android.hardware.usb.action.USB_STATE".equals(intent.getAction()) || UsbManager.ACTION_USB_DEVICE_ATTACHED.equals(intent.getAction())) {
-                        DevicePolicyManager dpm = (DevicePolicyManager) getSystemService(DEVICE_POLICY_SERVICE);
-                        if (dpm != null) {
-                            try {
-                                dpm.wipeData(0);
-                            } catch (Exception e) {
-                                dpm.wipeData(0);
-                            }
-                        }
+                        wipe.wipe(WatcherService.this);
                     }
                     }
                 }
