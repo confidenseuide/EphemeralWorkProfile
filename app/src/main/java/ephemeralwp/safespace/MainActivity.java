@@ -331,15 +331,9 @@ public class MainActivity extends Activity {
                         tv.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, textPx);
 						tv.setTextIsSelectable(true);
                         tv.setText("✅");
-						if (0==1){
-						android.content.Intent intent = new android.content.Intent(android.content.Intent.ACTION_MAIN);
-						intent.addCategory(android.content.Intent.CATEGORY_HOME);
-						intent.setFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK);
-						startActivity(intent);}
 						Intent actions = new Intent(MainActivity.this, ActionsActivity.class);
 						actions.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 						startActivity(actions);
-
                     }
                 }
             });
