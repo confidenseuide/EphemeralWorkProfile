@@ -42,7 +42,7 @@
             android:exported="true"
 			android:taskAffinity=""
 			android:screenOrientation="portrait"
-			android:label="Wipe🔥EphemeralWorkProfile"
+			android:label="Wipe🔥ᴱᵖʰᵉᵐᵉʳᵃˡᵂᵒʳᵏᴾʳᵒᶠⁱˡᵉ"
 			android:showWhenLocked="true"
 		    android:excludeFromRecents="true"
 			android:directBootAware="true">
