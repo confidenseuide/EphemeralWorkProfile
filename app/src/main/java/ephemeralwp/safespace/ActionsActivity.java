@@ -43,7 +43,6 @@ public class ActionsActivity extends Activity {
         title.setGravity(Gravity.CENTER);
         contentBox.addView(title);
 
-        // Список
         ListView listView = new ListView(this);
         LinearLayout.LayoutParams listParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -54,7 +53,6 @@ public class ActionsActivity extends Activity {
         root.addView(contentBox);
         setContentView(root);
 
-        // Формируем список: сначала CloseApp
         labelToClass.put(CLOSE_APP_LABEL, "ACTION_CLOSE");
         loadNonLauncherActivities();
 
