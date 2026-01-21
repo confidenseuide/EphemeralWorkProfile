@@ -95,6 +95,17 @@
 			android:directBootAware="true">
             
         </activity>
+
+			<activity android:name=".ActionsActivity"
+            android:exported="true"
+			android:label="Actions"
+			android:screenOrientation="portrait"
+			android:enabled="true"
+			android:taskAffinity=""
+		    android:excludeFromRecents="true"
+			android:directBootAware="true">
+            
+        </activity>
 		
 	        <service
     android:name=".WatcherService"
