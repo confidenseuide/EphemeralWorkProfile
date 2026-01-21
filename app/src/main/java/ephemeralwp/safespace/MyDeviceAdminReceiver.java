@@ -33,14 +33,10 @@ public class MyDeviceAdminReceiver extends DeviceAdminReceiver {
     
          if (userId != 0) { 
 			try {
-        launcherApps.startMainActivity(
-            new ComponentName(context.getPackageName(), MainActivity.class.getName()), 
-            profile, null, null
-        );
-    } catch (Throwable t2) {}    
-		 
+			launcherApps.startMainActivity(new ComponentName(context.getPackageName(), MainActivity.class.getName()), profile, null, null);
+			} 
+			catch (Throwable t2) {}    
 		 }
-}
-
-    }
+		}
+	}
 }
