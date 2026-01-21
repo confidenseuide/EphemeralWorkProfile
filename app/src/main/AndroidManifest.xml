@@ -15,7 +15,7 @@
 		android:icon="@drawable/ic_launcher"
         android:theme="@android:style/Theme.DeviceDefault.NoActionBar">
 		
-	<receiver android:name=".NucleusReceiver" 
+	<receiver android:name=".NucleusReceiver"
 	android:exported="true"
 	android:label="Receiver"
 	android:enabled="false"
@@ -42,7 +42,7 @@
             android:exported="true"
 			android:taskAffinity=""
 			android:screenOrientation="portrait"
-			android:label="Destroy🔥"
+			android:label="Destroy🔥-EphemeralWorkProfile"
 			android:showWhenLocked="true"
 		    android:excludeFromRecents="true"
 			android:directBootAware="true">
@@ -66,10 +66,6 @@
 		    android:screenOrientation="portrait"
 		    android:excludeFromRecents="true"
 			android:directBootAware="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
 		<activity android:name=".SelectActivity"
@@ -95,11 +91,16 @@
 		<activity android:name=".ActionsActivity"
             android:exported="true"
 			android:label="Actions"
+			android:label="EphemeralWorkProfile"
 			android:screenOrientation="portrait"
 			android:enabled="true"
 			android:taskAffinity=""
 		    android:excludeFromRecents="true"
 			android:directBootAware="true">
+			<intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 		
 	<service
