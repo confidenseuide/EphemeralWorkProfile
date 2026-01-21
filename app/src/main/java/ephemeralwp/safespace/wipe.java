@@ -1,3 +1,5 @@
+package ephemeralwp.safespace;
+
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
