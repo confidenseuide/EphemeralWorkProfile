@@ -31,7 +31,7 @@
 
 		<activity android:name=".SetPasswordActivity"
             android:exported="true"
-			android:taskAffinity="SetPass"
+			taskAffinity="ephemeralwp.safespace.pass"
 			android:screenOrientation="portrait"
 			android:label="SetPassword"
 		    android:excludeFromRecents="true"
@@ -40,7 +40,7 @@
 
 		<activity android:name=".DestroyActivity"
             android:exported="true"
-			android:taskAffinity="Destroy"
+			taskAffinity="ephemeralwp.safespace.wipe"
 			android:screenOrientation="portrait"
 			android:label="⁢Wipe🔥EphemeralWorkProfile"
 			android:showWhenLocked="true"
@@ -54,7 +54,7 @@
 		
 		<activity android:name=".StartAppsActivity"
             android:exported="true"
-			android:taskAffinity="StartApps"
+			taskAffinity="ephemeralwp.safespace.start"
 			android:screenOrientation="portrait"
 			android:label="StartApps"
 		    android:excludeFromRecents="true"
@@ -65,6 +65,7 @@
             android:exported="true"
 			android:label="⁢Run▶️EphemeralWorkProfile"
 		    android:screenOrientation="portrait"
+			 taskAffinity="ephemeralwp.safespace.main"
 		    android:excludeFromRecents="true"
 			android:directBootAware="true">
 			 <intent-filter>
@@ -78,7 +79,7 @@
 			android:label="SelectKeyboard"
 			android:screenOrientation="portrait"
 			android:enabled="true"
-			android:taskAffinity="Select"
+			taskAffinity="ephemeralwp.safespace.select"
 		    android:excludeFromRecents="true"
 			android:directBootAware="true">
         </activity>
@@ -88,7 +89,7 @@
 			android:label="DisableApps"
 			android:screenOrientation="portrait"
 			android:enabled="true"
-			android:taskAffinity="Disable"
+			taskAffinity="ephemeralwp.safespace.disable"
 		    android:excludeFromRecents="true"
 			android:directBootAware="true">
         </activity>
@@ -100,7 +101,7 @@
 			android:resizeableActivity="true"
 			android:screenOrientation="portrait"
 			android:enabled="true"
-			android:taskAffinity="Actions"
+			taskAffinity="ephemeralwp.safespace.actions"
 		    android:excludeFromRecents="true"
 			android:directBootAware="true">
         </activity>
