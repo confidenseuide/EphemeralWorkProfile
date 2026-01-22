@@ -338,6 +338,7 @@ public class MainActivity extends Activity {
 						Intent actions = new Intent(MainActivity.this, ActionsActivity.class);
 						actions.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 						startActivity(actions);
+						finishAndRemoveTask();
                     }
                 }
             });
