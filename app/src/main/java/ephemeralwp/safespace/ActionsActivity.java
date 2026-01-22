@@ -65,7 +65,6 @@ public class ActionsActivity extends Activity {
             String className = labelToClass.get(label);
 
             if (label.equals(CLOSE_APP_LABEL)) {
-                // Твоя логика HOME (сворачивание)
                 Intent home = new Intent(Intent.ACTION_MAIN);
                 home.addCategory(Intent.CATEGORY_HOME);
                 home.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -122,6 +121,7 @@ public class ActionsActivity extends Activity {
     protected void onResume() {
         super.onResume();
 		if (isWorkProfileContext()) {
+			getWindow().getDecorView().setKeepScreenOn(true);
 			hideSystemUI();
 		}	
 		
