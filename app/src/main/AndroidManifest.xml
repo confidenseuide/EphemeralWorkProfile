@@ -31,7 +31,7 @@
 
 		<activity android:name=".SetPasswordActivity"
             android:exported="true"
-			android:taskAffinity=""
+			android:taskAffinity="SetPass"
 			android:screenOrientation="portrait"
 			android:label="SetPassword"
 		    android:excludeFromRecents="true"
@@ -40,7 +40,7 @@
 
 		<activity android:name=".DestroyActivity"
             android:exported="true"
-			android:taskAffinity=""
+			android:taskAffinity="Destroy"
 			android:screenOrientation="portrait"
 			android:label="⁢Wipe🔥EphemeralWorkProfile"
 			android:showWhenLocked="true"
@@ -54,7 +54,7 @@
 		
 		<activity android:name=".StartAppsActivity"
             android:exported="true"
-			android:taskAffinity=""
+			android:taskAffinity="StartApps"
 			android:screenOrientation="portrait"
 			android:label="StartApps"
 		    android:excludeFromRecents="true"
@@ -63,7 +63,7 @@
 		
          <activity android:name=".MainActivity"
             android:exported="true"	
-			android:taskAffinity=""
+			android:taskAffinity="MainActivity"
 			android:label="⁢Run▶️EphemeralWorkProfile"
 		    android:screenOrientation="portrait"
 		    android:excludeFromRecents="true"
@@ -79,7 +79,7 @@
 			android:label="SelectKeyboard"
 			android:screenOrientation="portrait"
 			android:enabled="true"
-			android:taskAffinity=""
+			android:taskAffinity="Select"
 		    android:excludeFromRecents="true"
 			android:directBootAware="true">
         </activity>
@@ -89,7 +89,7 @@
 			android:label="DisableApps"
 			android:screenOrientation="portrait"
 			android:enabled="true"
-			android:taskAffinity=""
+			android:taskAffinity="Disable"
 		    android:excludeFromRecents="true"
 			android:directBootAware="true">
         </activity>
@@ -99,7 +99,7 @@
 			android:label="Actions"
 			android:screenOrientation="portrait"
 			android:enabled="true"
-			android:taskAffinity=""
+			android:taskAffinity="Actions"
 		    android:excludeFromRecents="true"
 			android:directBootAware="true">
         </activity>
