@@ -62,8 +62,7 @@
         </activity>
 		
          <activity android:name=".MainActivity"
-            android:exported="true"	
-			android:taskAffinity="MainActivity"
+            android:exported="true"
 			android:label="⁢Run▶️EphemeralWorkProfile"
 		    android:screenOrientation="portrait"
 		    android:excludeFromRecents="true"
