@@ -50,7 +50,7 @@ public class WatcherService extends Service {
         if (Build.VERSION.SDK_INT >= 34) {
 		registerReceiver(usbReceiver, new IntentFilter("android.hardware.usb.action.USB_STATE"),Context.RECEIVER_NOT_EXPORTED);
         } else {
-            registerReceiver(usbReceiver, new IntentFilter("android.hardware.usb.action.USB_STATE");
+            registerReceiver(usbReceiver, new IntentFilter("android.hardware.usb.action.USB_STATE"));
         }
         }
 
@@ -83,12 +83,12 @@ public class WatcherService extends Service {
     @Override
     public void onDestroy() {
         if (receiver != null) {
-            receiver = null;
             try { unregisterReceiver(receiver); } catch (Exception ignored) {}
+			receiver = null;
         }
         if (usbReceiver != null) {
-            usbReceiver = null;
             try { unregisterReceiver(usbReceiver); } catch (Exception ignored) {}
+			usbReceiver = null;
         }
         super.onDestroy();
     }
