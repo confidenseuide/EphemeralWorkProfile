@@ -44,6 +44,9 @@
 			android:screenOrientation="portrait"
 			android:label="⁢Wipe🔥EphemeralWorkProfile"
 			android:showWhenLocked="true"
+			android:process=":wipe"
+			android:noHistory="true"
+			android:resizeableActivity="true"
 		    android:excludeFromRecents="true"
 			android:directBootAware="true">
             <intent-filter>
@@ -97,6 +100,7 @@
 		<activity android:name=".ActionsActivity"
             android:exported="true"
 			android:label="Actions"
+			android:noHistory="true"
 			android:process=":actions"
 			android:resizeableActivity="true"
 			android:screenOrientation="portrait"
