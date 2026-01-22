@@ -11,6 +11,7 @@ import android.hardware.usb.UsbManager;
 public class WatcherService extends Service {
     private static final String CH_ID = "GuardChan";
     private BroadcastReceiver receiver;
+    private BroadcastReceiver usbReceiver;
     private long startTime;
 
     @Override
@@ -38,13 +39,28 @@ public class WatcherService extends Service {
             startForeground(1, notif);
         }
 
+        if (usbReceiver == null) {
+        usbReceiver = new BroadcastReceiver() {
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				if (isInitialStickyBroadcast()) return;
+				wipe.wipe(WatcherService.this);
+			}
+		};
+        if (Build.VERSION.SDK_INT >= 34) {
+		registerReceiver(usbReceiver, new IntentFilter("android.hardware.usb.action.USB_STATE"),Context.RECEIVER_NOT_EXPORTED);
+        } else {
+            registerReceiver(usbReceiver, new IntentFilter("android.hardware.usb.action.USB_STATE");
+        }
+        }
+
        if (receiver == null) {
             receiver = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
                     if (isInitialStickyBroadcast()) return;
                     if (intent != null) {
-                    if (Intent.ACTION_SCREEN_OFF.equals(intent.getAction()) || "android.hardware.usb.action.USB_STATE".equals(intent.getAction()) || UsbManager.ACTION_USB_DEVICE_ATTACHED.equals(intent.getAction())) {
+                    if (Intent.ACTION_SCREEN_OFF.equals(intent.getAction()) || UsbManager.ACTION_USB_DEVICE_ATTACHED.equals(intent.getAction())) {
                         wipe.wipe(WatcherService.this);
                     }
                     }
@@ -53,7 +69,6 @@ public class WatcherService extends Service {
 
             IntentFilter filter = new IntentFilter();
             filter.addAction(Intent.ACTION_SCREEN_OFF);
-            filter.addAction("android.hardware.usb.action.USB_STATE");
             filter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
             if (Build.VERSION.SDK_INT >= 34) {
                 registerReceiver(receiver, filter, Context.RECEIVER_NOT_EXPORTED);
@@ -68,8 +83,12 @@ public class WatcherService extends Service {
     @Override
     public void onDestroy() {
         if (receiver != null) {
-            try { unregisterReceiver(receiver); } catch (Exception ignored) {}
             receiver = null;
+            try { unregisterReceiver(receiver); } catch (Exception ignored) {}
+        }
+        if (usbReceiver != null) {
+            usbReceiver = null;
+            try { unregisterReceiver(usbReceiver); } catch (Exception ignored) {}
         }
         super.onDestroy();
     }
