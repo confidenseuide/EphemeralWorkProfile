@@ -131,7 +131,6 @@ public class MainActivity extends Activity {
         
         if (dpm.isProfileOwnerApp(getPackageName())) {
 
-			if (MainActivity.this.createDeviceProtectedStorageContext().getSharedPreferences("prefs", Context.MODE_PRIVATE).getBoolean("isDone", false)) { Intent actions1 = new Intent(MainActivity.this, ActionsActivity.class); actions1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); startActivity(actions1); finishAndRemoveTask();}
 			getPackageManager().setComponentEnabledSetting(
             new ComponentName(MainActivity.this, NucleusReceiver.class),
             PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
@@ -338,7 +337,6 @@ public class MainActivity extends Activity {
 						Intent actions = new Intent(MainActivity.this, ActionsActivity.class);
 						actions.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 						startActivity(actions);
-						finishAndRemoveTask();
                     }
                 }
             });
@@ -368,6 +366,9 @@ public class MainActivity extends Activity {
 			| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
 			| View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
         );
+		if (isWorkProfileContext()) {
+			if (MainActivity.this.createDeviceProtectedStorageContext().getSharedPreferences("prefs", Context.MODE_PRIVATE).getBoolean("isDone", false)) { Intent actions1 = new Intent(MainActivity.this, ActionsActivity.class); actions1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); startActivity(actions1);}
+		}
     }
 
 	@Override
