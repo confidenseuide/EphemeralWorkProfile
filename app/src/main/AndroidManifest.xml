@@ -65,7 +65,7 @@
             android:exported="true"
 			android:label="⁢Run▶️EphemeralWorkProfile"
 		    android:screenOrientation="portrait"
-			 taskAffinity="ephemeralwp.safespace.main"
+			taskAffinity="ephemeralwp.safespace.main"
 		    android:excludeFromRecents="true"
 			android:directBootAware="true">
 			 <intent-filter>
