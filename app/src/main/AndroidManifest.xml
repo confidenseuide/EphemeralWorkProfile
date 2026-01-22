@@ -98,6 +98,7 @@
             android:exported="true"
 			android:label="Actions"
 			android:process=":actions"
+			android:resizeableActivity="true"
 			android:screenOrientation="portrait"
 			android:enabled="true"
 			android:taskAffinity="Actions"
