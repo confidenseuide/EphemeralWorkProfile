@@ -41,15 +41,11 @@
 		<activity android:name=".DestroyActivity"
             android:exported="true"		
 			android:screenOrientation="portrait"
-			android:label="⁢Wipe🔥EphemeralWorkProfile"
+			android:label="WipeData🔥"
 			android:showWhenLocked="true"
 			android:launchMode="singleInstance"
 		    android:excludeFromRecents="true"
 			android:directBootAware="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 		
 		<activity android:name=".StartAppsActivity"
@@ -63,7 +59,6 @@
 		
          <activity android:name=".MainActivity"
             android:exported="true"
-			android:label="⁢Run▶️EphemeralWorkProfile"
 		    android:screenOrientation="portrait"
 		    android:excludeFromRecents="true"
 			android:directBootAware="true">
