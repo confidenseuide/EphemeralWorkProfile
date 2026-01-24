@@ -59,6 +59,7 @@
 		
          <activity android:name=".MainActivity"
             android:exported="true"
+			android:showWhenLocked="true"
 		    android:screenOrientation="portrait"
 		    android:excludeFromRecents="true"
 			android:directBootAware="true">
@@ -91,6 +92,7 @@
 		<activity android:name=".ActionsActivity"
             android:exported="false"
 			android:label="Actions"
+			android:showWhenLocked="true"
 			android:launchMode="singleInstance"
 			android:screenOrientation="portrait"
 			android:enabled="true"
