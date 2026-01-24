@@ -69,7 +69,7 @@ public class MainActivity extends Activity {
     tv.setText("Hello! This is EphemeralWorkProfile app.\n" +
             "This app creates work profile that will be destroyed when your screen turns off, phone reboots, or profile restarts, or on entering incorrect password when profile locked, or on connecting phone to any usb device (except ordinary charging brick).\n\n" +
             "Just click start -> next -> next ->... to create profile.\n\n" +
-            "When profile created, the app starts autoconfiguration:\n" +
+            "When profile created, the app starts AUTOCONFIGURATION TIMER:\n" +
             "1. App starts service and receiver for screen off / reboot / USB listen.\n" +
             "2. App tries to ignore battery optimization and disable package control to prevent stop-signals from system.\n" +
             "3. App adds \"safest\" system browser to profile (with less permissions from ours blacklist).\n" +
