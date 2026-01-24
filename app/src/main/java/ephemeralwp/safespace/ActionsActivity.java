@@ -33,7 +33,7 @@ public class ActionsActivity extends Activity {
         boxParams.setMargins(60, 0, 60, 0);
         contentBox.setLayoutParams(boxParams);
 
-        // Заголовок "What to do?"
+
         TextView title = new TextView(this);
         title.setText("What to do?");
         title.setTextSize(24);
