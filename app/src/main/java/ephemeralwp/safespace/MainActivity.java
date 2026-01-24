@@ -67,7 +67,7 @@ public class MainActivity extends Activity {
     tv.setLineSpacing(0, 1.2f);
 	tv.setTypeface(null, android.graphics.Typeface.BOLD); 
     tv.setText("Hello! This is EphemeralWorkProfile app.\n" +
-            "The app creates work profile that will be destroyed when your screen turns off, phone reboots, or profile restarts, or on entering incorrect password if profile locked, or on connecting phone to any usb device (except ordinary charging brick).\n\n" +
+            "This app creates work profile that will be destroyed when your screen turns off, phone reboots, or profile restarts, or on entering incorrect password when profile locked, or on connecting phone to any usb device (except ordinary charging brick).\n\n" +
             "Just click start -> next -> next ->... to create profile.\n\n" +
             "When profile created, the app starts autoconfiguration:\n" +
             "1. App starts service and receiver for screen off / reboot / USB listen.\n" +
