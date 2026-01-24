@@ -9,9 +9,11 @@ import java.util.*;
 public class MyDeviceAdminReceiver extends DeviceAdminReceiver {
 
 	@Override
-	public void onPasswordFailed(Context context, Intent intent, UserHandle user) {
-    DevicePolicyManager dpm = (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);
-    wipe.wipe(context);
+	public void onPasswordFailed(Context context, Intent intent, UserHandle user) {    
+	UserManager um = (UserManager) context.getSystemService(Context.USER_SERVICE);
+    KeyguardManager km = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
+    if (!um.isUserUnlocked(android.os.Process.myUserHandle()) || km.isKeyguardLocked()) {
+        wipe.wipe(context);}
 	}
 	
     @Override
