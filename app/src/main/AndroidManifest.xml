@@ -30,7 +30,7 @@
     </receiver>
 
 		<activity android:name=".SetPasswordActivity"
-            android:exported="true"
+            android:exported="false"
 			android:launchMode="singleInstance"
 			android:screenOrientation="portrait"
 			android:label="SetPassword"
@@ -39,7 +39,7 @@
         </activity>
 
 		<activity android:name=".DestroyActivity"
-            android:exported="true"		
+            android:exported="false"		
 			android:screenOrientation="portrait"
 			android:label="WipeData🔥"
 			android:showWhenLocked="true"
@@ -49,7 +49,7 @@
         </activity>
 		
 		<activity android:name=".StartAppsActivity"
-            android:exported="true"
+            android:exported="false"
 			android:launchMode="singleInstance"
 			android:screenOrientation="portrait"
 			android:label="StartApps"
@@ -69,7 +69,7 @@
         </activity>
 
 		<activity android:name=".SelectActivity"
-            android:exported="true"
+            android:exported="false"
 			android:label="SelectKeyboard"
 			android:launchMode="singleInstance"
 			android:screenOrientation="portrait"
@@ -79,7 +79,7 @@
         </activity>
 
 		<activity android:name=".DisableActivity"
-            android:exported="true"
+            android:exported="false"
 			android:label="DisableApps"
 			android:launchMode="singleInstance"
 			android:screenOrientation="portrait"
@@ -89,7 +89,7 @@
         </activity>
 
 		<activity android:name=".ActionsActivity"
-            android:exported="true"
+            android:exported="false"
 			android:label="Actions"
 			android:launchMode="singleInstance"
 			android:screenOrientation="portrait"
