@@ -1,4 +1,4 @@
-package ephemeralwp.safespace;
+package protectedwp.safespace;
 
 import android.app.*;
 import android.app.admin.*;
@@ -128,7 +128,14 @@ public class StartAppsActivity extends Activity {
                 Toast.makeText(this, "Failed to launch this activity", Toast.LENGTH_SHORT).show();
             }
         });
-        builder.show();
+        AlertDialog dialog = builder.create(); 
+		dialog.show();
+		if (dialog.getWindow() != null) {  
+		WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
+		lp.gravity = Gravity.CENTER;
+		lp.y = 0;
+		dialog.getWindow().setAttributes(lp);
+		}
     }
 
     private boolean launchActivity(ActivityInfo act) {
@@ -155,6 +162,11 @@ public class StartAppsActivity extends Activity {
         ProgressDialog pd = new ProgressDialog(this);
         pd.setMessage("Deep Scanning...");
         pd.show();
+		if (pd.getWindow() != null) {
+		WindowManager.LayoutParams lp = pd.getWindow().getAttributes();
+		lp.gravity = Gravity.CENTER;
+		pd.getWindow().setAttributes(lp);
+		}
 
         new Thread(() -> {
             List<PackageInfo> packages = pm.getInstalledPackages(PackageManager.GET_ACTIVITIES | PackageManager.MATCH_UNINSTALLED_PACKAGES);
