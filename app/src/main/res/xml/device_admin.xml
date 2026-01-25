@@ -2,5 +2,6 @@
     <uses-policies>
         <profile-owner />
         <watch-login />
+        <wipe-data />
     </uses-policies>
 </device-admin>
