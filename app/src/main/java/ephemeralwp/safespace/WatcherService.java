@@ -6,6 +6,7 @@ import android.content.*;
 import android.content.pm.ServiceInfo;
 import android.os.Build;
 import android.os.IBinder;
+import java.util.List;
 import android.hardware.usb.UsbManager;
 
 public class WatcherService extends Service {
