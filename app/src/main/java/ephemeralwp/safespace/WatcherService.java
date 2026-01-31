@@ -14,6 +14,53 @@ public class WatcherService extends Service {
     private BroadcastReceiver usbReceiver;
     private long startTime;
 
+	private void startEnforcedService() {
+	Context context = this;
+    DevicePolicyManager dpm = (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);
+    NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+    String pkg = context.getPackageName();
+
+	if (dpm.getPermissionGrantState(new ComponentName(this, MyDeviceAdminReceiver.class), context.getPackageName(), android.Manifest.permission.POST_NOTIFICATIONS) != DevicePolicyManager.PERMISSION_GRANT_STATE_GRANTED) {
+    dpm.setPermissionGrantState(
+                    new ComponentName(this, MyDeviceAdminReceiver.class),
+                    getPackageName(),
+                    android.Manifest.permission.POST_NOTIFICATIONS,
+                    DevicePolicyManager.PERMISSION_GRANT_STATE_GRANTED
+                );}
+
+    List<NotificationChannel> channels = nm.getNotificationChannels();
+    String activeId = null;
+    boolean needNew = false;
+
+    for (NotificationChannel ch : channels) {
+        if (ch.getImportance() == NotificationManager.IMPORTANCE_NONE) {
+            nm.deleteNotificationChannel(ch.getId());
+            needNew = true;
+        } else if (activeId == null) {
+            activeId = ch.getId();
+        }
+    }
+
+    if (needNew || activeId == null) {
+        activeId = "ephemeralwp.safespace" + Long.toHexString(new java.security.SecureRandom().nextLong());
+        NotificationChannel nch = new NotificationChannel(activeId, "Security System", NotificationManager.IMPORTANCE_LOW);
+        nm.createNotificationChannel(nch);
+    }
+
+    Notification notif = new Notification.Builder(context, activeId)
+            .setContentTitle("Profile Protected")
+            .setContentText("it will be frozen on screen off and apps will be hidden.")
+            .setSmallIcon(android.R.drawable.ic_lock_lock)
+            .setOngoing(true)
+            .build();
+
+    if (android.os.Build.VERSION.SDK_INT >= 34) {
+        startForeground(1, notif, ServiceInfo.FOREGROUND_SERVICE_TYPE_SYSTEM_EXEMPTED);
+    } else {
+        startForeground(1, notif);
+    }
+	}
+	
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         startTime = System.currentTimeMillis();
