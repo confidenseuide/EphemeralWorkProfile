@@ -18,7 +18,7 @@
 	<receiver android:name=".NucleusReceiver"
 	android:exported="true"
 	android:label="Receiver"
-	android:enabled="true"
+	android:enabled="false"
 	android:directBootAware="true">
      <intent-filter android:priority="999">
         <action android:name="android.intent.action.BOOT_COMPLETED" />
