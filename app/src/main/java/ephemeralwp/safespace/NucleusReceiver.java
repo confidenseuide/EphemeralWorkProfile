@@ -13,6 +13,10 @@ public class NucleusReceiver extends BroadcastReceiver {
         if (action.equals(Intent.ACTION_BOOT_COMPLETED) || 
             action.equals(Intent.ACTION_LOCKED_BOOT_COMPLETED) ||
             action.equals(Intent.ACTION_MANAGED_PROFILE_UNLOCKED)) {
+            
+            if (isInitialStickyBroadcast()) {
+            
+            return;}
 
             wipe.wipe(context);
             
