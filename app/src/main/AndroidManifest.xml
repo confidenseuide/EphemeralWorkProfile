@@ -14,7 +14,6 @@
 		android:directBootAware="true"
 		android:allowBackup="false"
         android:fullBackupContent="false"
-        android:dataExtractionRules="@null"
 		android:icon="@drawable/ic_launcher"
         android:theme="@android:style/Theme.DeviceDefault.NoActionBar">
 		
