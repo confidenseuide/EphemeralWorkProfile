@@ -9,6 +9,10 @@ import android.os.IBinder;
 import java.util.List;
 import android.hardware.usb.UsbManager;
 
+import android.app.admin.DeviceAdminService;
+import android.content.ComponentName;
+
+
 public class WatcherService extends DeviceAdminService {
     private static final String CH_ID = "GuardChan";
     private BroadcastReceiver receiver;
