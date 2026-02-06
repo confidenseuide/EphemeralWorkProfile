@@ -68,9 +68,11 @@ public class WatcherService extends DeviceAdminService {
     public void onCreate() {
         super.onCreate();
 		UserManager um = (UserManager) getSystemService(USER_SERVICE);
-        if (!um.isUserUnlocked(android.os.Process.myUserHandle())) {
+		KeyguardManager km = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
+        if (km != null && km.isDeviceLocked()) {
+		if (!um.isUserUnlocked(android.os.Process.myUserHandle())) {
 			wipe.wipe(this);
-		}                
+		}}                
         startTime = System.currentTimeMillis();
 
         startEnforcedService();
