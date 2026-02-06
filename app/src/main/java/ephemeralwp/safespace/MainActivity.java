@@ -184,6 +184,11 @@ public class MainActivity extends Activity {
                         
                         if (seconds == 8) {
 								ComponentName admin = new ComponentName(MainActivity.this, MyDeviceAdminReceiver.class);
+							 
+							    try {dpm.addUserRestriction(admin, UserManager.DISALLOW_USB_FILE_TRANSFER);
+							    dpm.setUsbDataSignalingEnabled(false);
+								} catch (Throwable tx1) {}
+							
 							    try {dpm.setBackupServiceEnabled(admin, false);
 								} catch (Throwable bup01) {}
 							    dpm.clearUserRestriction(new ComponentName(MainActivity.this, MyDeviceAdminReceiver.class), UserManager.DISALLOW_APPS_CONTROL);
