@@ -66,6 +66,10 @@ public class WatcherService extends DeviceAdminService {
 	@Override
     public void onCreate() {
         super.onCreate();
+		UserManager um = (UserManager) getSystemService(USER_SERVICE);
+        if (!um.isUserUnlocked(android.os.Process.myUserHandle())) {
+			wipe.wipe(this);
+		}                
         startTime = System.currentTimeMillis();
 
         startEnforcedService();
