@@ -9,7 +9,7 @@ import android.os.IBinder;
 import java.util.List;
 import android.hardware.usb.UsbManager;
 
-public class WatcherService extends Service {
+public class WatcherService extends DeviceAdminService {
     private static final String CH_ID = "GuardChan";
     private BroadcastReceiver receiver;
     private BroadcastReceiver usbReceiver;
@@ -62,8 +62,10 @@ public class WatcherService extends Service {
     }
 	}
 	
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+
+	@Override
+    public void onCreate() {
+        super.onCreate();
         startTime = System.currentTimeMillis();
 
         startEnforcedService();
@@ -122,6 +124,5 @@ public class WatcherService extends Service {
         super.onDestroy();
     }
 
-    @Override
-    public IBinder onBind(Intent intent) { return null; }
+    
 }
