@@ -108,7 +108,7 @@ public class WatcherService extends DeviceAdminService {
             }
         }
 
-        return START_STICKY;
+        
     }
 
     @Override
