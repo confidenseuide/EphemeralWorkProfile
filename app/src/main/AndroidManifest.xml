@@ -12,6 +12,7 @@
     <application
         android:label="EphemeralWorkProfile"
 		android:allowBackup="false"
+		android:requestLegacyExternalStorage="false"
         android:fullBackupContent="false"
 		android:extractNativeLibs="false"
 		android:icon="@drawable/ic_launcher"
