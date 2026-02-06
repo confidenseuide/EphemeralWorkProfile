@@ -103,7 +103,6 @@
 		    android:excludeFromRecents="true"
 			android:directBootAware="true">
         </activity>
-		
 
 			<service
     android:name=".WatcherService"
