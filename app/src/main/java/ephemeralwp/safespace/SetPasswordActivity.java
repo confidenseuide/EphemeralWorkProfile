@@ -13,7 +13,6 @@ public class SetPasswordActivity extends Activity {
 
 	private DevicePolicyManager dpm;
 
-
 	private void showPasswordPrompt() {
     final android.app.Dialog dialog = new android.app.Dialog(this, android.R.style.Theme_Material_Light_Dialog);
 	if (dialog.getWindow() != null) {dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);}
@@ -26,7 +25,7 @@ public class SetPasswordActivity extends Activity {
     layout.setPadding(padding, padding, padding, padding);
 
     android.widget.TextView tv = new android.widget.TextView(this);
-    tv.setText("Set password for profile if you haven't done so yet. Use a password type that is different from the password type of the main profile.");
+    tv.setText("Set password for profile if you haven't done so yet. Use a password that is different from the password of the main profile.");
     tv.setTextSize(18);
     tv.setTextColor(0xFF000000);
     tv.setPadding(0, 0, 0, padding);
