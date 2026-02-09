@@ -71,7 +71,7 @@ public class MainActivity extends Activity {
             "Just click start -> next -> next ->... to create profile.\n\n" +
             "When profile created, the app starts AUTOCONFIGURATION TIMER:\n" +
             "1. App starts service and receiver for screen off / reboot / USB listen.\n" +
-            "2. App tries to ignore battery optimization and disable package control to prevent stop-signals from system.\n" +
+            "2. App tries to ignore battery optimization and disable package control to prevent stop-signals from energy saving services.\n" +
             "3. App adds \"safest\" system browser to profile (with less permissions from ours blacklist).\n" +
 			"4. App tries to disable backup servicees (result not guaranteed) and disallow usb data\n"+
             "5. App disables screenshots in profile (safety), allows apps install and accounts management (user freedom).\n" +
