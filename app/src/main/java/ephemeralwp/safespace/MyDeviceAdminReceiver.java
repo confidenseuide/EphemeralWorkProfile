@@ -1,5 +1,6 @@
-package protectedwp.safespace;
+package ephemeralwp.safespace;
 
+import android.app.*;
 import android.app.admin.*;
 import android.content.*;
 import android.content.pm.*;
@@ -9,8 +10,10 @@ import java.util.*;
 public class MyDeviceAdminReceiver extends DeviceAdminReceiver {
 
 	@Override
-	public void onPasswordFailed(Context context, Intent intent, UserHandle user) {
-    super.onPasswordFailed(context, intent, user);
+	public void onPasswordFailed(Context context, Intent intent, UserHandle user) {    
+	UserManager um = (UserManager) context.getSystemService(Context.USER_SERVICE);
+    KeyguardManager km = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
+    if (!um.isUserUnlocked(android.os.Process.myUserHandle()) || km.isKeyguardLocked()) {wipe.wipe(context);}
 	}
 	
     @Override
@@ -18,7 +21,9 @@ public class MyDeviceAdminReceiver extends DeviceAdminReceiver {
         DevicePolicyManager dpm = (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);
         ComponentName admin = new ComponentName(context, MyDeviceAdminReceiver.class);    
   
-        try {dpm.enableSystemApp(admin, context.getPackageName());} 
+        dpm.setProfileEnabled(admin);
+        dpm.setProfileName(admin, "Ephemeral WP");
+		try {dpm.enableSystemApp(admin, context.getPackageName());} 
 		catch (Throwable t1) {}    
 
 		LauncherApps launcherApps = (LauncherApps) context.getSystemService(Context.LAUNCHER_APPS_SERVICE);
