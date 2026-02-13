@@ -2,6 +2,8 @@
     <uses-policies>
         <profile-owner />
         <watch-login />
+        <limit-password />
         <wipe-data />
+        <disable-keyguard-features />
     </uses-policies>
 </device-admin>
