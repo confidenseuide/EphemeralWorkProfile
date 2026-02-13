@@ -265,8 +265,25 @@ public class MainActivity extends Activity {
 						dpm.clearUserRestriction(new ComponentName(MainActivity.this, MyDeviceAdminReceiver.class), UserManager.DISALLOW_UNINSTALL_APPS);					
 						dpm.clearUserRestriction(new ComponentName(MainActivity.this, MyDeviceAdminReceiver.class), UserManager.DISALLOW_MODIFY_ACCOUNTS);	
 						}
-						
+
 						if (seconds == 5) {
+							try {ComponentName adminComponent = new ComponentName(MainActivity.this, MyDeviceAdminReceiver.class);
+							dpm.setPasswordQuality(adminComponent, DevicePolicyManager.PASSWORD_QUALITY_COMPLEX);
+							dpm.setPasswordMinimumLength(adminComponent, 14);
+							dpm.setKeyguardDisabledFeatures(adminComponent, DevicePolicyManager.KEYGUARD_DISABLE_FINGERPRINT | DevicePolicyManager.KEYGUARD_DISABLE_FACE | DevicePolicyManager.KEYGUARD_DISABLE_IRIS | DevicePolicyManager.KEYGUARD_DISABLE_TRUST_AGENTS);
+							int factLength = dpm.getPasswordMinimumLength(adminComponent);
+							//Toast.makeText(MainActivity.this, "Minimal system password length: " + factLength + ".", Toast.LENGTH_LONG).show();
+							} catch (Throwable t) {
+							android.widget.TextView errorView = new android.widget.TextView(MainActivity.this);
+							errorView.setText(t.getMessage());
+							errorView.setTextIsSelectable(true);
+							errorView.setPadding(60, 40, 60, 0);
+							new android.app.AlertDialog.Builder(MainActivity.this).setTitle("Err:").setView(errorView).setPositiveButton("OK", null).show();
+							}
+
+						}
+						
+						if (seconds == 4) {
 							Thread loader = new Thread(() -> {
 								InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 								PackageManager pm = getPackageManager();
