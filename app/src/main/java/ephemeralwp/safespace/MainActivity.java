@@ -73,7 +73,7 @@ public class MainActivity extends Activity {
             "1. App starts service and receiver for screen off / reboot / USB listen.\n" +
             "2. App tries to ignore battery optimization and disable package control to prevent stop-signals from energy saving services.\n" +
             "3. App adds \"safest\" system browser to profile (with less permissions from ours blacklist).\n" +
-			"4. App tries to disable backup servicees (result not guaranteed) and disallow usb data\n"+
+			"4. App tries to disable backup servicees (result not guaranteed) and disallow mount physical media, usb data and debugging features\n"+
             "5. App disables screenshots in profile (safety), allows apps install and accounts management (user freedom).\n" +
             "6. App selects \"safest\" system keyboard and freezes others.\n"+
 			"7. App requests to set safe password type and minimal length (14), disables trust agents and biometrics.\n"+
