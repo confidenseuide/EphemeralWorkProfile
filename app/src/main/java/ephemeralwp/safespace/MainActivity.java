@@ -76,7 +76,8 @@ public class MainActivity extends Activity {
 			"4. App tries to disable backup servicees (result not guaranteed) and disallow usb data\n"+
             "5. App disables screenshots in profile (safety), allows apps install and accounts management (user freedom).\n" +
             "6. App selects \"safest\" system keyboard and freezes others.\n"+
-			"7. When the timer is finished app opens Actions screen.\n\n");
+			"7. App requests to set safe password type and minimal length (14), disables trust agents and biometrics.\n"+
+			"8. When the timer is finished app opens Actions screen.\n\n");
     scroll.addView(tv);
     root.addView(scroll, sParams);
 
