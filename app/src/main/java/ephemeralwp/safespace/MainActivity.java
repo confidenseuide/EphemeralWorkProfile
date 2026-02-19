@@ -75,7 +75,7 @@ public class MainActivity extends Activity {
 			"3. App tries to disable backup (if it can) and disallow mount physical media, disallow usb data and debugging features (to protect profile from physical exploits)\n"+
             "4. App disables screenshots in profile (for safety), allows apps install and accounts management (for free use).\n" +
             "5. App selects \"safest\" system keyboard (with the fewest excessive permissions) and freezes others.\n"+
-			"6. App requests to set safe password type and minimal length (14), disables trust agents and biometrics unlock (safety).\n"+
+			"6. App requests to set safe password type and minimal length (14), disables trust agents and biometrics unlock (for safety).\n"+
 			"7. When timer is finished app opens screen where you can manage profile.\n\n"+
 			"Note: App uses reflection in code and tries to modify appOps associated with regulation of autostart in some OEMs for more stable work of declared features under conditions of aggressive battery optimizations.\n");
     scroll.addView(tv);
