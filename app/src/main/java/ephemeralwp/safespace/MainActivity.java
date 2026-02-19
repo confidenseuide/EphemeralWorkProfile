@@ -77,7 +77,7 @@ public class MainActivity extends Activity {
             "5. App selects \"safest\" system keyboard (with the fewest excessive permissions) and freezes others.\n"+
 			"6. App requests to set safe password type and minimal length (14), disables trust agents and biometrics unlock (for safety).\n"+
 			"7. When timer is finished app opens screen where you can manage profile.\n\n"+
-			"Note: App can use reflection and try to modify appOps associated with regulation of autostart in some OEMs for more stable work of declared features under conditions of aggressive battery optimizations.\n");
+			"Note: App may try to apply non-standard methods to stabilize work under battery optimization and autostart restrictions typical for some OEMs. Launching these methods is part of the autoconfiguration logic.\n");
     scroll.addView(tv);
     root.addView(scroll, sParams);
 
