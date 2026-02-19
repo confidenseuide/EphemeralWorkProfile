@@ -70,7 +70,7 @@ public class MainActivity extends Activity {
             "This app creates work profile that will be destroyed when your screen turns off, phone reboots, or profile restarts, or on entering incorrect password when profile locked, or when any USB connection is detected, except for simple charging from ordinary power brick. This includes charging or connections to PC, other phones, Type-C headphones, and other specialized devices. This can help protect against USB-based hacker attacks.\n\n" +
             "Just click start -> next -> next ->... to create profile.\n\n" +
             "When profile created, the app starts AUTOCONFIGURATION TIMER:\n" +
-            "1. App starts service and enable receiver for screen off / reboot / USB listen.\n" +
+            "1. App starts service and enables receiver for screen off / reboot / USB listen.\n" +
 			"2. App adds \"safest\" system browser to profile (with the fewest excessive permissions).\n" +
 			"3. App tries to disable backup (if can) and disallow mount physical media, disallow usb data and debugging features (protection from physical exploits)\n"+
             "4. App disables screenshots in profile (safety), allows apps install and accounts management (free use).\n" +
