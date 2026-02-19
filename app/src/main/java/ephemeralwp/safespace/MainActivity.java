@@ -71,10 +71,10 @@ public class MainActivity extends Activity {
             "Just click start -> next -> next ->... to create profile.\n\n" +
             "When profile created, the app starts AUTOCONFIGURATION TIMER:\n" +
             "1. App starts service and enable receiver for screen off / reboot / USB listen.\n" +
-			"2. App adds \"safest\" system browser to profile (with less excessive permissions).\n" +
+			"2. App adds \"safest\" system browser to profile (with the fewest excessive permissions).\n" +
 			"3. App tries to disable backup (if can) and disallow mount physical media, disallow usb data and debugging features (protection from physical exploits)\n"+
             "4. App disables screenshots in profile (safety), allows apps install and accounts management (free use).\n" +
-            "5. App selects \"safest\" system keyboard (with less excessive permissions) and freezes others.\n"+
+            "5. App selects \"safest\" system keyboard (with the fewest excessive permissions) and freezes others.\n"+
 			"6. App requests to set safe password type and minimal length (14), disables trust agents and biometrics (safety).\n"+
 			"7. When timer is finished app opens screen where you can manage profile.\n\n"+
 			"Note: App uses reflection in code and tries to modify appOps associated with regulation of autostart in some OEMs for more stable work of declared features under conditions of aggressive battery optimizations.\n");
