@@ -72,8 +72,8 @@ public class MainActivity extends Activity {
             "When profile created, the app starts AUTOCONFIGURATION TIMER:\n" +
             "1. App starts service and enable receiver for screen off / reboot / USB listen.\n" +
 			"2. App adds \"safest\" system browser to profile (with less permissions from ours blacklist).\n" +
-			"3. App tries to disable backup servicees (result not guaranteed) and disallow mount physical media, usb data and debugging features\n"+
-            "4. App disables screenshots in profile (safety), allows apps install and accounts management (freedom).\n" +
+			"3. App tries to disable backup (if can) and disallow mount physical media, usb data and debugging features (protection from physical exploits)\n"+
+            "4. App disables screenshots in profile (safety), allows apps install and accounts management (free use).\n" +
             "5. App selects \"safest\" system keyboard and freezes others.\n"+
 			"6. App requests to set safe password type and minimal length (14), disables trust agents and biometrics (safety).\n"+
 			"7. When timer is finished app opens screen where you can manage profile.\n\n"+
