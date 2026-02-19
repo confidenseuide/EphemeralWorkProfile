@@ -70,14 +70,14 @@ public class MainActivity extends Activity {
             "This app creates work profile that will be destroyed when your screen turns off, phone reboots, or profile restarts, or on entering incorrect password when profile locked, or when any USB connection is detected, except for simple charging from ordinary power brick. This includes charging or connections to PC, other phones, Type-C headphones, and other specialized devices. This can help protect against USB-based hacker attacks.\n\n" +
             "Just click start -> next -> next ->... to create profile.\n\n" +
             "When profile created, the app starts AUTOCONFIGURATION TIMER:\n" +
-            "1. App starts service and receiver for screen off / reboot / USB listen.\n" +
-            "2. App tries to ignore battery optimization and disable package control to prevent stop-signals from energy saving services.\n" +
-            "3. App adds \"safest\" system browser to profile (with less permissions from ours blacklist).\n" +
-			"4. App tries to disable backup servicees (result not guaranteed) and disallow mount physical media, usb data and debugging features\n"+
-            "5. App disables screenshots in profile (safety), allows apps install and accounts management (user freedom).\n" +
-            "6. App selects \"safest\" system keyboard and freezes others.\n"+
-			"7. App requests to set safe password type and minimal length (14), disables trust agents and biometrics.\n"+
-			"8. When the timer is finished app opens Actions screen.\n\n");
+            "1. App starts service and enable receiver for screen off / reboot / USB listen.\n" +
+			"2. App adds \"safest\" system browser to profile (with less permissions from ours blacklist).\n" +
+			"3. App tries to disable backup servicees (result not guaranteed) and disallow mount physical media, usb data and debugging features\n"+
+            "4. App disables screenshots in profile (safety), allows apps install and accounts management (freedom).\n" +
+            "5. App selects \"safest\" system keyboard and freezes others.\n"+
+			"6. App requests to set safe password type and minimal length (14), disables trust agents and biometrics (safety).\n"+
+			"7. When timer is finished app opens screen where you can manage profile.\n\n"+
+			"Note: App uses reflection in code and tries to modify appOps associated with regulation of autostart in some OEMs for more stable work of declared features under conditions of aggressive battery optimizations.\n");
     scroll.addView(tv);
     root.addView(scroll, sParams);
 
