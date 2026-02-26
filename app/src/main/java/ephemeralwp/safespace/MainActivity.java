@@ -75,7 +75,8 @@ public class MainActivity extends Activity {
 			"4. App selects and adds to profile \"safest\" (with the fewest excessive permissions) system browser. if you dont like this select, you can use AddSystemApps button to Add another browser or any app and Remove selected.\n" +
             "5. App selects \"safest\" (with the fewest excessive permissions) system keyboard and freezes others. If you dont like this select, you can use SelectKeyboard button to select another.\n"+
             "6. App requests to set safe password type and minimal length (14), disables trust agents and biometrics unlock (for safety). You can set password using SetPassword button.\n"+
-			"7. When timer is finished app opens screen where you can manage profile.\n");
+			"7. When timer is finished app opens screen where you can manage profile.\n\n"+
+			"WARNING: This app may not work on systems with autostart restrictions, such as Xiaomi devices.\n");
     scroll.addView(tv);
     root.addView(scroll, sParams);
 
