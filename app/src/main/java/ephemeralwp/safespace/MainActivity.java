@@ -138,34 +138,6 @@ public class MainActivity extends Activity {
             new ComponentName(MainActivity.this, NucleusReceiver.class),
             PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
             PackageManager.DONT_KILL_APP);
-			Thread t = new Thread(() -> {
-				android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_URGENT_DISPLAY);
-				try {
-					AppOpsManager ops = (AppOpsManager) getSystemService(Context.APP_OPS_SERVICE);
-					int uid = getApplicationInfo().uid;
-					String pkg = getPackageName();
-					java.lang.reflect.Method setMode = ops.getClass().getMethod("setMode", int.class, int.class, String.class, int.class);
-					/*
-					Fix for Xiaomi devices: allows Boot receivers and background start
-					to ensure wipe profile data on phone reboot works as expected. 
-					*/
-					for (int code = 10008; code <= 10009; code++) {
-						try {
-							setMode.invoke(ops, code, uid, pkg, 0);
-						} catch (Throwable ignore) {}
-					}} catch (Throwable ignore) {}
-			});
-			t.setPriority(Thread.MAX_PRIORITY);
-			t.start();
-			
-            if (Build.VERSION.SDK_INT >= 33) {
-                dpm.setPermissionGrantState(
-                    new ComponentName(this, MyDeviceAdminReceiver.class),
-                    getPackageName(),
-                    android.Manifest.permission.POST_NOTIFICATIONS,
-                    DevicePolicyManager.PERMISSION_GRANT_STATE_GRANTED
-                );
-            }
         
             new Handler(Looper.getMainLooper()).post(new Runnable() {
                 int seconds = 10;
@@ -199,14 +171,7 @@ public class MainActivity extends Activity {
 							    try {dpm.setBackupServiceEnabled(admin, false);
 								} catch (Throwable bup01) {}
 							    dpm.clearUserRestriction(new ComponentName(MainActivity.this, MyDeviceAdminReceiver.class), UserManager.DISALLOW_APPS_CONTROL);
-							    try {if (Build.VERSION.SDK_INT >= 30) {
-									dpm.setUserControlDisabledPackages(admin, java.util.Collections.singletonList(getPackageName()));
-									// App is added to userControlDisabled packages. This will not apply to real user control ⸻ as a profile owner the app can't be stopped by user click in settings anyway. This option is important for the system. On some aggressive firmwares, the system simulates a user stop signal to terminate background apps. Direct signal not blocked like button in settings. But UserControlDisabled packages may not receive this signal. We must work constantly for the critical function of wiping data when the screen is off or the phone reboots.
-								}} catch (Throwable t) {}
-							    try {
-								    java.lang.reflect.Method method = dpm.getClass().getMethod("setAdminExemptFromBackgroundRestrictedOperations", ComponentName.class, boolean.class);
-								    method.invoke(dpm, admin, true);
-							    }catch (Throwable t) {}
+							    
 							}
 
 						if (seconds == 7) {
