@@ -70,11 +70,11 @@ public class MainActivity extends Activity {
             "Just click start -> next -> next ->... to create profile.\n\n" +
             "When profile created, the app starts AUTOCONFIGURATION TIMER:\n" +
             "1. App starts service and enables receiver for screen off / reboot / USB listen.\n" +
-			"2. App adds \"safest\" system browser to profile (with the fewest excessive permissions).\n" +
-			"3. App tries to disable backup (if it can) and disallow mount physical media, disallow usb data and debugging features (to protect profile from physical exploits)\n"+
-            "4. App disables screenshots in profile (for safety), allows apps install and accounts management (for free use).\n" +
-            "5. App selects \"safest\" system keyboard (with the fewest excessive permissions) and freezes others.\n"+
-			"6. App requests to set safe password type and minimal length (14), disables trust agents and biometrics unlock (for safety).\n"+
+		    "2. App tries to disable backup (if it can) and disallow mount physical media, disallow usb data and debugging features (to protect profile from physical exploits)\n"+
+            "3. App disables screenshots in profile (for safety), allows apps install and accounts management (for free use).\n" +
+			"4. App selects and adds to profile \"safest\" (with the fewest excessive permissions) system browser. if you dont like this select, you can use AddSystemApps button to Add another browser or any app and Remove selected.\n" +
+            "5. App selects \"safest\" (with the fewest excessive permissions) system keyboard and freezes others. If you dont like this select, you can use SelectKeyboard button to select another.\n"+
+            "6. App requests to set safe password type and minimal length (14), disables trust agents and biometrics unlock (for safety). You can set password using SetPassword button.\n"+
 			"7. When timer is finished app opens screen where you can manage profile.\n");
     scroll.addView(tv);
     root.addView(scroll, sParams);
