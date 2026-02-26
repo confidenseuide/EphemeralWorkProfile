@@ -1,4 +1,4 @@
-package protectedwp.safespace;
+package ephemeralwp.safespace;
 
 import android.app.*;
 import android.app.admin.*;
