@@ -23,8 +23,6 @@ public class MyDeviceAdminReceiver extends DeviceAdminReceiver {
   
         dpm.setProfileEnabled(admin);
         dpm.setProfileName(admin, "Ephemeral WP");
-		try {dpm.enableSystemApp(admin, context.getPackageName());} 
-		catch (Throwable t1) {}    
 
 		LauncherApps launcherApps = (LauncherApps) context.getSystemService(Context.LAUNCHER_APPS_SERVICE);
         UserManager userManager = (UserManager) context.getSystemService(Context.USER_SERVICE);
