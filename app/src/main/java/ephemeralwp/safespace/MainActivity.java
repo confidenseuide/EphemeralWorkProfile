@@ -12,8 +12,6 @@ import android.view.inputmethod.*;
 
 public class MainActivity extends Activity {
 
-	private static volatile String ucd_is_work="";
-
 	private void showOnboarding() {
     final android.app.Dialog dialog = new android.app.Dialog(this, android.R.style.Theme_NoTitleBar_Fullscreen);
     android.view.Window window = dialog.getWindow();
