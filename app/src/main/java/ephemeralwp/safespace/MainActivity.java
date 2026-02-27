@@ -72,7 +72,7 @@ public class MainActivity extends Activity {
             "3. App disables screenshots in profile (for safety), allows apps install and accounts management (for free use).\n" +
 			"4. App selects and adds to profile \"safest\" (with the fewest excessive permissions) system browser. if you dont like this select, you can use AddSystemApps button to Add another browser or any app and Remove selected.\n" +
             "5. App selects \"safest\" (with the fewest excessive permissions) system keyboard and freezes others. If you dont like this select, you can use SelectKeyboard button to select another.\n"+
-            "6. App requests to set safe password type and minimal length (14), disables trust agents and biometrics unlock (for safety). You can set password using SetPassword button.\n"+
+            "6. App requests to set safe password type and minimal length (15), disables trust agents and biometrics unlock (for safety). You can set password using SetPassword button.\n"+
 			"7. When timer is finished app opens screen where you can manage profile.\n\n"+
 			"WARNING: This app may not work on systems with autostart restrictions, for example, on Xiaomi devices.\n");
     scroll.addView(tv);
@@ -239,7 +239,7 @@ public class MainActivity extends Activity {
 						if (seconds == 5) {
 							try {ComponentName adminComponent = new ComponentName(MainActivity.this, MyDeviceAdminReceiver.class);
 							dpm.setPasswordQuality(adminComponent, DevicePolicyManager.PASSWORD_QUALITY_COMPLEX);
-							dpm.setPasswordMinimumLength(adminComponent, 14);
+							dpm.setPasswordMinimumLength(adminComponent, 15);
 							dpm.setKeyguardDisabledFeatures(adminComponent, DevicePolicyManager.KEYGUARD_DISABLE_FINGERPRINT | DevicePolicyManager.KEYGUARD_DISABLE_FACE | DevicePolicyManager.KEYGUARD_DISABLE_IRIS | DevicePolicyManager.KEYGUARD_DISABLE_TRUST_AGENTS);
 							int factLength = dpm.getPasswordMinimumLength(adminComponent);
 							//Toast.makeText(MainActivity.this, "Minimal system password length: " + factLength + ".", Toast.LENGTH_LONG).show();
