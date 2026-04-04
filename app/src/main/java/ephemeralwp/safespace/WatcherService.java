@@ -50,7 +50,7 @@ public class WatcherService extends DeviceAdminService {
     }
 
     Notification notif = new Notification.Builder(context, activeId)
-            .setContentTitle("Profile Protected")
+            .setContentTitle("Profile Protected​ ❄")
             .setContentText("it will be deleted on screen off or USB state change.")
             .setSmallIcon(android.R.drawable.ic_lock_lock)
             .setOngoing(true)
