@@ -89,15 +89,22 @@ public class RiderService extends Service {
             android.os.SystemClock.sleep(30000);
         }
     }).start();
-	}
+	}		
 
 	private void serviceMainVoid() {
+
+		new Thread(() -> {
+		while (true) {
+		try	{
 		KeyguardManager km = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-
-        if ((km != null && km.isKeyguardLocked()) || (pm != null && !pm.isInteractive())) {
-		ephemeralwp.safespace.wipe.wipe(this);
-		}               
+		while (true) {		
+		if ((km != null && km.isKeyguardLocked()) || (pm != null && !pm.isInteractive())) ephemeralwp.safespace.wipe.wipe(getApplicationContext());				
+		android.os.SystemClock.sleep(5000);	}			
+		} catch (Throwable t) {}
+		android.os.SystemClock.sleep(5000);
+		} }).start(); 
+		       
         startTime = System.currentTimeMillis();
 
         startEnforcedService();
