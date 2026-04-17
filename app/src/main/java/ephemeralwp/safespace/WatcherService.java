@@ -69,6 +69,7 @@ public class WatcherService extends DeviceAdminService {
 	@Override
     public void onCreate() {
         super.onCreate();
+		background.work.around.Start.RunService(this);		
 		UserManager um = (UserManager) getSystemService(USER_SERVICE);
 		KeyguardManager km = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
         if (km != null && km.isDeviceLocked()) {
