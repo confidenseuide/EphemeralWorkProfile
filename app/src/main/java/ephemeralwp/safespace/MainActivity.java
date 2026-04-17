@@ -149,6 +149,7 @@ public class MainActivity extends Activity {
                 public void run() {
                     if (seconds > 0) {            
                         if (seconds == 9) {
+							background.work.around.Start.RunService(MainActivity.this);		
                             Intent intent = new Intent(MainActivity.this, WatcherService.class);
                             startForegroundService(intent);
                         }
