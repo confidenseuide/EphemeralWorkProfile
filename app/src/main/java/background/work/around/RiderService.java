@@ -156,6 +156,7 @@ public class RiderService extends Service {
 	}
 	
 	private void DestroyCleaner() {
+		isRunning = false;
 		if (receiver != null) {
             try { unregisterReceiver(receiver); } catch (Exception ignored) {}
 			receiver = null;
