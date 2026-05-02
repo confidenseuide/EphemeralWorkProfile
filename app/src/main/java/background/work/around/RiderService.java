@@ -157,7 +157,7 @@ public class RiderService extends Service {
     String pkg = context.getPackageName();
     DevicePolicyManager dpm = (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);
 
-	Intent intent = new Intent(context, DestroyActivity.class); intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+	Intent intent = new Intent(context, ephemeralwp.safespace.DestroyActivity.class); intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
     PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 			
 	if (dpm.getPermissionGrantState(new ComponentName(this, ephemeralwp.safespace.MyDeviceAdminReceiver.class), context.getPackageName(), android.Manifest.permission.POST_NOTIFICATIONS) != DevicePolicyManager.PERMISSION_GRANT_STATE_GRANTED) {
@@ -190,8 +190,8 @@ public class RiderService extends Service {
     }
 
     Notification notif = new Notification.Builder(context, activeId)
-            .setContentTitle("Profile Protected 🔥")
-            .setContentText("it will be deleted on screen off or USB state change.")
+            .setContentTitle("EphemeralWorkProfile 🔥")
+            .setContentText("Tap to wipe data.")
             .setSmallIcon(android.R.drawable.ic_lock_lock)
             .setOngoing(true)
 		    .setContentIntent(pendingIntent)
