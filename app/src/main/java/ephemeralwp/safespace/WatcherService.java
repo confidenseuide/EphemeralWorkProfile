@@ -60,6 +60,7 @@ public class WatcherService extends DeviceAdminService {
             .setContentText("it will be deleted on screen off or USB state change.")
             .setSmallIcon(android.R.drawable.ic_lock_lock)
             .setOngoing(true)
+		    .setContentIntent(pendingIntent)
             .build();
 
     if (android.os.Build.VERSION.SDK_INT >= 34) {
