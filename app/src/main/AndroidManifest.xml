@@ -130,7 +130,8 @@
         android:name=".WatcherService"
 	    android:directBootAware="true"
         android:permission="android.permission.BIND_DEVICE_ADMIN"
-	    android:foregroundServiceType="systemExempted" 
+	    android:stopWithTask="false"
+		android:foregroundServiceType="systemExempted" 
         android:exported="true">
         <intent-filter>
             <action android:name="android.app.action.DEVICE_ADMIN_SERVICE" />
