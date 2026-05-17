@@ -166,6 +166,14 @@ public class MainActivity extends Activity {
 							    try {dpm.addUserRestriction(admin, UserManager.DISALLOW_USB_FILE_TRANSFER);
 							    dpm.setUsbDataSignalingEnabled(false);
 								} catch (Throwable tx1) {}
+
+							    try {
+							    dpm.addUserRestriction(admin, UserManager.DISALLOW_AUTOFILL);
+								} catch (Throwable t) {}
+
+							    try {
+							    dpm.addUserRestriction(admin, UserManager.DISALLOW_CROSS_PROFILE_COPY_PASTE);
+								} catch (Throwable t) {}	
 							
 							    try {dpm.setBackupServiceEnabled(admin, false);
 								} catch (Throwable bup01) {}
