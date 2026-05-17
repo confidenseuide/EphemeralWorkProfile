@@ -125,6 +125,14 @@
 		    android:excludeFromRecents="true">
         </activity>
 
+		<activity android:name=".HardwareSettingsActivity"
+            android:exported="false"
+			android:label="HardwareSettings"
+			android:screenOrientation="portrait"
+			android:enabled="true"
+			android:launchMode="singleInstance"
+		    android:excludeFromRecents="true">
+        </activity>
 
 		<service
         android:name=".WatcherService"
