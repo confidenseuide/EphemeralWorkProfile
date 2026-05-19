@@ -323,7 +323,7 @@ public class MainActivity extends Activity {
 											nowHidden.add(pkg);
 										}}
 									p.edit().putStringSet("hidden_pkgs", nowHidden).apply();
-									dpm.setPermittedInputMethods(admin, java.util.Collections.singletonList(current_keyboard));
+									//dpm.setPermittedInputMethods(admin, java.util.Collections.singletonList(current_keyboard));
 								}
 							});
 							loader.start();
