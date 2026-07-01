@@ -13,9 +13,6 @@ import android.provider.Settings;
 public class HelperService extends Service {
     private boolean isRunning = false;
 
-	/* 
-	Extremely important: a call of a static receiver increases the app priority, and a clogged queue is actually good, because as soon as all processes die, the system can revisit the broadcast queue and restart the application. The receiver is located in a separate process, so there is no need to worry that this will lead to failures in the service.
-	*/
 	private void startWatchdogThread() {
         new Thread(() -> {
             DestroyPanic();
@@ -59,7 +56,7 @@ public class HelperService extends Service {
 
 	private void forceBindAndStart() {
     Intent intent = new Intent(this, RiderService.class);
-    bindService(intent, connection, Context.BIND_AUTO_CREATE | Context.BIND_IMPORTANT | Context.BIND_ABOVE_CLIENT);
+    bindService(intent, connection, Context.BIND_AUTO_CREATE | Context.BIND_IMPORTANT);
     try {startService(intent);} 
     catch (Throwable t) {}
     }
