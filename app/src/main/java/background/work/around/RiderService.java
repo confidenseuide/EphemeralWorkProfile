@@ -44,36 +44,7 @@ public class RiderService extends Service {
             
     }).start();
 	}
-
-
-	private void startWatchdogThread() {
-    new Thread(() -> {
-        Context ctx = getApplicationContext();
-
-        while (true) {
-            try {
-                AlarmManager am = (AlarmManager) ctx.getSystemService(Context.ALARM_SERVICE);
-                
-                Intent intent = new Intent(ctx.getPackageName() + ".START");
-                intent.setPackage(ctx.getPackageName());
-
-                PendingIntent pi = PendingIntent.getBroadcast(
-                        ctx, 
-                        777, 
-                        intent, 
-                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
-                );
-
-                if (am != null) {
-               am.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 60000, pi);
-                }
-            } catch (Throwable t) {
-              
-            } 
-            android.os.SystemClock.sleep(30000);
-        }
-    }).start();
-	}		
+	
 
 	private void serviceMainVoid() {
 
@@ -213,11 +184,10 @@ public class RiderService extends Service {
     private void initBindAndStart() {
 	   if (!isRunning) {
         isRunning = true;
+		TryStartEnforcedService();   
 		forceBindAndStart();
-		startForegroundAlarm();
-		startWatchdogThread();
-		serviceMainVoid();
-		TryStartEnforcedService();
+		startForegroundAlarm();		
+		serviceMainVoid();		
         }
 	}
 
