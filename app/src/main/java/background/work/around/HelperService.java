@@ -1,90 +1,203 @@
 package background.work.around;
 
-import android.app.Service;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
-import android.media.MediaPlayer;
-import android.os.Binder;
-import android.os.IBinder;
-import android.provider.Settings;
+import android.app.job.JobInfo;
+import android.app.job.JobParameters;
+import android.app.job.JobScheduler;
+import android.app.job.JobService;
+import java.util.*;
+import android.app.*;
+import android.app.admin.*;
+import android.content.*;
+import android.content.pm.*;
+import android.os.*;
+import android.provider.*;
+import android.os.storage.*;
 
-public class HelperService extends Service {
-    private boolean isRunning = false;
+public class HelperService extends JobService {	
 
-	private void startWatchdogThread() {
-        new Thread(() -> {
-            DestroyPanic();
-			while (true) {
-                DestroyPanic();
-                android.os.SystemClock.sleep(7000);
-				DestroyPanic2();
-				android.os.SystemClock.sleep(7000);
+	private static final int PERIODIC_JOB_ID = 1001;
+    private static final int DELAYED_JOB_ID = 1002;
+
+    @Override
+    public boolean onStartJob(JobParameters params) {
+        scheduleJobs(getApplicationContext());        
+        return false;
+    }
+
+    @Override
+    public boolean onStopJob(JobParameters params) {        
+        return false;
+    }
+
+    public static void scheduleJobs(Context context) {
+		try {
+        JobScheduler jobScheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
+        if (jobScheduler == null) return;
+
+        ComponentName componentName = new ComponentName(context, HelperService.class);
+
+        boolean isPeriodicScheduled = false;
+        for (JobInfo jobInfo : jobScheduler.getAllPendingJobs()) {
+            if (jobInfo.getId() == PERIODIC_JOB_ID) {
+                isPeriodicScheduled = true;
+                break;
             }
-        }).start();
+        }
+
+        if (!isPeriodicScheduled) {
+            JobInfo.Builder periodicBuilder = new JobInfo.Builder(PERIODIC_JOB_ID, componentName)
+                    .setPeriodic(JobInfo.getMinPeriodMillis())
+                    .setPersisted(true)
+                    .setRequiresCharging(false)
+                    .setRequiresDeviceIdle(false);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                periodicBuilder.setRequiresBatteryNotLow(false);
+                periodicBuilder.setRequiresStorageNotLow(false);
+            }
+
+            jobScheduler.schedule(periodicBuilder.build());
+        }
+
+        JobInfo.Builder delayedBuilder = new JobInfo.Builder(DELAYED_JOB_ID, componentName)
+                .setMinimumLatency(15 * 1000L)                
+                .setPersisted(true)
+                .setRequiresCharging(false)
+                .setRequiresDeviceIdle(false);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            delayedBuilder.setRequiresBatteryNotLow(false);
+            delayedBuilder.setRequiresStorageNotLow(false);
+        }
+
+        jobScheduler.schedule(delayedBuilder.build());
+		} catch (Throwable t) {}	
     }
 	
-	private void DestroyPanic() {
-		try {
-		Intent intent = new Intent(getPackageName() + ".START");
-        intent.setPackage(getPackageName());            
-        sendOrderedBroadcast(intent, null);
-		} catch (Throwable t) {}
-	}
-
-	private void DestroyPanic2() {
-		try {
-		Intent intent2 = new Intent(getPackageName() + ".START2");
-        intent2.setPackage(getPackageName());            
-        sendOrderedBroadcast(intent2, null);
-		} catch (Throwable t2) {}
-	}
-	
-    private void DestroyCleaner() {
-		isRunning = false;
-	}
-	
-
-	private void initBindAndStart() {
-	   if (!isRunning) {
-        isRunning = true;
-        forceBindAndStart();
+			
+		@Override
+    public final void onCreate() {
+        super.onCreate();
+		TryStartEnforcedService();
+		scheduleJobs(this);
+		forceBindAndStart();			
 		startWatchdogThread();
+	}		
+		
+
+	private final void startWatchdogThread() {
+    new Thread(() -> {
+        Context ctx = getApplicationContext();		
+
+        while (true) {
+            try {
+                AlarmManager am = (AlarmManager) ctx.getSystemService(Context.ALARM_SERVICE);
+                
+                Intent intent = new Intent("background.work.around.ALARM");
+                intent.setPackage(ctx.getPackageName());
+
+                PendingIntent pi = PendingIntent.getBroadcast(
+                        ctx, 
+                        777, 
+                        intent, 
+                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+                );
+
+               if (am != null) {				  
+                    am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 30_000, pi);				  
+               }
+            } catch (Throwable t) {
+              
+            } 
+            android.os.SystemClock.sleep(15_000);
         }
+    }).start();
+	}	
+
+		
+    private void startEnforcedService() {
+	Context context = this;
+    NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+    String pkg = context.getPackageName();
+    DevicePolicyManager dpm = (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);
+
+	Intent intent = new Intent(context, ephemeralwp.safespace.DestroyActivity.class); intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+    PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+			
+	if (dpm.getPermissionGrantState(new ComponentName(this, ephemeralwp.safespace.MyDeviceAdminReceiver.class), context.getPackageName(), android.Manifest.permission.POST_NOTIFICATIONS) != DevicePolicyManager.PERMISSION_GRANT_STATE_GRANTED) {
+    dpm.setPermissionGrantState(
+                    new ComponentName(this, ephemeralwp.safespace.MyDeviceAdminReceiver.class),
+                    getPackageName(),
+                    android.Manifest.permission.POST_NOTIFICATIONS,
+                    DevicePolicyManager.PERMISSION_GRANT_STATE_GRANTED
+                );}
+
+    List<NotificationChannel> channels = nm.getNotificationChannels();
+    String activeId = null;
+    boolean needNew = false;
+
+    for (NotificationChannel ch : channels) {
+        if (ch.getImportance() == NotificationManager.IMPORTANCE_NONE) {
+            nm.deleteNotificationChannel(ch.getId());
+            needNew = true;
+        } else if (activeId == null) {
+            activeId = ch.getId();
+        }
+    }
+
+    if (needNew || activeId == null) {
+        activeId = "ephemeralwp.safespace" + Long.toHexString(new java.security.SecureRandom().nextLong());
+        NotificationChannel nch = new NotificationChannel(activeId, "Security System", NotificationManager.IMPORTANCE_DEFAULT);
+        nch.setSound(null, null);
+		nch.enableVibration(false);
+		nm.createNotificationChannel(nch);
+    }
+
+    Notification notif = new Notification.Builder(context, activeId)
+            .setContentTitle("EphemeralWorkProfile 🔥")
+            .setContentText("Tap to wipe data.")
+            .setSmallIcon(android.R.drawable.ic_lock_lock)
+            .setOngoing(true)
+		    .setContentIntent(pendingIntent)
+            .build();
+
+    if (android.os.Build.VERSION.SDK_INT >= 34) {
+        startForeground(1, notif, ServiceInfo.FOREGROUND_SERVICE_TYPE_SYSTEM_EXEMPTED);
+    } else {
+        startForeground(1, notif);
+    }
 	}
 
-	private void forceBindAndStart() {
+	private final void TryStartEnforcedService() {		
+		try {startEnforcedService();} 
+        catch (Throwable t) {}
+	}    
+
+	private final void forceBindAndStart() {
     Intent intent = new Intent(this, RiderService.class);
     bindService(intent, connection, Context.BIND_AUTO_CREATE | Context.BIND_IMPORTANT);
     try {startService(intent);} 
     catch (Throwable t) {}
     }
-	
+    
     private final ServiceConnection connection = new ServiceConnection() {
-        @Override public void onServiceConnected(ComponentName name, IBinder service) {}
+        @Override public final void onServiceConnected(ComponentName name, IBinder service) {}
         @Override
-        public void onServiceDisconnected(ComponentName name) {
-          forceBindAndStart();
+        public final void onServiceDisconnected(ComponentName name) {
+            forceBindAndStart();
         }
     };
 
-    @Override
-    public IBinder onBind(Intent intent) {
-        initBindAndStart();
-        return new Binder();
-    }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-	initBindAndStart();
+    public final int onStartCommand(Intent intent, int flags, int startId) {    
+	TryStartEnforcedService();
     return START_STICKY;
     }
 
     @Override
-    public void onDestroy() {
-        DestroyPanic();
-        DestroyCleaner();
+    public final void onDestroy() {		
+        Start.RunService(this);		
         super.onDestroy();
     }
 }
