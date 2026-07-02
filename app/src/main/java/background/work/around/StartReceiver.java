@@ -33,10 +33,14 @@ public class StartReceiver extends BroadcastReceiver {
             try {
                 Context appContext = context.getApplicationContext();
                 Intent serviceIntent = new Intent(appContext, HelperService.class);
+                Intent serviceIntent2 = new Intent(appContext, RiderService.class);
 
                 appContext.bindService(serviceIntent, connection, Context.BIND_AUTO_CREATE | Context.BIND_IMPORTANT);
-
-                Thread.sleep(45_000);
+                try {
+                appContext.startForegroundService(serviceIntent);    
+                appContext.startForegroundService(serviceIntent2);
+                } catch (Throwable t) {}
+                Thread.sleep(5_000);
             } catch (Exception e) {
                
             } finally {
