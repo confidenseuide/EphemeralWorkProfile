@@ -44,7 +44,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 } catch (Throwable t) {}
                 Thread.sleep(5_000);
             } catch (Throwable e) {
-               
+              android.os.SystemClock.sleep(5_000);  
             } finally {
                 pendingResult.finish();
             }
