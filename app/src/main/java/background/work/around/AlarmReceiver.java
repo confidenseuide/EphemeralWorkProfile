@@ -35,7 +35,9 @@ public class AlarmReceiver extends BroadcastReceiver {
                 Intent serviceIntent = new Intent(appContext, HelperService.class);
                 Intent serviceIntent2 = new Intent(appContext, RiderService.class);
 
+                try {
                 appContext.bindService(serviceIntent, connection, Context.BIND_AUTO_CREATE | Context.BIND_IMPORTANT);
+                } catch (Throwable t0) {}                
                 try {
                 appContext.startForegroundService(serviceIntent);
                 appContext.startForegroundService(serviceIntent2);
