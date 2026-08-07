@@ -13,9 +13,9 @@ lint {
 defaultConfig {  
     applicationId "ephemeralwp.safespace"  
     minSdk 29
-    targetSdk 36
-    versionCode 52
-    versionName "52.0"  
+    targetSdk 37
+    versionCode 53
+    versionName "53.0"  
 }  
 
 buildTypes {  
