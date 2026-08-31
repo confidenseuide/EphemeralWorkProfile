@@ -14,8 +14,8 @@ defaultConfig {
     applicationId "ephemeralwp.safespace"  
     minSdk 29
     targetSdk 37
-    versionCode 54
-    versionName "54.0"  
+    versionCode 55
+    versionName "55.0"  
 }  
 
 buildTypes {  
