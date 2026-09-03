@@ -138,13 +138,7 @@ public class MainActivity extends Activity {
             PackageManager.DONT_KILL_APP);
         
             new Handler(Looper.getMainLooper()).post(new Runnable() {
-                int seconds = 10;
-				/*
-				Why do we use a timer to setup?: 
-				This app creates a temporary work profile that is deleted when the screen turns off. 
-				The user can delete and recreate it multiple times in some situations. 
-				Auto-configuration allows doing it fast. 
-				*/
+                int seconds = 10;			
 				
                 public void run() {
                     if (seconds > 0) {            
@@ -250,8 +244,6 @@ public class MainActivity extends Activity {
 							dpm.setPasswordQuality(adminComponent, DevicePolicyManager.PASSWORD_QUALITY_COMPLEX);
 							dpm.setPasswordMinimumLength(adminComponent, 15);
 							dpm.setKeyguardDisabledFeatures(adminComponent, DevicePolicyManager.KEYGUARD_DISABLE_FINGERPRINT | DevicePolicyManager.KEYGUARD_DISABLE_FACE | DevicePolicyManager.KEYGUARD_DISABLE_IRIS | DevicePolicyManager.KEYGUARD_DISABLE_TRUST_AGENTS | DevicePolicyManager.KEYGUARD_DISABLE_FEATURES_ALL);							
-							int factLength = dpm.getPasswordMinimumLength(adminComponent);
-							//Toast.makeText(MainActivity.this, "Minimal system password length: " + factLength + ".", Toast.LENGTH_LONG).show();
 							} catch (Throwable t) {
 							android.widget.TextView errorView = new android.widget.TextView(MainActivity.this);
 							errorView.setText(t.getMessage());
@@ -323,8 +315,7 @@ public class MainActivity extends Activity {
 											nowHidden.add(pkg);
 										}}
 									p.edit().putStringSet("hidden_pkgs", nowHidden).apply();
-									//dpm.setPermittedInputMethods(admin, java.util.Collections.singletonList(current_keyboard));
-								}
+									}
 							});
 							loader.start();
 						}
@@ -403,13 +394,12 @@ public class MainActivity extends Activity {
                 List<UserHandle> profiles = userManager.getUserProfiles();
                 for (UserHandle profile : profiles) {
                    if (userManager.getSerialNumberForUser(profile) != 0) {
-                        launcherApps.startMainActivity(
+                       try {
+					   launcherApps.startMainActivity(
                             new ComponentName(getPackageName(), MainActivity.class.getName()), 
                             profile, null, null
                         );
-                        
-                        finishAndRemoveTask();
-                        break;
+					   } catch (Throwable t) {}                                                
                     }
                 }
             }
