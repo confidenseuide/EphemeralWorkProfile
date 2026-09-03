@@ -116,17 +116,7 @@
 		    android:excludeFromRecents="true"
 			android:directBootAware="true">
         </activity>
-
 		
-		<activity android:name=".HighEfficiencyModeActivity"
-            android:exported="false"
-			android:label="HighEfficiencyMode"
-			android:screenOrientation="portrait"
-			android:enabled="true"
-			android:launchMode="singleInstance"
-		    android:excludeFromRecents="true">
-        </activity>
-
 		<activity android:name=".HardwareSettingsActivity"
             android:exported="false"
 			android:label="HardwareSettings"
