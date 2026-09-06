@@ -1,6 +1,6 @@
 # EphemeralWorkProfile
 Profile owner Android app.
 
-This app creates a temporary work profile. It will be reset when the screen is turned off or when you reboot your phone.
+This app creates a temporary work profile. It will be deleted on screen off or phone reboot.
 
-Это приложение создает временный рабочий профиль. Он будет сброшен при выключении экрана или перезагрузке телефона.
+Это приложение создает временный рабочий профиль. Он будет удалён при выключении экрана или перезагрузке телефона.
