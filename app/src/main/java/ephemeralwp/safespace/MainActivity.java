@@ -64,17 +64,14 @@ public class MainActivity extends Activity {
     tv.setLineSpacing(0, 1.2f);
 	tv.setTypeface(null, android.graphics.Typeface.BOLD); 
     tv.setText("Hello! This is EphemeralWorkProfile app.\n" +
-            "This app creates work profile that will be destroyed when your screen turns off, phone reboots, or profile restarts, or on entering incorrect password when profile locked, or when any USB connection is detected, except for simple charging from ordinary power brick. This includes charging or connections to PC, other phones, Type-C headphones, and other specialized devices. This can help protect against USB-based hacker attacks.\n\n" +
+            "This app creates work profile that will be destroyed on screen off and on some events on lock screen, on phone reboot, on profile restart, on any USB connections except for simple charging from power brick.\n\n" +
             "Just click start -> next -> next ->... to create profile.\n\n" +
-            "When profile created, the app starts AUTOCONFIGURATION TIMER:\n" +
-            "1. App starts service and enables receiver for screen off / reboot / USB listen.\n" +
-		    "2. App tries to disable backup (if it can) and disallow mount physical media, disallow usb data and debugging features (to protect profile from physical exploits)\n"+
-            "3. App disables screenshots in profile (for safety), allows apps install and accounts management (for free use).\n" +
-			"4. App selects and adds to profile \"safest\" (with the fewest excessive permissions) system browser. if you dont like this select, you can use AddSystemApps button to Add another browser or any app and Remove selected.\n" +
-            "5. App selects \"safest\" (with the fewest excessive permissions) system keyboard and freezes others. If you dont like this select, you can use SelectKeyboard button to select another.\n"+
-            "6. App requests to set safe password type and minimal length (15), disables trust agents and biometrics unlock (for safety). You can set password using SetPassword button.\n"+
-			"7. When timer is finished app opens screen where you can manage profile.\n\n"+
-			"WARNING: This app may not work on systems with autostart restrictions, for example, on Xiaomi devices.\n");
+            "When profile created, this app enables its components and starts AUTO-CONFIGURATION TIMER where:\n" +
+            "1. App restricts backup, camera and screenshots in work profile\n"+
+			"2. Enables and activates the necessary system programs in work profile and allows app installation\n" +
+            "3. Sets unlocking security requirements to help you choose the optimal password length and type (you can set password in control panel)\n"+
+			"4. When timer is finished app opens control panel screen where you can manage profile\n\n"+
+			"WARNING: This app may not work on systems with autostart restrictions, for example, on Xiaomi devices\n");
     scroll.addView(tv);
     root.addView(scroll, sParams);
 
@@ -149,31 +146,13 @@ public class MainActivity extends Activity {
                         }
                         
                         if (seconds == 8) {
-								ComponentName admin = new ComponentName(MainActivity.this, MyDeviceAdminReceiver.class);
-
-							    try {dpm.addUserRestriction(admin, UserManager.DISALLOW_DEBUGGING_FEATURES);
-									} catch (Throwable t) {}
-							
-							    try {dpm.addUserRestriction(admin, UserManager.DISALLOW_MOUNT_PHYSICAL_MEDIA);
-									} catch (Throwable t) {}
-
-							    try {dpm.addUserRestriction(admin, UserManager.DISALLOW_USB_FILE_TRANSFER);
-							    dpm.setUsbDataSignalingEnabled(false);
-								} catch (Throwable tx1) {}
-
-							    try {
-							    dpm.addUserRestriction(admin, UserManager.DISALLOW_AUTOFILL);
-								} catch (Throwable t) {}
-
-							    try {
-							    dpm.addUserRestriction(admin, UserManager.DISALLOW_CROSS_PROFILE_COPY_PASTE);
-								} catch (Throwable t) {}	
-							
-							    try {dpm.setBackupServiceEnabled(admin, false);
-								} catch (Throwable bup01) {}
-							    dpm.clearUserRestriction(new ComponentName(MainActivity.this, MyDeviceAdminReceiver.class), UserManager.DISALLOW_APPS_CONTROL);
-							    
-							}
+								ComponentName admin = new ComponentName(MainActivity.this, MyDeviceAdminReceiver.class);							    							   							    							    
+							    dpm.addUserRestriction(admin, UserManager.DISALLOW_AUTOFILL);																						  
+							    dpm.addUserRestriction(admin, UserManager.DISALLOW_BLUETOOTH_SHARING); 
+							    dpm.setCameraDisabled(admin, true);    
+							    dpm.setBackupServiceEnabled(admin, false);		
+							    dpm.setScreenCaptureDisabled(admin, true);													     							    
+						}
 
 						if (seconds == 7) {
 							Thread loader = new Thread(() -> {
@@ -232,7 +211,6 @@ public class MainActivity extends Activity {
 						}
 						
 						if (seconds == 6) {
-						dpm.setScreenCaptureDisabled(new ComponentName(MainActivity.this, MyDeviceAdminReceiver.class), true);
 						dpm.clearUserRestriction(new ComponentName(MainActivity.this, MyDeviceAdminReceiver.class), UserManager.DISALLOW_INSTALL_UNKNOWN_SOURCES);	
 						dpm.clearUserRestriction(new ComponentName(MainActivity.this, MyDeviceAdminReceiver.class), UserManager.DISALLOW_INSTALL_APPS);		
 						dpm.clearUserRestriction(new ComponentName(MainActivity.this, MyDeviceAdminReceiver.class), UserManager.DISALLOW_UNINSTALL_APPS);					
@@ -240,19 +218,12 @@ public class MainActivity extends Activity {
 						}
 
 						if (seconds == 5) {
-							try {ComponentName adminComponent = new ComponentName(MainActivity.this, MyDeviceAdminReceiver.class);
+							ComponentName adminComponent = new ComponentName(MainActivity.this, MyDeviceAdminReceiver.class);
 							dpm.setPasswordQuality(adminComponent, DevicePolicyManager.PASSWORD_QUALITY_COMPLEX);
 							dpm.setPasswordMinimumLength(adminComponent, 15);
-							dpm.setKeyguardDisabledFeatures(adminComponent, DevicePolicyManager.KEYGUARD_DISABLE_FINGERPRINT | DevicePolicyManager.KEYGUARD_DISABLE_FACE | DevicePolicyManager.KEYGUARD_DISABLE_IRIS | DevicePolicyManager.KEYGUARD_DISABLE_TRUST_AGENTS | DevicePolicyManager.KEYGUARD_DISABLE_FEATURES_ALL);							
-							} catch (Throwable t) {
-							android.widget.TextView errorView = new android.widget.TextView(MainActivity.this);
-							errorView.setText(t.getMessage());
-							errorView.setTextIsSelectable(true);
-							errorView.setPadding(60, 40, 60, 0);
-							new android.app.AlertDialog.Builder(MainActivity.this).setTitle("Err:").setView(errorView).setPositiveButton("OK", null).show();
-							}
-
-						}
+							dpm.setKeyguardDisabledFeatures(adminComponent, DevicePolicyManager.KEYGUARD_DISABLE_BIOMETRICS | DevicePolicyManager.KEYGUARD_DISABLE_TRUST_AGENTS);				
+							
+						}						
 						
 						if (seconds == 4) {
 							Thread loader = new Thread(() -> {
@@ -332,7 +303,7 @@ public class MainActivity extends Activity {
 						MainActivity.this.createDeviceProtectedStorageContext().getSharedPreferences("prefs", Context.MODE_PRIVATE).edit().putBoolean("isDone", true).apply();
 
 						Context appContext = getApplicationContext();
-						Intent actions = new Intent(appContext, ActionsActivity.class);
+						Intent actions = new Intent(appContext, CopeActivity.class);
 						actions.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
 						appContext.startActivity(actions);
 					}
@@ -354,6 +325,9 @@ public class MainActivity extends Activity {
         super.onResume();
         if (!isWorkProfileContext() && hasWorkProfile()) {
             launchWorkProfileDelayed();
+		} else {
+			KeyguardManager keyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);        
+			if (keyguardManager != null && keyguardManager.isKeyguardLocked()) finish();    
 		}
 		getWindow().getDecorView().setKeepScreenOn(true);
         getWindow().getDecorView().setSystemUiVisibility(
