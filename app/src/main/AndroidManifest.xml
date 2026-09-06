@@ -42,13 +42,12 @@
 		    android:excludeFromRecents="true">
         </activity>
 
-		<activity android:name=".SetPasswordActivity"
+		<activity android:name=".CopeActivity"
             android:exported="false"
 			android:launchMode="singleInstance"
 			android:screenOrientation="portrait"
-			android:label="SetPassword"
-		    android:excludeFromRecents="true"
-			android:directBootAware="true">          
+			android:label="Control Panel"
+		    android:excludeFromRecents="true">          
         </activity>
 
 		<activity android:name=".DestroyActivity"
@@ -115,15 +114,6 @@
 			android:enabled="true"
 		    android:excludeFromRecents="true"
 			android:directBootAware="true">
-        </activity>
-		
-		<activity android:name=".HardwareSettingsActivity"
-            android:exported="false"
-			android:label="HardwareSettings"
-			android:screenOrientation="portrait"
-			android:enabled="true"
-			android:launchMode="singleInstance"
-		    android:excludeFromRecents="true">
         </activity>
 
 		<service
