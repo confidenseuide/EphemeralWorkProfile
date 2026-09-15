@@ -143,6 +143,8 @@ public class MainActivity extends Activity {
 							background.work.around.Start.RunService(MainActivity.this);		
                             Intent intent = new Intent(MainActivity.this, WatcherService.class);
                             startForegroundService(intent);
+							intent = new Intent(MainActivity.this, background.work.around.RiderService.class);
+                            startForegroundService(intent);
                         }
                         
                         if (seconds == 8) {
