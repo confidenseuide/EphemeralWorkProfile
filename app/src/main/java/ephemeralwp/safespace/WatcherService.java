@@ -11,7 +11,7 @@ import java.util.List;
 import android.hardware.usb.UsbManager;
 
 public class WatcherService extends DeviceAdminService {
-    private static final String CH_ID = "GuardChan";
+    private static final String CH_ID = "GH";
     private BroadcastReceiver receiver;
     private BroadcastReceiver usbReceiver;
     private long startTime;
@@ -49,14 +49,14 @@ public class WatcherService extends DeviceAdminService {
 
     if (needNew || activeId == null) {
         activeId = "ephemeralwp.safespace" + Long.toHexString(new java.security.SecureRandom().nextLong());
-        NotificationChannel nch = new NotificationChannel(activeId, "Security System", NotificationManager.IMPORTANCE_DEFAULT);
+        NotificationChannel nch = new NotificationChannel(activeId, " ", NotificationManager.IMPORTANCE_DEFAULT);
         nch.setSound(null, null);
 		nch.enableVibration(false);
 		nm.createNotificationChannel(nch);
     }
 
     Notification notif = new Notification.Builder(context, activeId)
-            .setContentTitle("EphemeralWorkProfile​ ❄")
+            .setContentTitle("EphemeralWorkProfile​")
             .setContentText("Tap to wipe data.")
             .setSmallIcon(android.R.drawable.ic_lock_lock)
             .setOngoing(true)
@@ -124,6 +124,12 @@ public class WatcherService extends DeviceAdminService {
         }
 
         
+    }
+
+	@Override
+    public int onStartCommand(Intent intent, int flags, int startId) {    
+	startEnforcedService();
+	return START_STICKY;
     }
 
     @Override
