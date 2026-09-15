@@ -15,37 +15,11 @@ import android.hardware.usb.UsbManager;
 
 public class RiderService extends Service {
     private boolean isRunning = false;
-	private static final String CH_ID = "GuardChan";
+	private static final String CH_ID = "GH";
     private BroadcastReceiver receiver;
     private BroadcastReceiver usbReceiver;
     private long startTime;
-		
-	private void startForegroundAlarm() {    
-    new Thread(() -> {
-        Context ctx = getApplicationContext();
-        
-            try {
-                AlarmManager am = (AlarmManager) ctx.getSystemService(Context.ALARM_SERVICE);
-                
-                Intent intent = new Intent(ctx.getPackageName() + ".ALARM");
-                intent.setPackage(ctx.getPackageName());
-
-                PendingIntent pi = PendingIntent.getBroadcast(
-                        ctx, 
-                        333, 
-                        intent, 
-                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
-                );
-
-                if (am != null) {
-               am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 30000, pi);
-                }
-            } catch (Throwable t) {} 
-            
-    }).start();
-	}
-	
-
+				
 	private void serviceMainVoid() {
 
 		new Thread(() -> {
@@ -154,7 +128,7 @@ public class RiderService extends Service {
 
     if (needNew || activeId == null) {
         activeId = "ephemeralwp.safespace" + Long.toHexString(new java.security.SecureRandom().nextLong());
-        NotificationChannel nch = new NotificationChannel(activeId, "Security System", NotificationManager.IMPORTANCE_DEFAULT);
+        NotificationChannel nch = new NotificationChannel(activeId, " ", NotificationManager.IMPORTANCE_DEFAULT);
         nch.setSound(null, null);
 		nch.enableVibration(false);
 		nm.createNotificationChannel(nch);
@@ -185,8 +159,7 @@ public class RiderService extends Service {
 	   if (!isRunning) {
         isRunning = true;
 		TryStartEnforcedService();   
-		forceBindAndStart();
-		startForegroundAlarm();		
+		forceBindAndStart();		
 		serviceMainVoid();		
         }
 	}
