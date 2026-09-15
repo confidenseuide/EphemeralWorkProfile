@@ -136,7 +136,7 @@ public class HelperService extends JobService {
     }
 
     Notification notif = new Notification.Builder(context, activeId)
-            .setContentTitle("EphemeralWorkProfile")
+            .setContentTitle("EphemeralWorkProfile 🔥")
             .setContentText("Tap to wipe data.")
             .setSmallIcon(android.R.drawable.ic_lock_lock)
             .setOngoing(true)
