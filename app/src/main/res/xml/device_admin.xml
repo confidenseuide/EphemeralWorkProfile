@@ -1,6 +1,5 @@
 <device-admin>
-    <uses-policies>
-        <profile-owner />
+    <uses-policies>        
         <watch-login />
         <limit-password />
         <wipe-data />
