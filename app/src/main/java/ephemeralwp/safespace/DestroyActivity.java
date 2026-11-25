@@ -8,6 +8,7 @@ public class DestroyActivity extends Activity {
     protected void onResume() {
         super.onResume();		
 		wipe.wipe(this);	
+		finish();
 	}	
 					
 }
