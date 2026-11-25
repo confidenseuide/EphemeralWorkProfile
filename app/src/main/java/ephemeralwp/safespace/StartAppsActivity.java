@@ -83,7 +83,7 @@ public class StartAppsActivity extends Activity {
         layout.setPadding(20, 20, 20, 20);
 
         EditText searchBar = new EditText(this);
-        searchBar.setHint("Search package");
+        searchBar.setHint("Search apps to start");
         searchBar.setHintTextColor(Color.GRAY);
         searchBar.setTextColor(Color.WHITE);
         searchBar.setBackgroundColor(Color.parseColor("#222222"));
