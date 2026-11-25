@@ -13,7 +13,7 @@ import java.util.*;
 public class ActionsActivity extends Activity {
 
     private Map<String, String> labelToClass = new LinkedHashMap<>();
-    private static final String CLOSE_APP_LABEL = "CloseApp";
+    private static final String CLOSE_APP_LABEL = "Close App";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +105,7 @@ public class ActionsActivity extends Activity {
             }
 
             for (ActivityInfo info : pi.activities) {
-                if (!info.name.equals(this.getClass().getName()) && !launcherClassNames.contains(info.name)) {
+                if (!info.name.equals(ClonerMainActivity.class.getName()) && !info.name.equals(ClonerWorkActivity.class.getName()) && !info.name.equals(this.getClass().getName()) && !launcherClassNames.contains(info.name)) {
                     String label = info.loadLabel(pm).toString();
                     if (label.equals(info.name) || label.isEmpty()) {
                         String[] parts = info.name.split("\\.");
@@ -120,51 +120,8 @@ public class ActionsActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-		if (isWorkProfileContext()) {
-			getWindow().getDecorView().setKeepScreenOn(true);
-			hideSystemUI();
-		}	
-		
-		if (!isWorkProfileContext() && hasWorkProfile()) {
-            launchWorkProfileDelayed();
-		}
-		
-		if (!isWorkProfileContext() && !hasWorkProfile()) {
-			Intent intent = new Intent(this, MainActivity.class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			startActivity(intent);
-			finish();
-		}
+		getWindow().getDecorView().setKeepScreenOn(true);
+		hideSystemUI();
+					
 	}
-	
-	private boolean isWorkProfileContext() {
-        DevicePolicyManager dpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
-        return dpm.isProfileOwnerApp(getPackageName());
-    }
-
-    private boolean hasWorkProfile() {
-        UserManager userManager = (UserManager) getSystemService(Context.USER_SERVICE);
-        return userManager.getUserProfiles().size() > 1;
-    }
-
-    private void launchWorkProfileDelayed() {
-
-            LauncherApps launcherApps = (LauncherApps) getSystemService(Context.LAUNCHER_APPS_SERVICE);
-            UserManager userManager = (UserManager) getSystemService(Context.USER_SERVICE);
-            
-            if (launcherApps != null && userManager != null) {
-                List<UserHandle> profiles = userManager.getUserProfiles();
-                for (UserHandle profile : profiles) {
-                   if (userManager.getSerialNumberForUser(profile) != 0) {
-                        launcherApps.startMainActivity(
-                            new ComponentName(getPackageName(), ActionsActivity.class.getName()), 
-                            profile, null, null
-                        );
-                        
-                        finishAndRemoveTask();
-                        break;
-                    }
-                }
-            }
-        }
 }
