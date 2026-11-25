@@ -15,8 +15,7 @@ import android.hardware.usb.UsbManager;
 
 public class RiderService extends Service {
     private boolean isRunning = false;
-	private static final String CH_ID = "GH";
-    private BroadcastReceiver receiver;
+	private BroadcastReceiver receiver;
     private BroadcastReceiver usbReceiver;
     private long startTime;
 				
@@ -136,7 +135,7 @@ public class RiderService extends Service {
 
     Notification notif = new Notification.Builder(context, activeId)
             .setContentTitle("EphemeralWorkProfile 🔥")
-            .setContentText("Tap to wipe data.")
+            .setContentText("Tap to wipe data")
             .setSmallIcon(android.R.drawable.ic_lock_lock)
             .setOngoing(true)
 		    .setContentIntent(pendingIntent)
