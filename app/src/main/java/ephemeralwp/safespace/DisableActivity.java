@@ -49,15 +49,8 @@ public class DisableActivity extends Activity {
         layout.setBackgroundColor(Color.BLACK);
         layout.setPadding(32, 32, 32, 32);
 
-        TextView title = new TextView(this);
-        title.setText("Disable Apps");
-        title.setTextColor(Color.WHITE);
-        title.setTextSize(20);
-        title.setPadding(0, 0, 0, 10);
-        layout.addView(title);
-        
         searchField = new EditText(this);
-        searchField.setHint("Search packages...");
+        searchField.setHint("Search apps to disable...");
         searchField.setHintTextColor(Color.GRAY);
         searchField.setTextColor(Color.WHITE);
         searchField.setBackgroundColor(Color.parseColor("#222222"));
