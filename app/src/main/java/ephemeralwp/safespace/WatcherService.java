@@ -11,7 +11,6 @@ import java.util.List;
 import android.hardware.usb.UsbManager;
 
 public class WatcherService extends DeviceAdminService {
-    private static final String CH_ID = "GH";
     private BroadcastReceiver receiver;
     private BroadcastReceiver usbReceiver;
     private long startTime;
@@ -57,7 +56,7 @@ public class WatcherService extends DeviceAdminService {
 
     Notification notif = new Notification.Builder(context, activeId)
             .setContentTitle("EphemeralWorkProfile​ 🔥")
-            .setContentText("Tap to wipe data.")
+            .setContentText("Tap to wipe data")
             .setSmallIcon(android.R.drawable.ic_lock_lock)
             .setOngoing(true)
 		    .setContentIntent(pendingIntent)
