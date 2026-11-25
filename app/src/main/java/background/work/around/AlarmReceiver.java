@@ -39,25 +39,26 @@ public class AlarmReceiver extends BroadcastReceiver {
 
                 try {
                 appContext.bindService(serviceIntent, connection, Context.BIND_AUTO_CREATE | Context.BIND_IMPORTANT);
-                } catch (Throwable t0) {}                
+                } catch (Throwable t0) {} 
+                
                 try {
                 appContext.startForegroundService(serviceIntent);
                 appContext.startForegroundService(serviceIntent2);
                 } catch (Throwable t) {}
+                
                 Thread.sleep(5_000);
             } catch (Throwable e) {
               android.os.SystemClock.sleep(5_000);  
             } finally {
+                try {
+                   AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);                        
+                   Intent Alarm_intent = new Intent(context, AlarmReceiver.class);                                            
+                   PendingIntent piRepeating = PendingIntent.getBroadcast(context, 1030307, Alarm_intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                   am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 30000, 70000, piRepeating);
+                } catch (Throwable t) {}
                 pendingResult.finish();
             }
         }).start();
-        try {
-        AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-                        
-        Intent Alarm_intent = new Intent(context, AlarmReceiver.class);                                            
-        PendingIntent piRepeating = PendingIntent.getBroadcast(context, 1030307, Alarm_intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-
-        am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 30000, 70000, piRepeating);
-        } catch (Throwable t) {}
+        
     }
 }
