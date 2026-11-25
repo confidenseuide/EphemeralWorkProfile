@@ -2,12 +2,18 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools">
 
+ <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />	
  <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
  <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
  <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SYSTEM_EXEMPTED" />
  <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
  <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-	
+
+	<permission
+    android:name="ephemeralwp.safespace.INSTALLER_PERMISSION"
+    android:protectionLevel="signature" />
+	<uses-permission android:name="ephemeralwp.safespace.INSTALLER_PERMISSION" />
+
     <application
         android:label="EphemeralWorkProfile"
 		android:allowBackup="false"
@@ -17,10 +23,35 @@
 		android:extractNativeLibs="false"
 		android:icon="@drawable/ic_launcher"
         android:theme="@android:style/Theme.DeviceDefault.NoActionBar">
+
+		<activity
+            android:name=".ClonerMainActivity"
+			android:process=":cloner"
+			android:launchMode="singleInstance"
+			android:screenOrientation="portrait"			
+            android:excludeFromRecents="true"
+            android:exported="false"
+			android:enabled="true">            
+        </activity>
+
+        <activity
+            android:name=".ClonerWorkActivity"
+            android:exported="true"
+			android:process=":installer"
+			android:permission="ephemeralwp.safespace.INSTALLER_PERMISSION"    
+			android:enabled="false"
+			android:launchMode="singleInstance"
+			android:screenOrientation="portrait"			
+            android:excludeFromRecents="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">    
+		<intent-filter>
+            <action android:name="ephemeralwp.safespace.INSTALL_APK" />
+            <category android:name="android.intent.category.DEFAULT" />
+         </intent-filter>	
+		</activity>	
 		
 	<receiver android:name=".NucleusReceiver"
 	android:exported="false"
-	android:label="Receiver"
 	android:enabled="false"
 	android:directBootAware="true">
      <intent-filter android:priority="999">
@@ -42,22 +73,27 @@
             android:exported="false"
 			android:launchMode="singleInstance"
 			android:screenOrientation="portrait"
-			android:label="AddSystemApps"
+			android:label="Add System Apps"
 		    android:excludeFromRecents="true">
         </activity>
 
 		<activity android:name=".CopeActivity"
-            android:exported="false"
+            android:exported="true"
+			android:permission="android.permission.BIND_DEVICE_ADMIN"    
 			android:launchMode="singleInstance"
 			android:screenOrientation="portrait"
 			android:label="Control Panel"
-		    android:excludeFromRecents="true">          
+		    android:excludeFromRecents="true">   
+			<intent-filter>
+              <action android:name="android.app.action.PROVISIONING_SUCCESSFUL" />
+              <category android:name="android.intent.category.DEFAULT" />
+          </intent-filter>
         </activity>
 
 		<activity android:name=".DestroyActivity"
             android:exported="false"		
 			android:screenOrientation="portrait"
-			android:label="WipeData🔥"
+			android:label="Wipe Data🔥"
 			android:showWhenLocked="true"
 			android:launchMode="singleInstance"
 		    android:excludeFromRecents="true"
@@ -68,7 +104,7 @@
             android:exported="false"
 			android:launchMode="singleInstance"
 			android:screenOrientation="portrait"
-			android:label="StartApps"
+			android:label="Start Apps"
 		    android:excludeFromRecents="true"
 			android:directBootAware="true">
         </activity>
@@ -82,26 +118,12 @@
 			 <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-			<intent-filter>
-              <action android:name="android.app.action.PROVISIONING_SUCCESSFUL" />
-              <category android:name="android.intent.category.DEFAULT" />
-          </intent-filter>
-        </activity>
-
-		<activity android:name=".SelectActivity"
-            android:exported="false"
-			android:label="SelectKeyboard"
-			android:launchMode="singleInstance"
-			android:screenOrientation="portrait"
-			android:enabled="true"
-		    android:excludeFromRecents="true"
-			android:directBootAware="true">
+            </intent-filter>			
         </activity>
 
 		<activity android:name=".DisableActivity"
             android:exported="false"
-			android:label="DisableApps"
+			android:label="Disable Apps"
 			android:launchMode="singleInstance"
 			android:screenOrientation="portrait"
 			android:enabled="true"
@@ -168,8 +190,7 @@
         </receiver>	
 		
         <receiver android:name=".MyDeviceAdminReceiver"
-            android:label="Admin"
-			android:directBootAware="true"
+            android:directBootAware="true"
             android:permission="android.permission.BIND_DEVICE_ADMIN"
             android:exported="true">
             <meta-data android:name="android.app.device_admin" 
