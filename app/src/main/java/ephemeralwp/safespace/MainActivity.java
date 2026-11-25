@@ -16,7 +16,8 @@ public class MainActivity extends Activity {
     final android.app.Dialog dialog = new android.app.Dialog(this, android.R.style.Theme_NoTitleBar_Fullscreen);
     android.view.Window window = dialog.getWindow();
     if (window != null) {
-        window.addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+        window.addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON | android.view.WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);    
+		window.addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
                 | android.view.WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
         
         window.getDecorView().setSystemUiVisibility(
@@ -63,14 +64,14 @@ public class MainActivity extends Activity {
     tv.setTextColor(0xFF333333);
     tv.setLineSpacing(0, 1.2f);
 	tv.setTypeface(null, android.graphics.Typeface.BOLD); 
-    tv.setText("Hello! This is EphemeralWorkProfile app.\n" +
-            "This app creates work profile that will be destroyed on screen off and on some events on lock screen, on phone reboot, on profile restart, on any USB connections except for simple charging from power brick.\n\n" +
-            "Just click start -> next -> next ->... to create profile.\n\n" +
-            "When profile created, this app enables its components and starts AUTO-CONFIGURATION TIMER where:\n" +
-            "1. App restricts backup, camera and screenshots in work profile\n"+
-			"2. Enables and activates the necessary system programs in work profile and allows app installation\n" +
-            "3. Sets unlocking security requirements to help you choose the optimal password length and type (you can set password in control panel)\n"+
-			"4. When timer is finished app opens control panel screen where you can manage profile\n\n"+
+    tv.setText("Hello! This is EphemeralWorkProfile app!\n\n" +
+            "This app creates work profile that will be destroyed on screen off, on phone reboot or profile restart, on any USB connections except for simple charging from power brick\n\n" +
+            "Just click start -> next -> next ->... to create profile\n\n" +
+            "Before work profile enabling, this app: \n" +
+            "Disables backup, camera and screenshots in work profile (to protect your privacy)\n"+
+			"Enables some system components (browser, keyboard) and allows app installation\n" +
+            "Sets unlocking security requirements to help you choose the optimal password length and type\n"+
+			"When profile created it opens control panel screen where you can manage profile and set a password\n\n"+
 			"WARNING: This app may not work on systems with autostart restrictions, for example, on Xiaomi devices\n");
     scroll.addView(tv);
     root.addView(scroll, sParams);
@@ -109,16 +110,15 @@ public class MainActivity extends Activity {
     dialog.setContentView(root);
     dialog.setCancelable(false);
     dialog.show();
-}
+
+	}
 
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-		if (MainActivity.this.createDeviceProtectedStorageContext().getSharedPreferences("prefs", Context.MODE_PRIVATE).getBoolean("isDone", false)) {
-		return;}
-        final DevicePolicyManager dpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
+		final DevicePolicyManager dpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
 
         final TextView tv = new TextView(this);
         tv.setBackgroundColor(0xFF000000);
@@ -129,196 +129,15 @@ public class MainActivity extends Activity {
         getWindow().getDecorView().setSystemUiVisibility(5894);
         
         if (dpm.isProfileOwnerApp(getPackageName())) {
-
-			getPackageManager().setComponentEnabledSetting(
-            new ComponentName(MainActivity.this, NucleusReceiver.class),
-            PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-            PackageManager.DONT_KILL_APP);
-        
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                int seconds = 10;			
-				
-                public void run() {
-                    if (seconds > 0) {            
-                        if (seconds == 9) {
-							background.work.around.Start.RunService(MainActivity.this);		
-                            Intent intent = new Intent(MainActivity.this, WatcherService.class);
-                            startForegroundService(intent);
-							intent = new Intent(MainActivity.this, background.work.around.RiderService.class);
-                            startForegroundService(intent);
-                        }
-                        
-                        if (seconds == 8) {
-								ComponentName admin = new ComponentName(MainActivity.this, MyDeviceAdminReceiver.class);							    							   							    							    
-							    dpm.addUserRestriction(admin, UserManager.DISALLOW_AUTOFILL);																						  
-							    dpm.addUserRestriction(admin, UserManager.DISALLOW_BLUETOOTH_SHARING); 
-							    dpm.setCameraDisabled(admin, true);    
-							    dpm.setBackupServiceEnabled(admin, false);		
-							    dpm.setScreenCaptureDisabled(admin, true);													     							    
-						}
-
-						if (seconds == 7) {
-							Thread loader = new Thread(() -> {
-								Integer current_int=null;
-								Integer current_circle=null;
-								String current_browser=null;
-								android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_URGENT_DISPLAY);
-								Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-								ComponentName admin = new ComponentName(MainActivity.this, MyDeviceAdminReceiver.class);
-								PackageManager pm = getPackageManager();
-								
-								int flags = PackageManager.GET_ACTIVITIES | PackageManager.GET_PERMISSIONS | PackageManager.MATCH_UNINSTALLED_PACKAGES; 
-								List<PackageInfo> packages = pm.getInstalledPackages(flags);
-								
-								for (PackageInfo pkg : packages) {
-									String pkgName = pkg.packageName;
-									if (pkgName.equals(getPackageName())) {continue;}     
-									
-									if ((pkg.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0) {
-										Intent bIntent = new Intent(Intent.ACTION_VIEW, android.net.Uri.parse("http://"));
-										bIntent.addCategory(Intent.CATEGORY_BROWSABLE);
-										bIntent.setPackage(pkgName);
-										if (pm.queryIntentActivities(bIntent, PackageManager.MATCH_UNINSTALLED_PACKAGES).isEmpty()) {continue;}
-										
-										current_circle = 0;
-										if (pkg.requestedPermissions != null) {
-											for (String perm : pkg.requestedPermissions) {
-												if (perm.equals("android.permission.PACKAGE_USAGE_STATS")){ current_circle += 500;}
-												if (perm.equals("android.permission.MANAGE_EXTERNAL_STORAGE")) {current_circle += 500;}
-												if (perm.equals("android.permission.SYSTEM_ALERT_WINDOW")){ current_circle += 500;}
-												if (perm.equals("android.permission.WRITE_SETTINGS")) {current_circle += 500;}
-												if (perm.equals("android.permission.SEND_SMS") || perm.equals("android.permission.RECEIVE_SMS") || perm.equals("android.permission.READ_SMS")) {current_circle += 500;}
-												if (perm.equals("android.permission.CALL_PHONE") || perm.equals("android.permission.READ_PHONE_STATE")) {current_circle += 500;}
-												if (perm.equals("android.permission.WAKE_LOCK")){ current_circle += 150;}
-												if (perm.contains("TURN_SCREEN_ON") || perm.contains("WAKEUP_DEVICE")) {current_circle += 300; }
-												if (perm.equals("android.permission.CHANGE_WIFI_STATE")){ current_circle += 200;}
-												if (perm.equals("com.android.alarm.permission.SET_ALARM")) {current_circle += 200;}
-												if (perm.equals("android.permission.SCHEDULE_EXACT_ALARM")) {current_circle += 200;}
-											}
-										}
-										if (current_int == null) {
-											current_int = current_circle;
-											current_browser = pkgName;}
-										if (current_circle < current_int) {
-											current_int= current_circle;
-											current_browser = pkgName;}
-									}
-								}
-								try {
-									if (current_browser != null) {
-										getSharedPreferences("added_system_apps", MODE_PRIVATE).edit().putBoolean(current_browser, true).apply();
-										dpm.enableSystemApp(admin, current_browser);}
-								} catch (Throwable t) {}        
-							});
-							loader.start();
-						}
-						
-						if (seconds == 6) {
-						dpm.clearUserRestriction(new ComponentName(MainActivity.this, MyDeviceAdminReceiver.class), UserManager.DISALLOW_INSTALL_UNKNOWN_SOURCES);	
-						dpm.clearUserRestriction(new ComponentName(MainActivity.this, MyDeviceAdminReceiver.class), UserManager.DISALLOW_INSTALL_APPS);		
-						dpm.clearUserRestriction(new ComponentName(MainActivity.this, MyDeviceAdminReceiver.class), UserManager.DISALLOW_UNINSTALL_APPS);					
-						dpm.clearUserRestriction(new ComponentName(MainActivity.this, MyDeviceAdminReceiver.class), UserManager.DISALLOW_MODIFY_ACCOUNTS);	
-						}
-
-						if (seconds == 5) {
-							ComponentName adminComponent = new ComponentName(MainActivity.this, MyDeviceAdminReceiver.class);
-							dpm.setPasswordQuality(adminComponent, DevicePolicyManager.PASSWORD_QUALITY_COMPLEX);
-							dpm.setPasswordMinimumLength(adminComponent, 15);
-							dpm.setKeyguardDisabledFeatures(adminComponent, DevicePolicyManager.KEYGUARD_DISABLE_BIOMETRICS | DevicePolicyManager.KEYGUARD_DISABLE_TRUST_AGENTS);				
-							
-						}						
-						
-						if (seconds == 4) {
-							Thread loader = new Thread(() -> {
-								InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-								PackageManager pm = getPackageManager();
-								ComponentName admin = new ComponentName(MainActivity.this, MyDeviceAdminReceiver.class);
-								SharedPreferences p = getSharedPreferences("HiderPrefs", MODE_PRIVATE);
-								
-								Set<String> allPackages = new HashSet<>();
-								List<InputMethodInfo> enabledImes = imm.getInputMethodList();
-								for (InputMethodInfo imi : enabledImes) {
-									allPackages.add(imi.getPackageName());}
-								
-								Set<String> previouslyHidden = p.getStringSet("hidden_pkgs", new HashSet<>());
-								allPackages.addAll(previouslyHidden);
-								
-								String current_keyboard = null;
-								Integer current_int = null;
-								
-								for (String pkgName : allPackages) {
-									try {
-										PackageInfo pkg = pm.getPackageInfo(pkgName, PackageManager.GET_SERVICES | PackageManager.GET_PERMISSIONS);
-										int current_circle = 0;
-										boolean hasMainIme = false;
-										for (InputMethodInfo imi : enabledImes) {
-											if (imi.getPackageName().equals(pkgName)) {
-												if (imi.getSubtypeCount() == 0) { hasMainIme = true; break; }
-												for (int i = 0; i < imi.getSubtypeCount(); i++) {
-													if (!imi.getSubtypeAt(i).isAuxiliary()) { hasMainIme = true; break; }
-												}}
-											if (hasMainIme) { break; }}
-										if (!hasMainIme) { current_circle += 30000; }
-										if (pkg.requestedPermissions != null) {
-											for (String perm : pkg.requestedPermissions) {
-												if (perm.equals("android.permission.AUTHENTICATE_ACCOUNTS")) current_circle += 500;
-												if (perm.equals("android.permission.MANAGE_ACCOUNTS")) current_circle += 500;
-												if (perm.equals("android.permission.USE_CREDENTIALS")) current_circle += 500;
-												if (perm.equals("android.permission.READ_PROFILE")) current_circle += 500;
-												if (perm.equals("android.permission.POST_NOTIFICATIONS")) current_circle += 500;
-												if (perm.equals("android.permission.ACCESS_WIFI_STATE")) current_circle += 500;
-												if (perm.equals("android.permission.BLUETOOTH_CONNECT")) current_circle += 500;
-												if (perm.equals("com.google.android.c2dm.permission.RECEIVE")) current_circle += 500;
-												if (perm.equals("com.google.android.gms.permission.AD_ID")) current_circle += 500;
-												if (perm.equals("com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE")) current_circle += 500;
-											}}
-										if (current_int == null || current_circle < current_int) {
-											current_int = current_circle;
-											current_keyboard = pkgName;
-										}} catch (Throwable t) {}
-								}
-								if (current_keyboard != null) {
-									Set<String> nowHidden = new HashSet<>();
-									dpm.setApplicationHidden(admin, current_keyboard, false);
-									dpm.setPackagesSuspended(admin, new String[]{current_keyboard}, false);
-									
-									for (String pkg : allPackages) {
-										if (!pkg.equals(current_keyboard)) {
-											dpm.setApplicationHidden(admin, pkg, true);
-											dpm.setPackagesSuspended(admin, new String[]{pkg}, true);
-											nowHidden.add(pkg);
-										}}
-									p.edit().putStringSet("hidden_pkgs", nowHidden).apply();
-									}
-							});
-							loader.start();
-						}
-
-                        tv.setText(String.valueOf(seconds--));
-                        new Handler(Looper.getMainLooper()).postDelayed(this, 1000);
-                    } else {
-						android.util.DisplayMetrics dm = getResources().getDisplayMetrics();
-                        float textPx = (float) Math.sqrt(dm.widthPixels * dm.heightPixels) * 0.3f;
-                        tv.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, textPx);
-						tv.setTextIsSelectable(true);
-                        tv.setText("✅");
-
-						MainActivity.this.createDeviceProtectedStorageContext().getSharedPreferences("prefs", Context.MODE_PRIVATE).edit().putBoolean("isDone", true).apply();
-
-						Context appContext = getApplicationContext();
-						Intent actions = new Intent(appContext, CopeActivity.class);
-						actions.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-						appContext.startActivity(actions);
-					}
-                }
-            });
-        return;
-        } else {
+			Context appContext = getApplicationContext();
+			Intent actions = new Intent(appContext, ActionsActivity.class);
+			actions.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+			appContext.startActivity(actions);
+		} else {
             if (hasWorkProfile()) {
                 launchWorkProfileDelayed();
             } else {
-				showOnboarding();
-				
+				showOnboarding();				
 			}
         }
     }
@@ -342,12 +161,10 @@ public class MainActivity extends Activity {
 			| View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
         );
 		if (isWorkProfileContext()) {
-			if (MainActivity.this.createDeviceProtectedStorageContext().getSharedPreferences("prefs", Context.MODE_PRIVATE).getBoolean("isDone", false)) {
-					Context appContext1 = getApplicationContext();
-					Intent actions1 = new Intent(appContext1, ActionsActivity.class);
-					actions1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-					appContext1.startActivity(actions1);
-			}
+			Context appContext = getApplicationContext();
+			Intent actions = new Intent(appContext, ActionsActivity.class);
+			actions.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+			appContext.startActivity(actions);			
 		}
     }
 
@@ -379,8 +196,37 @@ public class MainActivity extends Activity {
     return false;
 	}
 
+	private AlertDialog workProfileDialog = null;
+
     private void launchWorkProfileDelayed() {
-    
+	   if (workProfileDialog != null && workProfileDialog.isShowing()) return;    
+       workProfileDialog = new AlertDialog.Builder(this)
+            .setTitle("Work Profile")
+            .setCancelable(false)
+            .setMessage("You already have work profile. Launch it or clone apps to it?")
+            .setPositiveButton("Launch profile", (dialog, which) -> {
+                launchWorkProfile();
+            })
+            .setNegativeButton("Clone apps", (dialog, which) -> {
+                startActivity(new Intent(this, ClonerMainActivity.class));
+                finish();
+            })
+            .create();		
+		workProfileDialog.show(); 
+    }
+
+	@Override
+	protected void onDestroy() {
+    if (workProfileDialog != null) {
+        if (workProfileDialog.isShowing()) {
+            workProfileDialog.dismiss();
+        }
+        workProfileDialog = null;
+    }
+    super.onDestroy();
+	}
+
+	private void launchWorkProfile() {		    
             LauncherApps launcherApps = (LauncherApps) getSystemService(Context.LAUNCHER_APPS_SERVICE);
             UserManager userManager = (UserManager) getSystemService(Context.USER_SERVICE);
             
@@ -397,8 +243,7 @@ public class MainActivity extends Activity {
                     }
                 }
 				finish();
-            }
-        
-}
+            }        
+	}
 
 }
