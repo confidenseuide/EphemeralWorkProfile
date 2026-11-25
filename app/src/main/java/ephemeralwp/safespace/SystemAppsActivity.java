@@ -54,14 +54,14 @@ public class SystemAppsActivity extends Activity {
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.setBackgroundColor(0xFFF5F5F5);
-        
-        TextView title = new TextView(this);
-        title.setText("System Apps Manager");
+
+		TextView title = new TextView(this);
+        title.setText("Add System Apps");
         title.setPadding(40, 50, 40, 30);
         title.setTextSize(22);
         title.setTypeface(null, android.graphics.Typeface.BOLD);
         layout.addView(title);
-
+                
         listView = new ListView(this);
         layout.addView(listView);
         
