@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools">
 
- <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />	
  <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+ <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />	
  <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
  <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SYSTEM_EXEMPTED" />
  <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
@@ -30,8 +30,13 @@
 			android:launchMode="singleInstance"
 			android:screenOrientation="portrait"			
             android:excludeFromRecents="true"
-            android:exported="false"
-			android:enabled="true">            
+            android:exported="true"
+			android:permission="ephemeralwp.safespace.INSTALLER_PERMISSION"
+			android:enabled="true">   
+			<intent-filter>
+				<action android:name="ephemeralwp.safespace.OPEN_USER_APPS" />
+				<category android:name="android.intent.category.DEFAULT" />
+			</intent-filter>
         </activity>
 
         <activity
@@ -71,6 +76,7 @@
 
 		<activity android:name=".SystemAppsActivity"
             android:exported="false"
+			android:enabled="true"
 			android:launchMode="singleInstance"
 			android:screenOrientation="portrait"
 			android:label="Add System Apps"
