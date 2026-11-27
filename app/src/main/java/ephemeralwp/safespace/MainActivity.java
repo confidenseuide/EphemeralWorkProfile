@@ -65,7 +65,7 @@ public class MainActivity extends Activity {
     tv.setLineSpacing(0, 1.2f);
 	tv.setTypeface(null, android.graphics.Typeface.BOLD); 
     tv.setText("Hello! This is EphemeralWorkProfile app!\n\n" +
-            "This app creates work profile that will be destroyed on screen off, on phone reboot or profile restart, on any USB connections except for simple charging from power brick\n\n" +
+            "This app creates work profile that will be destroyed on screen off, on phone reboot or profile restart, on any USB data connection except for simple charging from power brick\n\n" +
             "Just click start -> next -> next ->... to create profile\n\n" +
             "Before work profile enabling, this app: \n" +
             "Disables backup, camera and screenshots in work profile (to protect your privacy)\n"+
@@ -195,39 +195,9 @@ public class MainActivity extends Activity {
     }
     return false;
 	}
-
-	private AlertDialog workProfileDialog = null;
-
+	
     private void launchWorkProfileDelayed() {
-	   if (workProfileDialog != null && workProfileDialog.isShowing()) return;    
-       workProfileDialog = new AlertDialog.Builder(this)
-            .setTitle("Work Profile")
-            .setCancelable(false)
-            .setMessage("You already have work profile. Launch it or clone apps to it?")
-            .setPositiveButton("Launch profile", (dialog, which) -> {
-                launchWorkProfile();
-            })
-            .setNegativeButton("Clone apps", (dialog, which) -> {
-                startActivity(new Intent(this, ClonerMainActivity.class));
-                finish();
-            })
-            .create();		
-		workProfileDialog.show(); 
-    }
-
-	@Override
-	protected void onDestroy() {
-    if (workProfileDialog != null) {
-        if (workProfileDialog.isShowing()) {
-            workProfileDialog.dismiss();
-        }
-        workProfileDialog = null;
-    }
-    super.onDestroy();
-	}
-
-	private void launchWorkProfile() {		    
-            LauncherApps launcherApps = (LauncherApps) getSystemService(Context.LAUNCHER_APPS_SERVICE);
+	   LauncherApps launcherApps = (LauncherApps) getSystemService(Context.LAUNCHER_APPS_SERVICE);
             UserManager userManager = (UserManager) getSystemService(Context.USER_SERVICE);
             
             if (launcherApps != null && userManager != null) {
@@ -244,6 +214,5 @@ public class MainActivity extends Activity {
                 }
 				finish();
             }        
-	}
-
+    }
 }
