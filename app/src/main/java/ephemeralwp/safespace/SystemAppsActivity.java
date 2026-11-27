@@ -4,6 +4,7 @@ import android.app.*;
 import android.app.admin.*;
 import android.content.*;
 import android.content.pm.*;
+import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.*;
 import android.widget.*;
@@ -61,9 +62,35 @@ public class SystemAppsActivity extends Activity {
         title.setTextSize(22);
         title.setTypeface(null, android.graphics.Typeface.BOLD);
         layout.addView(title);
+
+		TextView warning = new TextView(this);
+        warning.setText("Here you can add only system (pre-installed) apps to work profile");
+        warning.setTextColor(0xFFFFFFFF);
+        warning.setTextSize(14);
+        warning.setPadding(40, 30, 40, 30);
+        GradientDrawable warnBg = new GradientDrawable();
+        warnBg.setColor(0xCCD32F2F);
+        warnBg.setCornerRadius(24);
+        warning.setBackground(warnBg);
+        LinearLayout.LayoutParams warnLp = new LinearLayout.LayoutParams(-1, -2);
+        warnLp.setMargins(40, 0, 40, 30);
+        layout.addView(warning, warnLp);
                 
         listView = new ListView(this);
-        layout.addView(listView);
+		layout.addView(listView, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0, 1f));
+
+		Button backBtn = new Button(this);
+        backBtn.setText("Back");
+        backBtn.setTextColor(0xFFFFFFFF);
+        backBtn.setAllCaps(false);
+        GradientDrawable btnBg = new GradientDrawable();
+        btnBg.setColor(0xFFF44336);
+        btnBg.setCornerRadius(24);
+        backBtn.setBackground(btnBg);
+        backBtn.setOnClickListener(v -> finish());
+        LinearLayout.LayoutParams btnLp = new LinearLayout.LayoutParams(-1, -2);
+        btnLp.setMargins(40, 30, 40, 60);
+        layout.addView(backBtn, btnLp);
         
         setContentView(layout);
         refreshList();
@@ -141,8 +168,12 @@ public class SystemAppsActivity extends Activity {
         }
     }
 
+	private AlertDialog statusDialog;
+
     private void toggleStatus(final AppInfo app) {
-    new AlertDialog.Builder(this)
+	if (statusDialog != null && statusDialog.isShowing()) return;
+            
+    statusDialog = new AlertDialog.Builder(this)
         .setTitle("Confirm")
         .setMessage((app.isAdded ? "Remove " : "Add ") + app.name + "?")
         .setPositiveButton("Yes", (dialog, which) -> {
@@ -170,6 +201,26 @@ public class SystemAppsActivity extends Activity {
         })
         .setNegativeButton("No", null)
         .show();
-}
+		
+		Window window = statusDialog.getWindow();
+		if (window != null) {        
+			WindowManager.LayoutParams params = window.getAttributes();        
+			params.gravity = Gravity.CENTER;        
+			params.x = 0;       
+			params.y = 0;        
+			window.setAttributes(params);
+		}
+	}
+
+	   @Override
+    protected void onDestroy() {        
+        if (statusDialog != null) {
+            if (statusDialog.isShowing()) {            
+                statusDialog.dismiss();
+            }       
+            statusDialog = null;    
+        }        
+		super.onDestroy();
+    }
 
 }
