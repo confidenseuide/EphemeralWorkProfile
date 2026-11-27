@@ -111,8 +111,7 @@
 			android:launchMode="singleInstance"
 			android:screenOrientation="portrait"
 			android:label="Start Apps"
-		    android:excludeFromRecents="true"
-			android:directBootAware="true">
+		    android:excludeFromRecents="true">
         </activity>
 		
          <activity android:name=".MainActivity"
@@ -133,8 +132,7 @@
 			android:launchMode="singleInstance"
 			android:screenOrientation="portrait"
 			android:enabled="true"
-		    android:excludeFromRecents="true"
-			android:directBootAware="true">
+		    android:excludeFromRecents="true">
         </activity>
 
 		<activity android:name=".ActionsActivity"
