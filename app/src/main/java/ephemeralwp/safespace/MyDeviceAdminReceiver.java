@@ -35,9 +35,11 @@ public class MyDeviceAdminReceiver extends DeviceAdminReceiver {
 		dpm.setCameraDisabled(admin, true);    
 		dpm.setBackupServiceEnabled(admin, false);		
 		dpm.setScreenCaptureDisabled(admin, true);		
-        context.getPackageManager().setComponentEnabledSetting(new ComponentName(context, NucleusReceiver.class), PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP); 
-		background.work.around.Start.RunService(context);
+        background.work.around.Start.RunService(context);
+		context.getPackageManager().setComponentEnabledSetting(new ComponentName(context, NucleusReceiver.class), PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP); 
+		context.getPackageManager().setComponentEnabledSetting(new ComponentName(context, ClonerMainActivity.class), PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);		
 		context.getPackageManager().setComponentEnabledSetting(new ComponentName(context, ClonerWorkActivity.class), PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);		
+	    dpm.addCrossProfileIntentFilter(admin, new IntentFilter("ephemeralwp.safespace.OPEN_USER_APPS"), DevicePolicyManager.FLAG_PARENT_CAN_ACCESS_MANAGED);				
 		dpm.addCrossProfileIntentFilter(admin, new IntentFilter("ephemeralwp.safespace.INSTALL_APK"), DevicePolicyManager.FLAG_MANAGED_CAN_ACCESS_PARENT);
 		dpm.setProfileEnabled(admin);        		
 		Integer current_intB=null;
