@@ -1,1 +1,3 @@
-This app creates a temporary work profile. It will be reset when the screen is turned off or when you reboot your phone.
+This app creates a temporary work profile that will be deleted on screen off, phone reboot or USB data connection
+
+if Google Play Protect blocks app installation, contact Google or just disable Google Play Store and Android Developer Verifier apps in your phone settings
