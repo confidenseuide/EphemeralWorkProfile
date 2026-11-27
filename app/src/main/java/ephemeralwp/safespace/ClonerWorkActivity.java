@@ -1,6 +1,8 @@
 package ephemeralwp.safespace;
 
 import android.app.Activity;
+import android.view.Gravity;
+import android.view.Window;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -170,6 +172,14 @@ public class ClonerWorkActivity extends Activity {
                 .setOnDismissListener(d -> finish())            
                 .create();
             errorDialog.show();
+            Window w = errorDialog.getWindow();
+            if (w != null) {            
+                w.setGravity(Gravity.CENTER);            
+                WindowManager.LayoutParams lp = w.getAttributes();            
+                lp.x = 0;            
+                lp.y = 0;            
+                w.setAttributes(lp);
+            }
             TextView tv = errorDialog.findViewById(android.R.id.message);
             if (tv != null) tv.setTextIsSelectable(true);            
         });
