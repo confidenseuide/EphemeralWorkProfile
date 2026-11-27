@@ -1,6 +1,7 @@
 package ephemeralwp.safespace;
 
 import android.app.Activity;
+import android.view.Window;
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -11,6 +12,7 @@ import android.content.pm.LauncherApps;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.Process;
 import android.os.UserHandle;
@@ -80,8 +82,82 @@ public class ClonerMainActivity extends Activity {
         title.setTypeface(null, android.graphics.Typeface.BOLD);
         layout.addView(title);
 
+        TextView warning = new TextView(this);
+        warning.setText("Here you can clone only user (installed) apps to work profile");
+        warning.setTextColor(0xFFFFFFFF);
+        warning.setTextSize(14);
+        warning.setPadding(40, 30, 40, 30);
+        GradientDrawable warnBg = new GradientDrawable();
+        warnBg.setColor(0xCCD32F2F);
+        warnBg.setCornerRadius(24);
+        warning.setBackground(warnBg);
+        LinearLayout.LayoutParams warnLp = new LinearLayout.LayoutParams(-1, -2);
+        warnLp.setMargins(40, 0, 40, 30);
+        layout.addView(warning, warnLp);
+        
         listView = new ListView(this);
-        layout.addView(listView);
+        layout.addView(listView, new LinearLayout.LayoutParams(
+        LinearLayout.LayoutParams.MATCH_PARENT, 0, 1f));
+
+        LinearLayout emptyView = new LinearLayout(this);
+        emptyView.setOrientation(LinearLayout.VERTICAL);
+        emptyView.setGravity(Gravity.CENTER);
+        emptyView.setPadding(80, 80, 80, 80);
+        emptyView.setVisibility(View.GONE);
+
+        TextView emptyIcon = new TextView(this);
+        emptyIcon.setText("📦");
+        emptyIcon.setTextSize(72);
+        emptyIcon.setGravity(Gravity.CENTER);
+
+        TextView emptyTitle = new TextView(this);
+        emptyTitle.setText("No Apps Found");
+        emptyTitle.setTextColor(0xFF1C1C1E);
+        emptyTitle.setTextSize(24);
+        emptyTitle.setTypeface(null, android.graphics.Typeface.BOLD);
+        emptyTitle.setGravity(Gravity.CENTER);
+        emptyTitle.setPadding(0, 40, 0, 16);
+
+        TextView emptySub = new TextView(this);
+        emptySub.setText("There are no user apps to clone. You have only system apps. \nInstall something and come back.");
+        emptySub.setTextColor(0xFF8E8E93);
+        emptySub.setTextSize(15);
+        emptySub.setGravity(Gravity.CENTER);
+        emptySub.setPadding(0, 0, 0, 50);
+
+        GradientDrawable refreshBg = new GradientDrawable();
+        refreshBg.setColor(0xFF2C2C2E);
+        refreshBg.setCornerRadius(100);
+
+        Button refreshBtn = new Button(this);
+        refreshBtn.setText("Refresh");
+        refreshBtn.setTextColor(0xFFFFFFFF);
+        refreshBtn.setAllCaps(false);
+        refreshBtn.setBackground(refreshBg);
+        refreshBtn.setPadding(100, 30, 100, 30);
+        refreshBtn.setOnClickListener(v -> loadApps());
+
+        emptyView.addView(emptyIcon);
+        emptyView.addView(emptyTitle);
+        emptyView.addView(emptySub);
+        emptyView.addView(refreshBtn, new LinearLayout.LayoutParams(-2, -2));
+
+        layout.addView(emptyView, new LinearLayout.LayoutParams(
+        LinearLayout.LayoutParams.MATCH_PARENT, 0, 1f));
+        listView.setEmptyView(emptyView);
+
+        Button backBtn = new Button(this);
+        backBtn.setText("Back");
+        backBtn.setTextColor(0xFFFFFFFF);
+        backBtn.setAllCaps(false);
+        GradientDrawable btnBg = new GradientDrawable();
+        btnBg.setColor(0xFFF44336);
+        btnBg.setCornerRadius(24);
+        backBtn.setBackground(btnBg);
+        backBtn.setOnClickListener(v -> finish());
+        LinearLayout.LayoutParams btnLp = new LinearLayout.LayoutParams(-1, -2);
+        btnLp.setMargins(40, 30, 40, 60);
+        layout.addView(backBtn, btnLp);
 
         setContentView(layout);
     }
@@ -173,13 +249,28 @@ public class ClonerMainActivity extends Activity {
         }
     }
 
-    private void confirmClone(final AppItem app) {
-        new AlertDialog.Builder(this)
-                .setTitle("Confirm")
-                .setMessage("Clone " + app.name + "?")
-                .setPositiveButton("Yes", (dialog, which) -> cloneApp(app.info))
-                .setNegativeButton("No", null)
-                .show();
+    private AlertDialog confirmDialog;
+
+    private void confirmClone(final AppItem app) {    
+        if (confirmDialog != null && confirmDialog.isShowing()) return;
+    
+        confirmDialog = new AlertDialog.Builder(this)
+            .setTitle("Confirm")
+            .setMessage("Clone " + app.name + "?")
+            .setPositiveButton("Yes", (dialog, which) -> cloneApp(app.info))
+            .setNegativeButton("No", null)
+            .create();
+        confirmDialog.show();
+    
+        Window w = confirmDialog.getWindow();
+    
+        if (w != null) {        
+            w.setGravity(Gravity.CENTER);        
+            WindowManager.LayoutParams lp = w.getAttributes();        
+            lp.x = 0;        
+            lp.y = 0;        
+            w.setAttributes(lp);
+        }            
     }
 
     private void cloneApp(ApplicationInfo appInfo) {
@@ -227,14 +318,20 @@ public class ClonerMainActivity extends Activity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onDestroy() {        
         if (errorDialog != null) {
             if (errorDialog.isShowing()) {            
                 errorDialog.dismiss();
             }       
             errorDialog = null;    
         }
+        if (confirmDialog != null) {
+            if (confirmDialog.isShowing()) {            
+                confirmDialog.dismiss();
+            }       
+            confirmDialog = null;    
+        }
+        super.onDestroy();
     }
 
     private AlertDialog errorDialog;
@@ -248,8 +345,15 @@ public class ClonerMainActivity extends Activity {
             .setCancelable(false)
             .setPositiveButton("OK", null)
             .create();
-        errorDialog.show();
-    
+        errorDialog.show();  
+        Window w = errorDialog.getWindow();
+        if (w != null) {            
+            w.setGravity(Gravity.CENTER);            
+            WindowManager.LayoutParams lp = w.getAttributes();            
+            lp.x = 0;            
+            lp.y = 0;            
+            w.setAttributes(lp);
+        }
         TextView tv = errorDialog.findViewById(android.R.id.message);
         if (tv != null) tv.setTextIsSelectable(true);    
     }
