@@ -69,7 +69,11 @@ public class ActionsActivity extends Activity {
                 home.addCategory(Intent.CATEGORY_HOME);
                 home.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(home);
-            } else {
+            } else if (className.equals("OPEN_USER_APPS")) {			
+				try {
+					startActivity(new Intent("ephemeralwp.safespace.OPEN_USER_APPS"));
+				} catch (Exception ignored) {}
+			} else {
                 try {
                     Intent i = new Intent();
                     i.setComponent(new ComponentName(getPackageName(), className));
@@ -112,6 +116,14 @@ public class ActionsActivity extends Activity {
                         label = parts[parts.length - 1];
                     }
                     labelToClass.put(label, info.name);
+					if (info.name.equals(SystemAppsActivity.class.getName())) {
+						for (ResolveInfo r : pm.queryIntentActivities(new Intent("ephemeralwp.safespace.OPEN_USER_APPS"), 0)) {
+							if (!r.activityInfo.packageName.equals(getPackageName())) { 
+								labelToClass.put("Clone User Apps", "OPEN_USER_APPS"); 
+								break; 
+							}
+						}
+					}
                 }
             }
         } catch (Exception ignored) {}
@@ -121,7 +133,12 @@ public class ActionsActivity extends Activity {
     protected void onResume() {
         super.onResume();
 		getWindow().getDecorView().setKeepScreenOn(true);
-		hideSystemUI();
-					
+		hideSystemUI();					
+	}
+	
+	@Override
+	protected void onRestart() {
+		super.onRestart();
+		recreate();
 	}
 }
