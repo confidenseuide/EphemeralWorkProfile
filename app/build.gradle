@@ -27,5 +27,4 @@ buildTypes {
 
 }
 
-dependencies {
-}
+dependencies {}
